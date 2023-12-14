@@ -25,7 +25,7 @@ static void initial_param(t_cub *get_parm) // char *path_map)
     get_parm->prs_map.map.height = 0;
     // get_parm->prs_map.f_c_color.floor = -1;
     // get_parm->prs_map.f_c_color.ceiling = -1;
-    // get_parm->path_maps = strdup();
+    // get_parm->path_maps = strdup(path_map);
     // get_parm->map_fd = open(get_parm->path_maps, O_RDONLY);
 }
 
