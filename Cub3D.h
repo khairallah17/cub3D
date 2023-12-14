@@ -17,9 +17,8 @@ typedef struct s_texture
 
 typedef struct s_color_rgb
 {
-	int	red;
-	int	green;
-	int	blue;
+	int			floor;
+	int			ceiling;
 } t_color_rgb;
 
 typedef struct s_map
@@ -32,9 +31,15 @@ typedef struct s_map
 typedef struct s_map_data
 {
 	t_map		map;
-	t_color_rgb	floor;
-	t_color_rgb ceiling;
+	t_color_rgb	f_c_color;
 	t_texture	texture;
 }	t_map_data;
+
+typedef struct s_cub
+{
+	char *path_maps;
+	int	map_fd;
+	t_map_data prs_map;
+}	t_cub;
 
 #endif
