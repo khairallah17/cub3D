@@ -6,6 +6,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <libc.h>
+#include "./gnl/get_next_line.h"
 
 typedef struct s_texture
 {
@@ -35,11 +36,12 @@ typedef struct s_map_data
 	t_texture	texture;
 }	t_map_data;
 
-typedef struct s_cub
+typedef struct s_cub3d
 {
 	char *path_maps;
+	char *tmp_store;
 	int	map_fd;
 	t_map_data prs_map;
-}	t_cub;
+}	t_cub3d;
 
 #endif
