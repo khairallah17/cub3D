@@ -1,9 +1,15 @@
-NO ./path_to_the_north_texture
+NO ./path_to_the_north_texture.xpm
+Error: can't Open and read path Texture
 SO ./path_to_the_south_texture
+SO here
 WE ./path_to_the_west_texture
+WE here
 EA ./path_to_the_east_texture
+EA here
 F 220,100,0
+F here
 C 225,30,0
+C here
 1111111111111111111111111
 1000000000110000000000001
 1011000001110000000000001

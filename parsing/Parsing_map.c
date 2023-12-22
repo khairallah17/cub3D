@@ -45,44 +45,82 @@ static void initial_param(t_cub3d *get_parm, char *path_map)
 
 int index_first_path(char *str, int i)
 {
-    while (str[i] && (str[i] = ' '))
+    while (str[i] && str[i] == ' ')
         i++;
     return (i);
 }
 
 int index_end_path(char *str, int i)
 {
-    while (i > 0 && str[i] == ' ')
+    while (i >= 0 && (str[i] == ' '))
         i--;
+    // printf("i = %d\n", i);
     return (i);
 }
 
-// char *search_path_texture(t_cub3d *cub)
-// {
-//     int first_index_path;
-//     int end_index_path;
-//     char *str;
+char *search_path_texture(t_cub3d *cub)
+{
+    int first_index_path;
+    int end_index_path;
+    int fd;
+    char *str;
+    // int i = 0;
 
-//     first_index_path = index_first_path(cub->tmp_store, 2);
-//     end_index_path = index_end_path(cub->tmp_store, strlen(cub->tmp_store));
-//     str = 
-
-// }
+    first_index_path = index_first_path(cub->tmp_store, 2);
+    end_index_path = index_end_path(cub->tmp_store, strlen(cub->tmp_store) - 2);
+    // printf("first %d\n", first_index_path);
+    // printf("end %d\n", end_index_path);
+    // int i = (end_index_path - (first_index_path + 1));
+    // printf("limit %d\n", i);
+    str = ft_substr(cub->tmp_store, first_index_path, (end_index_path - first_index_path + 1));
+    if(!strnstr(str, ".xpm", strlen(str)) || strncmp(strnstr(str, ".xpm", strlen(str)), ".xpm", strlen(".xpm")))
+    {
+        printf("Error: Path missed .xpm at the end\n");
+        exit(EXIT_FAILURE);
+    }
+    else
+    {
+        fd = open(str, O_RDWR);
+        if (fd == -1)
+        {
+            printf("Error: can't Open and read path Texture\n");
+        }
+    }
+    return (str);
+}
 
 static void parse_texture(t_cub3d *cub)
 {
     if (!strncmp(cub->tmp_store, "NO ", 3) && cub->prs_map.texture.north == NULL)
-        puts("NO here"); //function to check texture path
+    {
+        cub->tmp_store = search_path_texture(cub);
+    }
+        // puts("NO here"); //function to check texture path
     else if (!strncmp(cub->tmp_store, "SO ", 3) && cub->prs_map.texture.south == NULL)
-        puts("SO here"); //function to check texture path
+    {
+        cub->tmp_store = search_path_texture(cub);
+    }
+        // puts("SO here"); //function to check texture path
     else if (!strncmp(cub->tmp_store, "WE ", 3) && cub->prs_map.texture.west == NULL)
-        puts("WE here"); //function to check texture path
+    {
+        cub->tmp_store = search_path_texture(cub);
+    }
+        // puts("WE here"); //function to check texture path
     else if (!strncmp(cub->tmp_store, "EA ", 3) && cub->prs_map.texture.east == NULL)
-        puts("EA here"); //function to check texture path
+    {
+        cub->tmp_store = search_path_texture(cub);
+    }
+        // puts("EA here"); //function to check texture path
     else if (!strncmp(cub->tmp_store, "F ", 2) && cub->prs_map.f_c_color.floor == -1)
-        puts("F here"); //function to check texture path
+    {
+        cub->tmp_store = search_path_texture(cub);
+    }
+        // puts("F here"); //function to check texture path
     else if (!strncmp(cub->tmp_store, "C ", 2) && cub->prs_map.f_c_color.ceiling == -1)
-        puts("C here"); //function to check texture path
+    {
+        cub->tmp_store = search_path_texture(cub);
+    }
+        // puts("C here"); //function to check texture path
 }
 
 
