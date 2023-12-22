@@ -2,7 +2,7 @@ NAME		=	Cub3D
 
 CC			=	gcc
 
-CFLAGS		=	-Wall -Werror -Wextra
+CFLAGS		=	-Wall -Wextra #-Werror 
 
 # directories
 SRC_DIR		=	./

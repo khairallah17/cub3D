@@ -1,15 +1,121 @@
-NO ./path_to_the_north_texture.xpm
-Error: can't Open and read path Texture
-SO ./path_to_the_south_texture
-SO here
-WE ./path_to_the_west_texture
-WE here
-EA ./path_to_the_east_texture
-EA here
-F 220,100,0
-F here
-C 225,30,0
-C here
+NO ./path_to_the_north_texture.xpm                                                  
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+i = 33
+./path_to_the_north_texture.xpm
+SO ./path_to_the_south_texture.xpm
+i = 33
+WE ./path_to_the_west_texture.xpm
+i = 32
+EA ./path_to_the_east_texture.xpm
+i = 32
+F 220,100,0                                                    
+index first => 2
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+sss
+i = 10
+index sec => 10
+index sec => 63
+index last => 9
+220,100,0C 225,30,0
 1111111111111111111111111
 1000000000110000000000001
 1011000001110000000000001

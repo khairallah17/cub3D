@@ -45,16 +45,19 @@ static void initial_param(t_cub3d *get_parm, char *path_map)
 
 int index_first_path(char *str, int i)
 {
-    while (str[i] && str[i] == ' ')
+    while (str[i] && str[i] == 32)
         i++;
     return (i);
 }
 
 int index_end_path(char *str, int i)
 {
-    while (i >= 0 && (str[i] == ' '))
+    while(i >= 0 && str[i] == 32)
+    {
+        puts("sss");
         i--;
-    // printf("i = %d\n", i);
+    }
+    printf("i = %d\n", i);
     return (i);
 }
 
@@ -72,21 +75,38 @@ char *search_path_texture(t_cub3d *cub)
     // printf("end %d\n", end_index_path);
     // int i = (end_index_path - (first_index_path + 1));
     // printf("limit %d\n", i);
-    str = ft_substr(cub->tmp_store, first_index_path, (end_index_path - first_index_path + 1));
+    str = ft_substr(cub->tmp_store, first_index_path, end_index_path - first_index_path + 1);
     if(!strnstr(str, ".xpm", strlen(str)) || strncmp(strnstr(str, ".xpm", strlen(str)), ".xpm", strlen(".xpm")))
     {
         printf("Error: Path missed .xpm at the end\n");
         exit(EXIT_FAILURE);
     }
-    else
-    {
-        fd = open(str, O_RDWR);
-        if (fd == -1)
-        {
-            printf("Error: can't Open and read path Texture\n");
-        }
-    }
+    // else
+    // {
+    //     fd = open(str, O_RDWR);
+    //     if (fd == -1)
+    //     {
+    //         printf("Error: can't Open and read path Texture\n");
+    //     }
+    // }
     return (str);
+}
+
+char *check_color(t_cub3d *cub)//, int color)
+{
+    int first_index_color;
+    int second_index_color;
+    char *temp;
+
+    first_index_color = index_first_path(cub->tmp_store, 1);
+    // printf("index first => %d\n", first_index_color);
+    second_index_color = index_end_path(cub->tmp_store, (strlen(cub->tmp_store) - 2)); //skipping "/0" + also first character and secend character space "F "
+    // printf("index sec => %d\n", second_index_color);
+    // printf("index sec => %d\n", (int)strlen(cub->tmp_store) - 1);
+    temp = ft_substr(cub->tmp_store, first_index_color, second_index_color - first_index_color + 1);
+    // printf("index last => %d\n", second_index_color - first_index_color + 1);
+    // printf("%s", temp);
+    return(temp);
 }
 
 static void parse_texture(t_cub3d *cub)
@@ -94,6 +114,7 @@ static void parse_texture(t_cub3d *cub)
     if (!strncmp(cub->tmp_store, "NO ", 3) && cub->prs_map.texture.north == NULL)
     {
         cub->tmp_store = search_path_texture(cub);
+        printf("%s\n", cub->tmp_store);
     }
         // puts("NO here"); //function to check texture path
     else if (!strncmp(cub->tmp_store, "SO ", 3) && cub->prs_map.texture.south == NULL)
@@ -113,15 +134,18 @@ static void parse_texture(t_cub3d *cub)
         // puts("EA here"); //function to check texture path
     else if (!strncmp(cub->tmp_store, "F ", 2) && cub->prs_map.f_c_color.floor == -1)
     {
-        cub->tmp_store = search_path_texture(cub);
+        cub->tmp_store = check_color(cub);
+        printf("%s", cub->tmp_store);
     }
         // puts("F here"); //function to check texture path
-    else if (!strncmp(cub->tmp_store, "C ", 2) && cub->prs_map.f_c_color.ceiling == -1)
-    {
-        cub->tmp_store = search_path_texture(cub);
-    }
+    // else if (!strncmp(cub->tmp_store, "C ", 2) && cub->prs_map.f_c_color.ceiling == -1)
+    // {
+    //     cub->tmp_store = search_path_texture(cub);
+    // }
         // puts("C here"); //function to check texture path
 }
+
+
 
 
 int parsing_int(t_cub3d *cub)
@@ -141,6 +165,7 @@ int parsing_int(t_cub3d *cub)
         printf("%s", cub->tmp_store);
         parse_texture(cub);
         cub->tmp_store = get_next_line(cub->map_fd);
+        // printf("%s", cub->tmp_store);
         // puts(cub->tmp_store);
     }
     return(0);
