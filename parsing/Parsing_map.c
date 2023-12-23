@@ -54,10 +54,10 @@ int index_end_path(char *str, int i)
 {
     while(i >= 0 && str[i] == 32)
     {
-        puts("sss");
+        // puts("sss");
         i--;
     }
-    printf("i = %d\n", i);
+    // printf("i = %d\n", i);
     return (i);
 }
 
@@ -81,14 +81,14 @@ char *search_path_texture(t_cub3d *cub)
         printf("Error: Path missed .xpm at the end\n");
         exit(EXIT_FAILURE);
     }
-    // else
-    // {
-    //     fd = open(str, O_RDWR);
-    //     if (fd == -1)
-    //     {
-    //         printf("Error: can't Open and read path Texture\n");
-    //     }
-    // }
+    else
+    {
+        fd = open(str, O_RDWR);
+        if (fd == -1)
+        {
+            printf("Error: can't Open and read path Texture\n");
+        }
+    }
     return (str);
 }
 
@@ -114,7 +114,7 @@ static void parse_texture(t_cub3d *cub)
     if (!strncmp(cub->tmp_store, "NO ", 3) && cub->prs_map.texture.north == NULL)
     {
         cub->tmp_store = search_path_texture(cub);
-        printf("%s\n", cub->tmp_store);
+        // printf("%s\n", cub->tmp_store);
     }
         // puts("NO here"); //function to check texture path
     else if (!strncmp(cub->tmp_store, "SO ", 3) && cub->prs_map.texture.south == NULL)
@@ -135,13 +135,14 @@ static void parse_texture(t_cub3d *cub)
     else if (!strncmp(cub->tmp_store, "F ", 2) && cub->prs_map.f_c_color.floor == -1)
     {
         cub->tmp_store = check_color(cub);
-        printf("%s", cub->tmp_store);
+        // printf("%s", cub->tmp_store);
     }
         // puts("F here"); //function to check texture path
-    // else if (!strncmp(cub->tmp_store, "C ", 2) && cub->prs_map.f_c_color.ceiling == -1)
-    // {
-    //     cub->tmp_store = search_path_texture(cub);
-    // }
+    else if (!strncmp(cub->tmp_store, "C ", 2) && cub->prs_map.f_c_color.ceiling == -1)
+    {
+        cub->tmp_store = check_color(cub);
+        // cub->tmp_store = search_path_texture(cub);
+    }
         // puts("C here"); //function to check texture path
 }
 
@@ -162,7 +163,7 @@ int parsing_int(t_cub3d *cub)
             // cub->tmp_store = NULL;
             continue;
         }
-        printf("%s", cub->tmp_store);
+        // printf("%s", cub->tmp_store);
         parse_texture(cub);
         cub->tmp_store = get_next_line(cub->map_fd);
         // printf("%s", cub->tmp_store);
