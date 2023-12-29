@@ -81,14 +81,17 @@ char *search_path_texture(t_cub3d *cub)
         printf("Error: Path missed .xpm at the end\n");
         exit(EXIT_FAILURE);
     }
-    else
-    {
-        fd = open(str, O_RDWR);
-        if (fd == -1)
-        {
-            printf("Error: can't Open and read path Texture\n");
-        }
-    }
+    // else
+    // {
+    //     // puts(str);
+    //     fd = open(str, O_RDWR);
+    //     // printf("fd = %d\n", fd);
+    //     if (fd == -1)
+    //     {
+    //         printf("Error: can't Open and read path Texture\n");
+    //         exit(EXIT_FAILURE);
+    //     }
+    // }
     return (str);
 }
 
@@ -105,7 +108,7 @@ char *check_color(t_cub3d *cub)//, int color)
     // printf("index sec => %d\n", (int)strlen(cub->tmp_store) - 1);
     temp = ft_substr(cub->tmp_store, first_index_color, second_index_color - first_index_color + 1);
     // printf("index last => %d\n", second_index_color - first_index_color + 1);
-    // printf("%s", temp);
+    printf("%s\n", temp);
     return(temp);
 }
 
@@ -163,7 +166,7 @@ int parsing_int(t_cub3d *cub)
             // cub->tmp_store = NULL;
             continue;
         }
-        // printf("%s", cub->tmp_store);
+        printf("%s", cub->tmp_store);
         parse_texture(cub);
         cub->tmp_store = get_next_line(cub->map_fd);
         // printf("%s", cub->tmp_store);
