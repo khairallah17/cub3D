@@ -44,4 +44,13 @@ typedef struct s_cub3d
 	t_map_data prs_map;
 }	t_cub3d;
 
+
+void    check_arguments(int ac, char **av);
+// static void initial_param(t_cub3d *get_parm, char *path_map);
+// static void parse_texture(t_cub3d *cub);
+int parsing_int(t_cub3d *cub);
+int index_first_path(char *str, int i);
+int index_end_path(char *str, int i);
+char *search_path_texture(t_cub3d *cub);
+char *check_color(t_cub3d *cub);//, int color);
 #endif
