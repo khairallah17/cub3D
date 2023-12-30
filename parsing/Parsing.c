@@ -52,10 +52,7 @@ static void parse_texture(t_cub3d *cub)
         // puts("C here"); //function to check texture path
 }
 
-
-
-
-int parsing_int(t_cub3d *cub)
+int parsing_remove_new_line(t_cub3d *cub)
 {
     // int count;
 
@@ -85,7 +82,7 @@ int parsing_int(t_cub3d *cub)
     check_arguments(ac, av);
     cub = (t_cub3d *)malloc(sizeof(t_cub3d));
     initial_param(cub, av[1]);
-    parsing_int(cub);
+    parsing_remove_new_line(cub);
     
     // return(cub);
 }
