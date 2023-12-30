@@ -21,7 +21,11 @@ CUT			=	\033[K
 #source files
 SRC_FILES	=	gnl/get_next_line_utils.c \
 				gnl/get_next_line.c \
-				parsing/Parsing_map.c
+				parsing/check_arguments.c \
+				parsing/checking_texture_file.c \
+				parsing/color_rgb.c \
+				parsing/path_xpm.c \
+				parsing/parsing.c
 
 INC_FILES	=	gnl/get_next_line.h \
 				Cub3D.h
