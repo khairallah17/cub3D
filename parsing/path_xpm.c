@@ -39,16 +39,16 @@ char *search_path_texture(t_cub3d *cub)
         printf("Error: Path missed .xpm at the end\n");
         exit(EXIT_FAILURE);
     }
-    else
-    {
-        // puts(str);
-        fd = open(str, O_RDWR);
-        // printf("fd = %d\n", fd);
-        if (fd == -1)
-        {
-            printf("Error: can't Open and read path Texture\n");
-            exit(EXIT_FAILURE);
-        }
-    }
+    // else
+    // {
+    //     // puts(str);
+    //     fd = open(str, O_RDWR);
+    //     // printf("fd = %d\n", fd);
+    //     if (fd == -1)
+    //     {
+    //         printf("Error: can't Open and read path Texture\n");
+    //         exit(EXIT_FAILURE);
+    //     }
+    // }
     return (str);
 }

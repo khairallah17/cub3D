@@ -38,7 +38,7 @@ char	*ft_reded_line(int fd, char *readed_line)
 	while (read_line > 0)
 	{	
 		buffer[read_line] = '\0';
-		readed_line = ft_strjoin(readed_line, buffer);
+		readed_line = join(readed_line, buffer);
 		if (readed_line == NULL)
 			return (NULL);
 		if (ft_strchr(readed_line, '\n'))

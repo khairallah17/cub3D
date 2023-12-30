@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <libc.h>
 #include "./gnl/get_next_line.h"
+#include "libft/libft.h"
 
 typedef struct s_texture
 {
