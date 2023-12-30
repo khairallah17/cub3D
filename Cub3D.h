@@ -21,6 +21,7 @@ typedef struct s_color_rgb
 {
 	int			floor;
 	int			ceiling;
+	int			*tab_color;
 } t_color_rgb;
 
 typedef struct s_map

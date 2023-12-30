@@ -11,6 +11,7 @@ static void initial_param(t_cub3d *get_parm, char *path_map)
     get_parm->prs_map.texture.south = NULL;
     get_parm->prs_map.texture.west = NULL;
     get_parm->path_maps = strdup(path_map);
+    get_parm->prs_map.f_c_color.tab_color = (int *)malloc(sizeof(int) * 3);
     get_parm->map_fd = open(get_parm->path_maps, O_RDONLY);
     // printf("%d\n", get_parm->map_fd);
 }

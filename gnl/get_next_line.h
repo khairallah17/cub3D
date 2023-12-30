@@ -21,7 +21,7 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <fcntl.h>
-#include "../libft/libft.h"
+// #include "../libft/libft.h"
 
 
 char	*ft_strdup(const char *s1);

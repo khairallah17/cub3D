@@ -6,7 +6,7 @@ CFLAGS		=	-Wall -Wextra #-Werror
 
 # directories
 SRC_DIR		=	./
-OBJ_DIR		=	./
+OBJ_DIR		=	./obj/
 INC_DIR		=	./
 
 # controll codes
@@ -30,7 +30,7 @@ SRC_FILES	=	gnl/get_next_line_utils.c \
 INC_FILES	=	gnl/get_next_line.h \
 				Cub3D.h
 
-OBJ_FILES	=	$(SRC_FILES:.cpp=.o)
+OBJ_FILES	=	$(SRC_FILES:.c=.o)
 
 #paths
 SRC			=	$(addprefix $(SRC_DIR), $(SRC_FILES))
@@ -52,12 +52,12 @@ all: $(NAME)
 $(NAME): $(OBJ) $(INC_FILES)
 	@echo "$(YELLOW)Compiling [$(NAME)]...$(RESET)"
 	@(cd libft; make)
-	@$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJ) ./libft/libft.a -o $(NAME)
 	@echo "$(GREEN)Finished [$(NAME)]$(RESET)"
 
 #compile objects
-$(OBJ_DIR)%.o:$(SRC_DIR)%.cpp $(INC_FILES)
-	@mkdir -p $(OBJ_DIR)
+$(OBJ_DIR)%.o:$(SRC_DIR)%.c $(INC_FILES)
+	@mkdir -p $(dir $@)
 	@echo "$(YELLOW)Compiling [$@]...$(RESET)"
 	@$(CC) $(CFLAGS) -I $(INC_DIR) -o $@ -c $<
 	@printf "$(UP)$(CUT)"
@@ -68,8 +68,8 @@ $(OBJ_DIR)%.o:$(SRC_DIR)%.cpp $(INC_FILES)
 clean:
 	@if [ -d "$(OBJ_DIR)" ]; then \
 	rm -rf $(OBJ_DIR); \
-	echo "$(BLUE)Deleting all objects from /ex00...$(RESET)"; else \
-	echo "No objects to remove from /ex00."; \
+	echo "$(BLUE)Deleting all objects from /Cub3D...$(RESET)"; else \
+	echo "No objects to remove from /Cub3D."; \
 	fi;
 
 #fclean rule

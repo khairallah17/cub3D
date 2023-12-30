@@ -25,12 +25,31 @@ void parsing_rgb_proba(char *temp, int i, int count_cama)
     }
 }
 
-char *check_color(t_cub3d *cub)//, int color)
+void send_rgb_color(t_cub3d *cub, char *temp, char **rgb_color)
+{
+    int i;
+
+    i = 0;
+    rgb_color = ft_split(temp, ',');
+    while (i > 3)
+    {
+        cub->prs_map.f_c_color.tab_color[i] = ft_atoi(check_color(cub));
+        // printf("color = %d\n", cub->prs_map.f_c_color.tab_color[i]);
+        i++;
+    }
+    // while (rgb_color[i])
+    // {
+    //     puts(rgb_color[i]);
+    //     i++;
+    // }
+}
+
+char *check_color(t_cub3d *cub)//, int i)
 {
     int first_index_color;
     int second_index_color;
     char *temp;
-    char **rgb_color;
+    char **rgb_color = NULL;
 
     first_index_color = index_first_path(cub->tmp_store, 1);
     // printf("index first => %d\n", first_index_color);
@@ -39,15 +58,12 @@ char *check_color(t_cub3d *cub)//, int color)
     // printf("index sec => %d\n", (int)strlen(cub->tmp_store) - 1);
     temp = ft_substr(cub->tmp_store, first_index_color, second_index_color - first_index_color + 1);
     parsing_rgb_proba(temp, 0, 0);
-    rgb_color = ft_split(temp, ',');
-    int i = 0;
-    while (rgb_color[i])
-    {
-        puts(rgb_color[i]);
-        i++;
-    }
+    send_rgb_color(cub, temp, rgb_color);
+    int i=0;
+    while(i > 3)
+        printf("%d\n", cub->prs_map.f_c_color.tab_color[i++]);
     //"255,255,255"
     // printf("index last => %d\n", second_index_color - first_index_color + 1);
-    printf("%s\n", temp);
+    // printf("%s\n", temp);
     return(temp);
 }
