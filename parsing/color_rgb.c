@@ -25,29 +25,42 @@ void parsing_rgb_proba(char *temp, int i, int count_cama)
     }
 }
 
-void send_rgb_color(t_cub3d *cub, char *temp, char **rgb_color)
+int send_rgb_color(char *temp, char **rgb_color)
 {
     int i;
+    // int color;
+    int tb_color[3];
 
     i = 0;
+    int j = 0;
     rgb_color = ft_split(temp, ',');
-    while (i > 3)
+    while (rgb_color[j])
+        printf("rgb_color = %s\n", rgb_color[j++]);
+    // puts("d");
+    while (i < 3)
     {
-        cub->prs_map.f_c_color.tab_color[i] = ft_atoi(check_color(cub));
-        // printf("color = %d\n", cub->prs_map.f_c_color.tab_color[i]);
+        tb_color[i] = ft_atoi(rgb_color[i]);
+        // puts("d3");
+        if (tb_color[i] < 0 || tb_color[i] > 255)
+        {
+            printf("ERROR: Please re-change range of RGB the limit [0-255]\n");
+            exit(EXIT_FAILURE);
+        }
+        // puts("d4");
+        printf("tb_color = %d\n", tb_color[i]);
         i++;
     }
-    // while (rgb_color[i])
-    // {
-    //     puts(rgb_color[i]);
-    //     i++;
-    // }
+    // color = ((tb_color[0] << 24) + (tb_color[1] << 16) + (tb_color[2] << 8) + 255);
+    // printf("color == %d\n", color);
+    // printf("color == %d\n", tb_color[0]);
+    return (((tb_color[0] << 24) | (tb_color[1] << 16) | (tb_color[2] << 8) | 255));
 }
 
-char *check_color(t_cub3d *cub)//, int i)
+int check_color(t_cub3d *cub)
 {
     int first_index_color;
     int second_index_color;
+    int color;
     char *temp;
     char **rgb_color = NULL;
 
@@ -58,12 +71,10 @@ char *check_color(t_cub3d *cub)//, int i)
     // printf("index sec => %d\n", (int)strlen(cub->tmp_store) - 1);
     temp = ft_substr(cub->tmp_store, first_index_color, second_index_color - first_index_color + 1);
     parsing_rgb_proba(temp, 0, 0);
-    send_rgb_color(cub, temp, rgb_color);
-    int i=0;
-    while(i > 3)
-        printf("%d\n", cub->prs_map.f_c_color.tab_color[i++]);
+    puts("d");
+    color  = send_rgb_color(temp, rgb_color);
     //"255,255,255"
     // printf("index last => %d\n", second_index_color - first_index_color + 1);
-    // printf("%s\n", temp);
-    return(temp);
+    printf("%d\n", color);
+    return(color);
 }

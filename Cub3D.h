@@ -54,5 +54,5 @@ int parsing_remove_new_line(t_cub3d *cub);
 int index_first_path(char *str, int i);
 int index_end_path(char *str, int i);
 char *search_path_texture(t_cub3d *cub);
-char *check_color(t_cub3d *cub);//, int color);
+int check_color(t_cub3d *cub);
 #endif

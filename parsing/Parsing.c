@@ -41,13 +41,14 @@ static void parse_texture(t_cub3d *cub)
         // puts("EA here"); //function to check texture path
     else if (!strncmp(cub->tmp_store, "F ", 2) && cub->prs_map.f_c_color.floor == -1)
     {
-        cub->tmp_store = check_color(cub);
+        cub->prs_map.f_c_color.floor = check_color(cub);
         // printf("%s", cub->tmp_store);
     }
         // puts("F here"); //function to check texture path
     else if (!strncmp(cub->tmp_store, "C ", 2) && cub->prs_map.f_c_color.ceiling == -1)
     {
-        cub->tmp_store = check_color(cub);
+        
+        cub->prs_map.f_c_color.ceiling = check_color(cub);
         // cub->tmp_store = search_path_texture(cub);
     }
         // puts("C here"); //function to check texture path
@@ -93,4 +94,6 @@ int parsing_remove_new_line(t_cub3d *cub)
 int main(int ac, char **av)
 {
     parsing(ac, av);
+// // int check_color(t_cub3d *cub, int color)
+//     int t = heck_color(t_cub3d *cub, int color);
 }
