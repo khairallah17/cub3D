@@ -3,14 +3,14 @@
 
 int index_first_path(char *str, int i)
 {
-    while (str[i] && str[i] == 32)
+    while (str[i] && str[i] == ' ')
         i++;
     return (i);
 }
 
 int index_end_path(char *str, int i)
 {
-    while(i >= 0 && str[i] == 32)
+    while(i >= 0 && str[i] == ' ')
     {
         // puts("sss");
         i--;
