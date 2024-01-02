@@ -42,6 +42,8 @@ typedef struct s_cub3d
 {
 	char *path_maps;
 	char *tmp_store;
+	int	count_txtr_line;
+	int error_parse_nb;
 	int	map_fd;
 	t_map_data prs_map;
 }	t_cub3d;

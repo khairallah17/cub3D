@@ -26,7 +26,7 @@ char *search_path_texture(t_cub3d *cub)
     int fd;
     char *str;
     // int i = 0;
-
+    cub->count_txtr_line++;
     first_index_path = index_first_path(cub->tmp_store, 2);
     end_index_path = index_end_path(cub->tmp_store, strlen(cub->tmp_store) - 2);
     // printf("first %d\n", first_index_path);

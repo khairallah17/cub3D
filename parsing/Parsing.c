@@ -4,6 +4,7 @@ static void initial_param(t_cub3d *get_parm, char *path_map)
 {
     // get_parm->prs_map.map.width = 0;
     // get_parm->prs_map.map.height = 0;
+    get_parm->count_txtr_line = 0;
     get_parm->prs_map.f_c_color.floor = -1;
     get_parm->prs_map.f_c_color.ceiling = -1;
     get_parm->prs_map.texture.east = NULL;
@@ -16,56 +17,83 @@ static void initial_param(t_cub3d *get_parm, char *path_map)
     // printf("%d\n", get_parm->map_fd);
 }
 
+void    ft_send_err_free(t_cub3d *cub, int err_nbr, char *error_msg)
+{
+    if (err_nbr == -1)
+        free(cub->tmp_store);
+    free(cub->path_maps);
+    if (cub->prs_map.texture.east != NULL)
+        free(cub->prs_map.texture.east);
+    if (cub->prs_map.texture.north != NULL)
+        free(cub->prs_map.texture.north);
+    if (cub->prs_map.texture.south != NULL)
+        free(cub->prs_map.texture.south);
+    if (cub->prs_map.texture.west != NULL)
+        free(cub->prs_map.texture.west);
+    
+}
+
 static void parse_texture(t_cub3d *cub)
 {
     if (!strncmp(cub->tmp_store, "NO ", 3) && cub->prs_map.texture.north == NULL)
-    {
         cub->tmp_store = search_path_texture(cub);
-        // printf("%s\n", cub->tmp_store);
-    }
-        // puts("NO here"); //function to check texture path
     else if (!strncmp(cub->tmp_store, "SO ", 3) && cub->prs_map.texture.south == NULL)
-    {
         cub->tmp_store = search_path_texture(cub);
-    }
-        // puts("SO here"); //function to check texture path
     else if (!strncmp(cub->tmp_store, "WE ", 3) && cub->prs_map.texture.west == NULL)
-    {
         cub->tmp_store = search_path_texture(cub);
-    }
-        // puts("WE here"); //function to check texture path
     else if (!strncmp(cub->tmp_store, "EA ", 3) && cub->prs_map.texture.east == NULL)
-    {
         cub->tmp_store = search_path_texture(cub);
-    }
-        // puts("EA here"); //function to check texture path
     else if (!strncmp(cub->tmp_store, "F ", 2) && cub->prs_map.f_c_color.floor == -1)
-    {
         cub->prs_map.f_c_color.floor = check_color(cub);
-        // printf("%s", cub->tmp_store);
-    }
-        // puts("F here"); //function to check texture path
     else if (!strncmp(cub->tmp_store, "C ", 2) && cub->prs_map.f_c_color.ceiling == -1)
-    {
-        
         cub->prs_map.f_c_color.ceiling = check_color(cub);
-        // cub->tmp_store = search_path_texture(cub);
+    else if ((!strncmp(cub->tmp_store, "NO ", 3) && cub->prs_map.texture.north != NULL)
+            || (!strncmp(cub->tmp_store, "SO ", 3) && cub->prs_map.texture.south != NULL)
+            || (!strncmp(cub->tmp_store, "WE ", 3) && cub->prs_map.texture.west != NULL)
+            || (!strncmp(cub->tmp_store, "EA ", 3) && cub->prs_map.texture.east != NULL)
+            || (!strncmp(cub->tmp_store, "F ", 2) && cub->prs_map.f_c_color.floor != -1)
+            ||( !strncmp(cub->tmp_store, "C ", 2) && cub->prs_map.f_c_color.ceiling != -1))
+        cub->error_parse_nb = 1;
+    else if (ft_strchr("01NSWE ", cub->tmp_store[0]))
+        cub->error_parse_nb = -1;
+    else
+        cub->error_parse_nb = 2;
+}
+
+static void check_for_errors(int idx_line, int count_txtr, t_cub3d *cub)
+{
+    printf("%d\n", idx_line);
+    if (idx_line == 0) //|| (cub->tmp_store == NULL && count_txtr == 0))
+    {
+        printf("ERROR: Empty Map file\n");
+        exit(EXIT_FAILURE);
     }
-        // puts("C here"); //function to check texture path
+    else if ()
+    {
+
+    }
+    else if (count_txtr != 6)
+    {
+        printf("ERROR: Missing One or Multiples line parameter (NO,SO,WE,EA,F,C)\n");
+        exit(EXIT_FAILURE);
+    }
+
 }
 
 int parsing_remove_new_line(t_cub3d *cub)
 {
     // int count;
+    int count_line;
 
+    count_line = 0;
     cub->tmp_store = get_next_line(cub->map_fd);
     while(cub->tmp_store)
     {
+        count_line++;
         if(!strncmp(cub->tmp_store, "\n", 1))
         {
             free(cub->tmp_store);
             cub->tmp_store = get_next_line(cub->map_fd);
-            // cub->tmp_store = NULL;
             continue;
         }
         printf("%s", cub->tmp_store);
@@ -74,6 +102,8 @@ int parsing_remove_new_line(t_cub3d *cub)
         // printf("%s", cub->tmp_store);
         // puts(cub->tmp_store);
     }
+    printf("couuunt = %d\n", cub->count_txtr_line);
+    check_for_errors(count_line, cub->count_txtr_line, cub->error_parse_nb, cub);
     return(0);
 }
 
