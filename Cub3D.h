@@ -8,8 +8,12 @@
 #include <libc.h>
 #include "./gnl/get_next_line.h"
 #include "libft/libft.h"
-// # include "./MLX42/include/MLX42/MLX42.h"
+# include "./MLX42/include/MLX42/MLX42.h"
+// # include "./MLX42/include/MLX42/MLX42_Int.h"
 
+
+# define WINDOW_HEIGHT 1000
+# define WINDOW_WIDTH  700
 
 typedef struct s_texture
 {
@@ -40,14 +44,38 @@ typedef struct s_map_data
 	t_texture	texture;
 }	t_map_data;
 
+typedef struct s_mlx
+{
+	void	*mlx;
+	void	*window;
+	// void	*master;
+	// int		*master_data;
+	void	*wall_north;
+	int		*wall_no_data;
+	int		wall_no_side;
+
+	void	*wall_south;
+	int		*wall_so_data;
+	int		wall_so_side;
+
+	void	*wall_east;
+	int		*wall_ea_data;
+	int		wall_ea_side;
+
+	void	*wall_west;
+	int		*wall_we_data;
+	int		wall_we_side;
+}	t_mlx;
+
 typedef struct s_cub3d
 {
+	t_map_data prs_map;
 	char *path_maps;
 	char *tmp_store;
 	int	count_txtr_line;
 	int error_parse_nb;
 	int	map_fd;
-	t_map_data prs_map;
+	t_mlx	mlx;
 }	t_cub3d;
 
 
@@ -59,5 +87,6 @@ int index_first_path(char *str, int i);
 int index_end_path(char *str, int i);
 char *search_path_texture(t_cub3d *cub);
 int check_color(t_cub3d *cub);
-void   parsing(int ac, char **av);
+// void   parsing(int ac, char **av);
+t_cub3d *parsing(int ac, char **av);
 #endif

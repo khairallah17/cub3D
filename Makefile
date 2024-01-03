@@ -4,6 +4,7 @@ CC			=	gcc
 
 CFLAGS		=	-Wall -Wextra #-Werror 
 # CMLX42		= /Users/eagoumi/Desktop/cub3D/MLX42/build/libmlx42.a -Iinclude -lglfw -L"/Users/$(USER)/.brew/opt/glfw/lib/"
+CMLX42		= /Users/agoumi/Desktop/cub3D/MLX42/build/libmlx42.a -Iinclude -lglfw -L"/Users/agoumi/.brew/opt/glfw/lib/"
 # directories
 SRC_DIR		=	./
 OBJ_DIR		=	./obj/
