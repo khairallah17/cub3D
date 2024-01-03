@@ -8,7 +8,7 @@
 #include <libc.h>
 #include "./gnl/get_next_line.h"
 #include "libft/libft.h"
-# include "./MLX42/include/MLX42/MLX42.h"
+// # include "./MLX42/include/MLX42/MLX42.h"
 
 
 typedef struct s_texture

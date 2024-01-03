@@ -62,10 +62,7 @@ static void parse_texture(t_cub3d *cub)
             || (!strncmp(cub->tmp_store, "EA ", 3) && cub->prs_map.texture.east != NULL)
             || (!strncmp(cub->tmp_store, "F ", 2) && cub->prs_map.f_c_color.floor != -1)
             || (!strncmp(cub->tmp_store, "C ", 2) && cub->prs_map.f_c_color.ceiling != -1))
-    {
         cub->error_parse_nb = 1;
-
-    }
     else if (ft_strchr("01NSWE ", cub->tmp_store[0]))
         cub->error_parse_nb = -1;
     else
@@ -109,8 +106,8 @@ int parsing_remove_new_line(t_cub3d *cub)
         }
         printf("%s", cub->tmp_store);
         parse_texture(cub);
-        // if(cub->error_parse_nb != -1)
-        //     free(cub->tmp_store);
+        if(cub->error_parse_nb != -1)
+            free(cub->tmp_store);
         if(cub->error_parse_nb)
             break ;
         cub->tmp_store = get_next_line(cub->map_fd);
