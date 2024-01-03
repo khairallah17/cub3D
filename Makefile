@@ -1,9 +1,9 @@
-NAME		=	Cub3D
+NAME		=	cub3D
 
 CC			=	gcc
 
 CFLAGS		=	-Wall -Wextra #-Werror 
-
+CMLX42		= /Users/eagoumi/Desktop/cub3D/MLX42/build/libmlx42.a -Iinclude -lglfw -L"/Users/$(USER)/.brew/opt/glfw/lib/"
 # directories
 SRC_DIR		=	./
 OBJ_DIR		=	./obj/
@@ -25,10 +25,11 @@ SRC_FILES	=	gnl/get_next_line_utils.c \
 				parsing/checking_texture_file.c \
 				parsing/color_rgb.c \
 				parsing/path_xpm.c \
-				parsing/parsing.c
+				parsing/parsing.c \
+				cub3D.c
 
 INC_FILES	=	gnl/get_next_line.h \
-				Cub3D.h
+				cub3D.h
 
 OBJ_FILES	=	$(SRC_FILES:.c=.o)
 
@@ -52,7 +53,7 @@ all: $(NAME)
 $(NAME): $(OBJ) $(INC_FILES)
 	@echo "$(YELLOW)Compiling [$(NAME)]...$(RESET)"
 	@(cd libft; make)
-	@$(CC) $(CFLAGS) $(OBJ) ./libft/libft.a -o $(NAME)
+	@$(CC) $(CFLAGS) $(CMLX42) $(OBJ) ./libft/libft.a -o $(NAME)
 	@echo "$(GREEN)Finished [$(NAME)]$(RESET)"
 
 #compile objects

@@ -1,4 +1,4 @@
-#include "../Cub3D.h"
+#include "../cub3D.h"
 
 
 int index_first_path(char *str, int i)

@@ -1,4 +1,4 @@
-#include "../Cub3D.h"
+#include "../cub3D.h"
 
 void    check_arguments(int ac, char **av)
 {

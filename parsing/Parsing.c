@@ -1,4 +1,4 @@
-#include "../Cub3D.h"
+#include "../cub3D.h"
 
 static void initial_param(t_cub3d *get_parm, char *path_map)
 {
@@ -76,6 +76,7 @@ static void check_for_errors(int idx_line, int count_txtr, int err_nbr, t_cub3d 
 {
     printf("line idx = %d\n", idx_line);
     printf("numb_err = %d\n", err_nbr);
+    printf("numb_err = %d\n", count_txtr);
     if (idx_line == 0 || (cub->tmp_store == NULL && count_txtr == 0))
         send_err_free(cub, err_nbr, "ERROR: Empty Map file");
     else if (err_nbr == 1)
@@ -83,7 +84,10 @@ static void check_for_errors(int idx_line, int count_txtr, int err_nbr, t_cub3d 
     else if (err_nbr == 2)
         send_err_free(cub, err_nbr, "ERROR: Undifined");
     else if (count_txtr != 6)
+    {
+        printf("number texture == %d\n", count_txtr);
         send_err_free(cub, err_nbr, "ERROR: Missing One or Multiples line parameter (NO,SO,WE,EA,F,C)");
+    }
 
 }
 
@@ -105,6 +109,8 @@ int parsing_remove_new_line(t_cub3d *cub)
         }
         printf("%s", cub->tmp_store);
         parse_texture(cub);
+        // if(cub->error_parse_nb != -1)
+        //     free(cub->tmp_store);
         if(cub->error_parse_nb)
             break ;
         cub->tmp_store = get_next_line(cub->map_fd);
@@ -126,15 +132,7 @@ int parsing_remove_new_line(t_cub3d *cub)
     cub = (t_cub3d *)malloc(sizeof(t_cub3d));
     initial_param(cub, av[1]);
     count_line = parsing_remove_new_line(cub);
-    
+    // mlx_init(500, 500, "agoumi Hello", true);
     // return(cub);
 }
 
-
-
-int main(int ac, char **av)
-{
-    parsing(ac, av);
-// // int check_color(t_cub3d *cub, int color)
-//     int t = heck_color(t_cub3d *cub, int color);
-}

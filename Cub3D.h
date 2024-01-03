@@ -8,6 +8,8 @@
 #include <libc.h>
 #include "./gnl/get_next_line.h"
 #include "libft/libft.h"
+# include "./MLX42/include/MLX42/MLX42.h"
+
 
 typedef struct s_texture
 {
@@ -57,4 +59,5 @@ int index_first_path(char *str, int i);
 int index_end_path(char *str, int i);
 char *search_path_texture(t_cub3d *cub);
 int check_color(t_cub3d *cub);
+void   parsing(int ac, char **av);
 #endif

@@ -1,1 +1,1 @@
-#include "../Cub3D.h"
+#include "../cub3D.h"

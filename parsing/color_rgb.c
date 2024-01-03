@@ -1,4 +1,4 @@
-#include "../Cub3D.h"
+#include "../cub3D.h"
 
 void error_rgb_proba(char *temp, int i, int count_cama)
 {
@@ -87,6 +87,6 @@ int check_color(t_cub3d *cub)
         exit(EXIT_FAILURE);
     }
     // printf("index last => %d\n", second_index_color - first_index_color + 1);
-    printf("%d\n", color);
+    printf("culllor = %d\n", color);
     return(color);
 }
