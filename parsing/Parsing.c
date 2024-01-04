@@ -1,9 +1,11 @@
 #include "../cub3D.h"
+#include <stdint.h>
 
 static void initial_param(t_cub3d *get_parm, char *path_map)
 {
-    // get_parm->prs_map.map.width = 0;
-    // get_parm->prs_map.map.height = 0;
+    get_parm->prs_map.map.map_grid = NULL;
+    get_parm->prs_map.map.width = 0;
+    get_parm->prs_map.map.height = 0;
     get_parm->count_txtr_line = 0;
     get_parm->error_parse_nb = 0;
     get_parm->prs_map.f_c_color.floor = -1;
@@ -135,10 +137,10 @@ t_cub3d *parsing(int ac, char **av)
     while (cub->tmp_store)
     {
         // printf("%s", cub->tmp_store);
-        if (((int)ft_strlen(cub->tmp_store) > cub->prs_map.map.width) && cub->tmp_store[(ft_strlen(cub->tmp_store) - 1)] == '\n')
-            cub->prs_map.map.width = ft_strlen(cub->tmp_store) - 1;
-        else if (((int)ft_strlen(cub->tmp_store) > cub->prs_map.map.width) && cub->tmp_store[(ft_strlen(cub->tmp_store) - 1)] != '\n') // if they are at end of the map and no \n there
-            cub->prs_map.map.width = ft_strlen(cub->tmp_store); // without -1 because on the parsing we remove all newline on the map
+        if (((int)ft_strlen(cub->tmp_store) > cub->prs_map.map.width) && cub->tmp_store[((int)ft_strlen(cub->tmp_store) - 1)] == '\n')
+            cub->prs_map.map.width = (int)ft_strlen(cub->tmp_store) - 1;
+        else if (((int)ft_strlen(cub->tmp_store) > cub->prs_map.map.width) && cub->tmp_store[((int)ft_strlen(cub->tmp_store) - 1)] != '\n') // if they are at end of the map and no \n there
+            cub->prs_map.map.width = (int)ft_strlen(cub->tmp_store); // without -1 because on the parsing we remove all newline on the map
         cub->prs_map.map.height++;
         free(cub->tmp_store);
         cub->tmp_store = get_next_line(cub->map_fd);
@@ -152,13 +154,16 @@ t_cub3d *parsing(int ac, char **av)
     while(cub->tmp_store && count_line > 1)
     {
         count_line--;
-        printf("%s", cub->tmp_store);
+        // printf("%s", cub->tmp_store);
         free(cub->tmp_store);
         cub->tmp_store = get_next_line(cub->map_fd);
     }
+    // printf("height = %d\n", cub->prs_map.map.height);
+    // exit(1);
     cub->prs_map.map.map_grid = (char **)malloc(sizeof(char *) * (cub->prs_map.map.height + 1));
     if (!cub->prs_map.map.map_grid)
         send_err_free(cub, -1, "Error: Allocation are not being success");
+    // exit(0);
     //fill map now
     int i = 0;
     int j = 0;
@@ -175,10 +180,10 @@ t_cub3d *parsing(int ac, char **av)
             cub->prs_map.map.map_grid[i][j] = cub->tmp_store[j];
             j++;
         }
-        while(j < cub->prs_map.map.width ) // sparate it with space
-            cub->prs_map.map.map_grid[i][j++] = ' ';
+        // while(j < cub->prs_map.map.width) // sparate it with space
+        //     cub->prs_map.map.map_grid[i][j++] = ' ';
         cub->prs_map.map.map_grid[i][j] = '\0';
-        printf("%s", cub->prs_map.map.map_grid[i]);
+        // printf("%s", cub->prs_map.map.map_grid[i]);
         i++;
         free(cub->tmp_store); // free last buffer
         cub->tmp_store = get_next_line(cub->map_fd);

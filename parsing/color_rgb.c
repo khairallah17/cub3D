@@ -53,8 +53,8 @@ int send_rgb_color(char *temp, char **rgb_color)
         }
         // puts("d4");
         // printf("tb_color = %d\n", tb_color[i]);
-        i++;
         free(rgb_color[i]);
+        i++;
     }
     free(rgb_color);
     rgb_color = NULL;

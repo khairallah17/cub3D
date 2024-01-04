@@ -3,8 +3,8 @@ NAME		=	cub3D
 CC			=	gcc
 
 CFLAGS		=	-Wall -Wextra #-Werror 
-# CMLX42		= /Users/eagoumi/Desktop/cub3D/MLX42/build/libmlx42.a -Iinclude -lglfw -L"/Users/$(USER)/.brew/opt/glfw/lib/"
-CMLX42		= /Users/agoumi/Desktop/cub3D/MLX42/build/libmlx42.a -Iinclude -lglfw -L"/Users/agoumi/.brew/opt/glfw/lib/"
+CMLX42		=  $(PWD)/MLX42/build/libmlx42.a -Iinclude -lglfw -L"/Users/$(USER)/.brew/opt/glfw/lib/"
+# CMLX42		= /Users/agoumi/Desktop/cub3D/MLX42/build/libmlx42.a -Iinclude -lglfw -L"/Users/agoumi/.brew/opt/glfw/lib/"
 # directories
 SRC_DIR		=	./
 OBJ_DIR		=	./obj/
@@ -54,6 +54,7 @@ all: $(NAME)
 $(NAME): $(OBJ) $(INC_FILES)
 	@echo "$(YELLOW)Compiling [$(NAME)]...$(RESET)"
 	@(cd libft; make)
+	@(cd MLX42; cmake -B build; cmake --build build -j4)
 	@$(CC) $(CFLAGS) $(CMLX42) $(OBJ) ./libft/libft.a -o $(NAME)
 	@echo "$(GREEN)Finished [$(NAME)]$(RESET)"
 
@@ -78,6 +79,7 @@ clean:
 fclean: clean
 	@if [ -f "$(NAME)" ]; then \
 	rm -f $(NAME); \
+	cd ./libft; make fclean; \
 	echo "$(BLUE)Deleting $(NAME) from /Cub3D...$(RESET)"; else \
 	echo "No Executable to remove from /Cub3D."; \
 	fi;
