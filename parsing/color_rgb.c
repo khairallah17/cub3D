@@ -39,6 +39,11 @@ int send_rgb_color(char *temp, char **rgb_color)
     i = 0;
     // int j = 0;
     rgb_color = ft_split(temp, ',');
+    if (rgb_color == NULL)
+    {
+        printf("%s\n", "Error: Allocation are not being success");
+        exit(EXIT_FAILURE);
+    }
     // while (rgb_color[j])
     //     printf("rgb_color = %s\n", rgb_color[j++]);
     // puts("d");
@@ -59,7 +64,9 @@ int send_rgb_color(char *temp, char **rgb_color)
     free(rgb_color);
     rgb_color = NULL;
     int color = ((255 << 24) | (tb_color[0] << 16) | (tb_color[1] << 8) | tb_color[2]);
-    // free(tb_color[0]);
+    free(temp);
+    temp = NULL;
+    printf("%p\n", temp);
     // printf("color == %d\n", color);
     // printf("color1111 == %d\n", tb_color[0]);
     // return (((tb_color[0] << 24) | (tb_color[1] << 16) | (tb_color[2] << 8) | 0));
@@ -91,6 +98,6 @@ int check_color(t_cub3d *cub)
         exit(EXIT_FAILURE);
     }
     // printf("index last => %d\n", second_index_color - first_index_color + 1);
-    // printf("culllor = %d\n", color);
+    printf("culllor = %s\n", cub->tmp_store);
     return(color);
 }

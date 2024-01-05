@@ -7,6 +7,7 @@ void    check_map(t_cub3d *cub)
     int nb_player;
 
     i = 0;
+    nb_player = 0;
     while (i < cub->prs_map.map.height)
     {
         j = 0;
@@ -17,7 +18,7 @@ void    check_map(t_cub3d *cub)
             if (ft_strchr("NSWE", cub->prs_map.map.map_grid[i][j]))
             {
                 //set player position
-                
+                nb_player++;
             }
             else if (((i == 0 || j == 0 || i == (cub->prs_map.map.height - 1) || j == (cub->prs_map.map.width - 1)) 
                         && cub->prs_map.map.map_grid[i][j] != '1' && cub->prs_map.map.map_grid[i][j] != ' ')
@@ -29,4 +30,8 @@ void    check_map(t_cub3d *cub)
         }
         i++;
     }
+    if(nb_player == 0)
+        send_err_free(cub, 0, "Error: Re-check please it required the presence of the player");
+    else if (nb_player > 1)
+        send_err_free(cub, 0, "Error: Re-check please there is too many player on the map");
 }

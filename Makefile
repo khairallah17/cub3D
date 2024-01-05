@@ -2,7 +2,7 @@ NAME		=	cub3D
 
 CC			=	gcc
 
-CFLAGS		=	-Wall -Wextra #-Werror 
+CFLAGS		=	-Wall -Wextra  #-fsanitize=address -g
 # CMLX42		=  $(PWD)/MLX42/build/libmlx42.a -Iinclude -lglfw -L"/Users/$(USER)/.brew/opt/glfw/lib/"
 CMLX42		= $(PWD)/MLX42/build/libmlx42.a -Iinclude -lglfw -L"/Users/agoumi/.brew/opt/glfw/lib/"
 # directories

@@ -23,9 +23,20 @@ static void initial_param(t_cub3d *get_parm, char *path_map)
 
 static void    print_check_err(t_cub3d *cub, char *str)
 {
+    int i = 0;
+
+    while (i < cub->prs_map.map.height)
+    {
+        free(cub->prs_map.map.map_grid[i]);
+        cub->prs_map.map.map_grid[i++] = NULL;
+    }
+    if (i != 0)
+    {
+        free(cub->prs_map.map.map_grid);
+        cub->prs_map.map.map_grid = NULL;
+    }
     free(cub);
     cub = NULL;
-    printf("%s\n", str);
     exit(EXIT_FAILURE);
 }
 
@@ -150,7 +161,7 @@ t_cub3d *parsing(int ac, char **av)
     cub->map_fd = open(cub->path_maps, O_RDONLY);
     cub->tmp_store = get_next_line(cub->map_fd);
     // printf("fd = %d\n", cub->map_fd);
-    
+    printf("line = %d\n", count_line);
     while(cub->tmp_store && count_line > 1)
     {
         count_line--;

@@ -20,7 +20,7 @@ int main(int ac, char **av)
     cub = parsing(ac, av);
     //check map
 	check_map(cub);
-	//mlx window
+	// //mlx window
     // if (!(cub->mlx.mlx = mlx_init(WINDOW_WIDTH, WINDOW_HEIGHT, "cub3D", true)))
 	// {
 	// 	// puts(mlx_strerror(mlx_errno));
@@ -41,5 +41,4 @@ int main(int ac, char **av)
 	// mlx_loop_hook(cub->mlx.mlx, draw, cub);
     // mlx_loop(cub->mlx.mlx);
 	// mlx_terminate(cub->mlx.mlx);
-    // while(1);
 }
