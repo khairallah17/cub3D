@@ -37,6 +37,7 @@ static void    print_check_err(t_cub3d *cub, char *str)
     }
     free(cub);
     cub = NULL;
+    printf("%s", str);
     exit(EXIT_FAILURE);
 }
 

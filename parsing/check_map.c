@@ -17,6 +17,17 @@ void    check_map(t_cub3d *cub)
                 send_err_free(cub, 0, "Error: Unexpected charachter in map");
             if (ft_strchr("NSWE", cub->prs_map.map.map_grid[i][j]))
             {
+                cub->player.x_position = i * TILE_SIZE; //set tilr xposition
+                cub->player.y_position = j * TILE_SIZE; // set tile y position
+                cub->player.player_compass = cub->prs_map.map.map_grid[i][j];
+                if (cub->prs_map.map.map_grid[i][j] == 'N')
+                    cub->player.rotation = 3 * M_PI_2;
+                else if (cub->prs_map.map.map_grid[i][j] == 'W')
+                    cub->player.rotation = M_PI;
+                else if (cub->prs_map.map.map_grid[i][j] == 'S')
+                    cub->player.rotation = M_PI_2;
+                else if (cub->prs_map.map.map_grid[i][j] == 'E')
+                    cub->player.rotation = 0;
                 //set player position
                 nb_player++;
             }

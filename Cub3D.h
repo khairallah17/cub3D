@@ -6,14 +6,16 @@
 #include <math.h>
 #include <stdlib.h>
 #include <libc.h>
+# include <math.h>
 #include "./gnl/get_next_line.h"
 #include "libft/libft.h"
 # include "./MLX42/include/MLX42/MLX42.h"
 // # include "./MLX42/include/MLX42/MLX42_Int.h"
 
 
-# define WINDOW_HEIGHT 1000
-# define WINDOW_WIDTH  700
+# define WINDOW_HEIGHT	1000
+# define WINDOW_WIDTH	700
+# define TILE_SIZE		100
 
 typedef struct s_texture
 {
@@ -48,24 +50,16 @@ typedef struct s_mlx
 {
 	void	*mlx;
 	void	*window;
-	// void	*master;
-	// int		*master_data;
-	void	*wall_north;
-	int		*wall_no_data;
-	int		wall_no_side;
 
-	void	*wall_south;
-	int		*wall_so_data;
-	int		wall_so_side;
-
-	void	*wall_east;
-	int		*wall_ea_data;
-	int		wall_ea_side;
-
-	void	*wall_west;
-	int		*wall_we_data;
-	int		wall_we_side;
 }	t_mlx;
+
+typedef struct s_player
+{
+	float	x_position;
+	float	y_position;
+	double	rotation;
+	char	player_compass;
+}	t_player;
 
 typedef struct s_cub3d
 {
@@ -75,6 +69,7 @@ typedef struct s_cub3d
 	int	count_txtr_line;
 	int error_parse_nb;
 	int	map_fd;
+	t_player player;
 	t_mlx	mlx;
 }	t_cub3d;
 
