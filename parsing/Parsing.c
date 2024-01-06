@@ -15,7 +15,7 @@ static void initial_param(t_cub3d *get_parm, char *path_map)
     get_parm->prs_map.texture.south = NULL;
     get_parm->prs_map.texture.west = NULL;
     get_parm->path_maps = strdup(path_map);
-    get_parm->prs_map.f_c_color.tab_color = (int *)malloc(sizeof(int) * 3);
+    // get_parm->prs_map.f_c_color.tab_color = (int *)malloc(sizeof(int) * 3);
     get_parm->map_fd = open(get_parm->path_maps, O_RDONLY);
     // printf("%d\n", get_parm->map_fd);
 }
@@ -175,6 +175,7 @@ t_cub3d *parsing(int ac, char **av)
     cub->prs_map.map.map_grid = (char **)malloc(sizeof(char *) * (cub->prs_map.map.height + 1));
     if (!cub->prs_map.map.map_grid)
         send_err_free(cub, -1, "Error: Allocation are not being success");
+    printf("%p\n", cub->prs_map.map.map_grid);
     // exit(0);
     //fill map now
     int i = 0;
@@ -186,6 +187,7 @@ t_cub3d *parsing(int ac, char **av)
         cub->prs_map.map.map_grid[i] = (char *)malloc(sizeof(char) * (cub->prs_map.map.width + 1));
         if (!cub->prs_map.map.map_grid[i])
             send_err_free(cub, -1, "Error: Allocation are not being success1");
+      printf("%p\n", cub->prs_map.map.map_grid);
         j = 0;
         while (cub->tmp_store[j] != '\0' && cub->tmp_store[j] != '\n')
         {
