@@ -86,4 +86,6 @@ int check_color(t_cub3d *cub);
 t_cub3d *parsing(int ac, char **av);
 void    send_err_free(t_cub3d *cub, int err_nbr, char *error_msg);
 void    check_map(t_cub3d *cub);
+
+
 #endif

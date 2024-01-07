@@ -41,21 +41,6 @@ static void    print_check_err(t_cub3d *cub, char *str)
     exit(EXIT_FAILURE);
 }
 
-void    send_err_free(t_cub3d *cub, int err_nbr, char *error_msg)
-{
-    if (err_nbr == -1)
-        free(cub->tmp_store);
-    free(cub->path_maps);
-    if (cub->prs_map.texture.east != NULL)
-        free(cub->prs_map.texture.east);
-    if (cub->prs_map.texture.north != NULL)
-        free(cub->prs_map.texture.north);
-    if (cub->prs_map.texture.south != NULL)
-        free(cub->prs_map.texture.south);
-    if (cub->prs_map.texture.west != NULL)
-        free(cub->prs_map.texture.west);
-    print_check_err(cub, error_msg);
-}
 
 static void parse_texture(t_cub3d *cub)
 {
@@ -84,6 +69,22 @@ static void parse_texture(t_cub3d *cub)
         cub->error_parse_nb = 2;
 }
 
+void    send_err_free(t_cub3d *cub, int err_nbr, char *error_msg)
+{
+    if (err_nbr == -1)
+        free(cub->tmp_store);
+    free(cub->path_maps);
+    if (cub->prs_map.texture.east != NULL)
+        free(cub->prs_map.texture.east);
+    if (cub->prs_map.texture.north != NULL)
+        free(cub->prs_map.texture.north);
+    if (cub->prs_map.texture.south != NULL)
+        free(cub->prs_map.texture.south);
+    if (cub->prs_map.texture.west != NULL)
+        free(cub->prs_map.texture.west);
+    print_check_err(cub, error_msg);
+}
+
 static void check_for_errors(int idx_line, int count_txtr, int err_nbr, t_cub3d *cub)
 {
     // printf("line idx = %d\n", idx_line);
@@ -94,7 +95,7 @@ static void check_for_errors(int idx_line, int count_txtr, int err_nbr, t_cub3d 
     else if (err_nbr == 1)
         send_err_free(cub, err_nbr, "ERROR: There is Diplicated Parameters Please Re-check");
     else if (err_nbr == 2)
-        send_err_free(cub, err_nbr, "ERROR: Undifined");
+        send_err_free(cub, err_nbr, "ERROR: Undifined character on the file");
     else if (count_txtr != 6)
     {
         printf("number texture == %d\n", count_txtr);
@@ -163,6 +164,7 @@ t_cub3d *parsing(int ac, char **av)
     cub->tmp_store = get_next_line(cub->map_fd);
     // printf("fd = %d\n", cub->map_fd);
     printf("line = %d\n", count_line);
+    // skip 6 line of texture
     while(cub->tmp_store && count_line > 1)
     {
         count_line--;
