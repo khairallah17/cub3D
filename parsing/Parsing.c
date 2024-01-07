@@ -137,6 +137,62 @@ int parsing_param_text_and_rm_newline(t_cub3d *cub)
     return(count_line);
 }
 
+//fill map now
+static void remplir_map(t_cub3d *cub3d)
+{
+    int i = 0;
+    int j = 0;
+
+    i = 0;
+    while(cub3d->tmp_store)
+    {
+        cub3d->prs_map.map.map_grid[i] = (char *)malloc(sizeof(char) * (cub3d->prs_map.map.width + 1));
+        if (!cub3d->prs_map.map.map_grid[i])
+            send_err_free(cub3d, -1, "Error: Allocation are not being success1");
+      printf("%p\n", cub3d->prs_map.map.map_grid);
+        j = 0;
+        while (cub3d->tmp_store[j] != '\0' && cub3d->tmp_store[j] != '\n')
+        {
+            cub3d->prs_map.map.map_grid[i][j] = cub3d->tmp_store[j];
+            j++;
+        }
+        // while(j < cub3d->prs_map.map.width) // sparate it with space
+        //     cub3d->prs_map.map.map_grid[i][j++] = ' ';
+        cub3d->prs_map.map.map_grid[i][j] = '\0';
+        // printf("%s", cub3d->prs_map.map.map_grid[i]);
+        i++;
+        free(cub3d->tmp_store); // free last buffer
+        cub3d->tmp_store = get_next_line(cub3d->map_fd);
+    }
+    cub3d->prs_map.map.map_grid[i] = NULL;
+}
+
+
+static void skip_texture_and_remplir_map(t_cub3d *cub3d, int *line_count)
+{
+    // fill map
+    cub3d->map_fd = open(cub3d->path_maps, O_RDONLY);
+    cub3d->tmp_store = get_next_line(cub3d->map_fd);
+    // printf("fd = %d\n", cub3d->map_fd);
+    printf("line = %d\n", (*line_count));
+    // skip 6 line of texture
+    while(cub3d->tmp_store && (*line_count) > 1)
+    {
+        (*line_count)--;
+        // printf("%s", cub3d->tmp_store);
+        free(cub3d->tmp_store);
+        cub3d->tmp_store = get_next_line(cub3d->map_fd);
+    }
+    // printf("height = %d\n", cub3d->prs_map.map.height);
+    // exit(1);
+    cub3d->prs_map.map.map_grid = (char **)malloc(sizeof(char *) * (cub3d->prs_map.map.height + 1));
+    if (!cub3d->prs_map.map.map_grid)
+        send_err_free(cub3d, -1, "Error: Allocation are not being success");
+    printf("%p\n", cub3d->prs_map.map.map_grid);
+    remplir_map(cub3d);
+}
+
+
 t_cub3d *parsing(int ac, char **av)
 {
     t_cub3d *cub;
@@ -159,52 +215,8 @@ t_cub3d *parsing(int ac, char **av)
         cub->tmp_store = get_next_line(cub->map_fd);
     }
     close(cub->map_fd);
-    // fill map
-    cub->map_fd = open(cub->path_maps, O_RDONLY);
-    cub->tmp_store = get_next_line(cub->map_fd);
-    // printf("fd = %d\n", cub->map_fd);
-    printf("line = %d\n", count_line);
-    // skip 6 line of texture
-    while(cub->tmp_store && count_line > 1)
-    {
-        count_line--;
-        // printf("%s", cub->tmp_store);
-        free(cub->tmp_store);
-        cub->tmp_store = get_next_line(cub->map_fd);
-    }
-    // printf("height = %d\n", cub->prs_map.map.height);
-    // exit(1);
-    cub->prs_map.map.map_grid = (char **)malloc(sizeof(char *) * (cub->prs_map.map.height + 1));
-    if (!cub->prs_map.map.map_grid)
-        send_err_free(cub, -1, "Error: Allocation are not being success");
-    printf("%p\n", cub->prs_map.map.map_grid);
+    skip_texture_and_remplir_map(cub, &count_line);
     // exit(0);
-    //fill map now
-    int i = 0;
-    int j = 0;
-
-    i = 0;
-    while(cub->tmp_store)
-    {
-        cub->prs_map.map.map_grid[i] = (char *)malloc(sizeof(char) * (cub->prs_map.map.width + 1));
-        if (!cub->prs_map.map.map_grid[i])
-            send_err_free(cub, -1, "Error: Allocation are not being success1");
-      printf("%p\n", cub->prs_map.map.map_grid);
-        j = 0;
-        while (cub->tmp_store[j] != '\0' && cub->tmp_store[j] != '\n')
-        {
-            cub->prs_map.map.map_grid[i][j] = cub->tmp_store[j];
-            j++;
-        }
-        // while(j < cub->prs_map.map.width) // sparate it with space
-        //     cub->prs_map.map.map_grid[i][j++] = ' ';
-        cub->prs_map.map.map_grid[i][j] = '\0';
-        // printf("%s", cub->prs_map.map.map_grid[i]);
-        i++;
-        free(cub->tmp_store); // free last buffer
-        cub->tmp_store = get_next_line(cub->map_fd);
-    }
-    cub->prs_map.map.map_grid[i] = NULL;
     return(cub);
 }
 

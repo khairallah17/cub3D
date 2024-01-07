@@ -1,5 +1,33 @@
 #include "../cub3D.h"
 
+void    check_map_good_or_bad(t_cub3d *cub3d, int *i, int *j, int *nb_player)
+{
+    if (!ft_strchr("01NSWE ", cub3d->prs_map.map.map_grid[(*i)][(*j)]))
+        send_err_free(cub3d, 0, "Error: Unexpected charachter in map");
+    if (ft_strchr("NSWE", cub3d->prs_map.map.map_grid[(*i)][(*j)]))
+    {
+        cub3d->player.x_position = (*i) * TILE_SIZE; //set tilr xposition
+        cub3d->player.y_position = (*j) * TILE_SIZE; // set tile y position
+        cub3d->player.player_compass = cub3d->prs_map.map.map_grid[(*i)][(*j)];
+        if (cub3d->prs_map.map.map_grid[(*i)][(*j)] == 'N')
+            cub3d->player.rotation = 3 * M_PI_2;
+        else if (cub3d->prs_map.map.map_grid[(*i)][(*j)] == 'W')
+            cub3d->player.rotation = M_PI;
+        else if (cub3d->prs_map.map.map_grid[(*i)][(*j)] == 'S')
+            cub3d->player.rotation = M_PI_2;
+        else if (cub3d->prs_map.map.map_grid[(*i)][(*j)] == 'E')
+            cub3d->player.rotation = 0;
+        //count number of player
+        (*nb_player)++;
+    }
+    else if ((((*i) == 0 || (*j) == 0 || (*i) == (cub3d->prs_map.map.height - 1) || (*j) == (cub3d->prs_map.map.width - 1)) 
+                && cub3d->prs_map.map.map_grid[(*i)][(*j)] != '1' && cub3d->prs_map.map.map_grid[(*i)][(*j)] != ' ')
+                || (cub3d->prs_map.map.map_grid[(*i)][(*j)] == '0' && ((cub3d->prs_map.map.map_grid[(*i) + 1][(*j)] && cub3d->prs_map.map.map_grid[(*i) + 1][(*j)] == ' ') 
+                || ((cub3d->prs_map.map.map_grid[(*i) - 1][(*j)] && cub3d->prs_map.map.map_grid[(*i) - 1][(*j)] == ' ') 
+                || (cub3d->prs_map.map.map_grid[(*i)][(*j) + 1] && cub3d->prs_map.map.map_grid[(*i)][(*j) + 1] == ' ') || (cub3d->prs_map.map.map_grid[(*i)][(*j) - 1] && cub3d->prs_map.map.map_grid[(*i)][(*j) - 1] == ' ')))))
+        send_err_free(cub3d, 0, "Error: Map should Rounded by wall");
+}
+
 void    check_map(t_cub3d *cub)
 {
     int i;
@@ -13,30 +41,7 @@ void    check_map(t_cub3d *cub)
         j = 0;
         while (j < cub->prs_map.map.width)
         {
-            if (!ft_strchr("01NSWE ", cub->prs_map.map.map_grid[i][j]))
-                send_err_free(cub, 0, "Error: Unexpected charachter in map");
-            if (ft_strchr("NSWE", cub->prs_map.map.map_grid[i][j]))
-            {
-                cub->player.x_position = i * TILE_SIZE; //set tilr xposition
-                cub->player.y_position = j * TILE_SIZE; // set tile y position
-                cub->player.player_compass = cub->prs_map.map.map_grid[i][j];
-                if (cub->prs_map.map.map_grid[i][j] == 'N')
-                    cub->player.rotation = 3 * M_PI_2;
-                else if (cub->prs_map.map.map_grid[i][j] == 'W')
-                    cub->player.rotation = M_PI;
-                else if (cub->prs_map.map.map_grid[i][j] == 'S')
-                    cub->player.rotation = M_PI_2;
-                else if (cub->prs_map.map.map_grid[i][j] == 'E')
-                    cub->player.rotation = 0;
-                //set player position
-                nb_player++;
-            }
-            else if (((i == 0 || j == 0 || i == (cub->prs_map.map.height - 1) || j == (cub->prs_map.map.width - 1)) 
-                        && cub->prs_map.map.map_grid[i][j] != '1' && cub->prs_map.map.map_grid[i][j] != ' ')
-                        || (cub->prs_map.map.map_grid[i][j] == '0' && ((cub->prs_map.map.map_grid[i + 1][j] && cub->prs_map.map.map_grid[i + 1][j] == ' ') 
-                        || ((cub->prs_map.map.map_grid[i - 1][j] && cub->prs_map.map.map_grid[i - 1][j] == ' ') 
-                        || (cub->prs_map.map.map_grid[i][j + 1] && cub->prs_map.map.map_grid[i][j + 1] == ' ') || (cub->prs_map.map.map_grid[i][j - 1] && cub->prs_map.map.map_grid[i][j - 1] == ' ')))))
-                send_err_free(cub, 0, "Error: Map should Rounded by wall");
+            check_map_good_or_bad(cub, &i, &j, &nb_player);
             j++;
         }
         i++;
