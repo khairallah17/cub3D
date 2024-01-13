@@ -17,7 +17,7 @@
 # include <string.h>
 # include <math.h>
 # include <stdlib.h>
-# include <libc.h>
+// # include <libc.h>
 # include <math.h>
 # include "./gnl/get_next_line.h"
 # include "libft/libft.h"
@@ -61,7 +61,6 @@ typedef struct s_mlx
 {
 	void	*mlx;
 	void	*window;
-
 }	t_mlx;
 
 typedef struct s_player

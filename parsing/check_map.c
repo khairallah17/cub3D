@@ -6,7 +6,7 @@
 /*   By: eagoumi <eagoumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 05:42:36 by eagoumi           #+#    #+#             */
-/*   Updated: 2024/01/07 05:43:38 by eagoumi          ###   ########.fr       */
+/*   Updated: 2024/01/08 21:13:18 by eagoumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	check_map_good_or_bad(t_cub3d *cub3d, int *i, int *j, int *nb_player)
 {
-	if (!ft_strchr("01NSWE ", cub3d->prs_map.map.map_grid[(*i)][(*j)]))
+	if (!ft_strchr("01DNSWE ", cub3d->prs_map.map.map_grid[(*i)][(*j)]))
 		send_err_free(cub3d, 0, "Error: Unexpected charachter in map");
 	if (ft_strchr("NSWE", cub3d->prs_map.map.map_grid[(*i)][(*j)]))
 	{
@@ -36,8 +36,16 @@ void	check_map_good_or_bad(t_cub3d *cub3d, int *i, int *j, int *nb_player)
 				&& cub3d->prs_map.map.map_grid[(*i)][(*j)] != '1' && cub3d->prs_map.map.map_grid[(*i)][(*j)] != ' ')
 				|| (cub3d->prs_map.map.map_grid[(*i)][(*j)] == '0' && ((cub3d->prs_map.map.map_grid[(*i) + 1][(*j)] && cub3d->prs_map.map.map_grid[(*i) + 1][(*j)] == ' ') 
 				|| ((cub3d->prs_map.map.map_grid[(*i) - 1][(*j)] && cub3d->prs_map.map.map_grid[(*i) - 1][(*j)] == ' ') 
-				|| (cub3d->prs_map.map.map_grid[(*i)][(*j) + 1] && cub3d->prs_map.map.map_grid[(*i)][(*j) + 1] == ' ') || (cub3d->prs_map.map.map_grid[(*i)][(*j) - 1] && cub3d->prs_map.map.map_grid[(*i)][(*j) - 1] == ' ')))))
+				|| (cub3d->prs_map.map.map_grid[(*i)][(*j) + 1] && cub3d->prs_map.map.map_grid[(*i)][(*j) + 1] == ' ') 
+				|| (cub3d->prs_map.map.map_grid[(*i)][(*j) - 1] && cub3d->prs_map.map.map_grid[(*i)][(*j) - 1] == ' ')))))
 		send_err_free(cub3d, 0, "Error: Map should Rounded by wall");
+	else if (cub3d->prs_map.map.map_grid[(*i)][(*j)] == 'D' &&  ((cub3d->prs_map.map.map_grid[(*i)][(*j) + 1] != '1' || cub3d->prs_map.map.map_grid[(*i)][(*j) - 1] != '1')
+			&& (cub3d->prs_map.map.map_grid[(*i) + 1][(*j)] != '1' || cub3d->prs_map.map.map_grid[(*i) - 1][(*j)] != '1')))
+		send_err_free(cub3d, 0, "Error: we have problem with doors should be rounded right and left with wall");
+	else if (cub3d->prs_map.map.map_grid[(*i)][(*j)] == 'D' && cub3d->prs_map.map.map_grid[(*i)][(*j) + 1] == '1' && cub3d->prs_map.map.map_grid[(*i)][(*j) - 1] == '1' && (cub3d->prs_map.map.map_grid[(*i) + 1][(*j)] != '0' || cub3d->prs_map.map.map_grid[(*i) - 1][(*j)] != '0'))
+		send_err_free(cub3d, 0, "Error: we have problem with doors should be not closed with wall3");
+	else if (cub3d->prs_map.map.map_grid[(*i)][(*j)] == 'D' && cub3d->prs_map.map.map_grid[(*i) + 1][(*j)] == '1' && cub3d->prs_map.map.map_grid[(*i) - 1][(*j)] == '1' && (cub3d->prs_map.map.map_grid[(*i)][(*j) + 1] != '0' || cub3d->prs_map.map.map_grid[(*i)][(*j) - 1] != '0'))
+		send_err_free(cub3d, 0, "Error: we have problem with doors should be not closed with wall1");
 }
 
 void	check_map(t_cub3d *cub)
@@ -60,8 +68,8 @@ void	check_map(t_cub3d *cub)
 	}
 	if (nb_player == 0)
 		send_err_free(cub, 0, "Error: Re-check please it \
-						required the presence of the player");
+	required the presence of the player");
 	else if (nb_player > 1)
 		send_err_free(cub, 0, "Error: Re-check please \
-						there is too many player on the map");
+	there is too many player on the map");
 }

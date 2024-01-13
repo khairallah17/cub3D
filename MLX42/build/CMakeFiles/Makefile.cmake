@@ -7,6 +7,7 @@ set(CMAKE_DEPENDS_GENERATOR "Unix Makefiles")
 # The top level Makefile was generated from the following files:
 set(CMAKE_MAKEFILE_DEPENDS
   "CMakeCache.txt"
+<<<<<<< HEAD
   "/Users/mkhairal/.brew/Cellar/cmake/3.28.1/share/cmake/Modules/CMakeCCompiler.cmake.in"
   "/Users/mkhairal/.brew/Cellar/cmake/3.28.1/share/cmake/Modules/CMakeCCompilerABI.c"
   "/Users/mkhairal/.brew/Cellar/cmake/3.28.1/share/cmake/Modules/CMakeCInformation.cmake"
@@ -108,6 +109,33 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/Users/mkhairal/.brew/Cellar/cmake/3.28.1/share/cmake/Modules/Platform/Darwin.cmake"
   "/Users/mkhairal/.brew/Cellar/cmake/3.28.1/share/cmake/Modules/Platform/UnixPaths.cmake"
   "/Users/mkhairal/cub3D/MLX42/CMakeLists.txt"
+=======
+  "/Users/eagoumi/.brew/Cellar/cmake/3.28.1/share/cmake/Modules/CMakeCInformation.cmake"
+  "/Users/eagoumi/.brew/Cellar/cmake/3.28.1/share/cmake/Modules/CMakeCXXInformation.cmake"
+  "/Users/eagoumi/.brew/Cellar/cmake/3.28.1/share/cmake/Modules/CMakeCommonLanguageInclude.cmake"
+  "/Users/eagoumi/.brew/Cellar/cmake/3.28.1/share/cmake/Modules/CMakeGenericSystem.cmake"
+  "/Users/eagoumi/.brew/Cellar/cmake/3.28.1/share/cmake/Modules/CMakeInitializeConfigs.cmake"
+  "/Users/eagoumi/.brew/Cellar/cmake/3.28.1/share/cmake/Modules/CMakeLanguageInformation.cmake"
+  "/Users/eagoumi/.brew/Cellar/cmake/3.28.1/share/cmake/Modules/CMakeSystemSpecificInformation.cmake"
+  "/Users/eagoumi/.brew/Cellar/cmake/3.28.1/share/cmake/Modules/CMakeSystemSpecificInitialize.cmake"
+  "/Users/eagoumi/.brew/Cellar/cmake/3.28.1/share/cmake/Modules/Compiler/AppleClang-C.cmake"
+  "/Users/eagoumi/.brew/Cellar/cmake/3.28.1/share/cmake/Modules/Compiler/AppleClang-CXX.cmake"
+  "/Users/eagoumi/.brew/Cellar/cmake/3.28.1/share/cmake/Modules/Compiler/CMakeCommonCompilerMacros.cmake"
+  "/Users/eagoumi/.brew/Cellar/cmake/3.28.1/share/cmake/Modules/Compiler/Clang.cmake"
+  "/Users/eagoumi/.brew/Cellar/cmake/3.28.1/share/cmake/Modules/Compiler/GNU.cmake"
+  "/Users/eagoumi/.brew/Cellar/cmake/3.28.1/share/cmake/Modules/FindOpenGL.cmake"
+  "/Users/eagoumi/.brew/Cellar/cmake/3.28.1/share/cmake/Modules/FindPackageHandleStandardArgs.cmake"
+  "/Users/eagoumi/.brew/Cellar/cmake/3.28.1/share/cmake/Modules/FindPackageMessage.cmake"
+  "/Users/eagoumi/.brew/Cellar/cmake/3.28.1/share/cmake/Modules/Platform/Apple-AppleClang-C.cmake"
+  "/Users/eagoumi/.brew/Cellar/cmake/3.28.1/share/cmake/Modules/Platform/Apple-AppleClang-CXX.cmake"
+  "/Users/eagoumi/.brew/Cellar/cmake/3.28.1/share/cmake/Modules/Platform/Apple-Clang-C.cmake"
+  "/Users/eagoumi/.brew/Cellar/cmake/3.28.1/share/cmake/Modules/Platform/Apple-Clang-CXX.cmake"
+  "/Users/eagoumi/.brew/Cellar/cmake/3.28.1/share/cmake/Modules/Platform/Apple-Clang.cmake"
+  "/Users/eagoumi/.brew/Cellar/cmake/3.28.1/share/cmake/Modules/Platform/Darwin-Initialize.cmake"
+  "/Users/eagoumi/.brew/Cellar/cmake/3.28.1/share/cmake/Modules/Platform/Darwin.cmake"
+  "/Users/eagoumi/.brew/Cellar/cmake/3.28.1/share/cmake/Modules/Platform/UnixPaths.cmake"
+  "/Users/eagoumi/Desktop/cub3D/MLX42/CMakeLists.txt"
+>>>>>>> 472dd2e783d26fd35d80a8643cf8ae69c944a16c
   "CMakeFiles/3.28.1/CMakeCCompiler.cmake"
   "CMakeFiles/3.28.1/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.28.1/CMakeSystem.cmake"
@@ -122,11 +150,6 @@ set(CMAKE_MAKEFILE_OUTPUTS
 
 # Byproducts of CMake generate step:
 set(CMAKE_MAKEFILE_PRODUCTS
-  "CMakeFiles/3.28.1/CMakeSystem.cmake"
-  "CMakeFiles/3.28.1/CMakeCCompiler.cmake"
-  "CMakeFiles/3.28.1/CMakeCXXCompiler.cmake"
-  "CMakeFiles/3.28.1/CMakeCCompiler.cmake"
-  "CMakeFiles/3.28.1/CMakeCXXCompiler.cmake"
   "CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 

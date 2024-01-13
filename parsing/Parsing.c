@@ -101,14 +101,14 @@ static void	check_for_errors(int idx_line, int count_txtr,
 		send_err_free(cub, err_nbr, "ERROR: Empty Map file");
 	else if (err_nbr == 1)
 		send_err_free(cub, err_nbr, "ERROR: There is Diplicated \
-									Parameters Please Re-check");
+	Parameters Please Re-check");
 	else if (err_nbr == 2)
 		send_err_free(cub, err_nbr, "ERROR: Undifined character on the file");
 	else if (count_txtr != 6)
 	{
 		printf("number texture == %d\n", count_txtr);
 		send_err_free(cub, err_nbr, "ERROR: Missing One or \
-								Multiples line parameter (NO,SO,WE,EA,F,C)");
+		Multiples line parameter (NO,SO,WE,EA,F,C)");
 	}
 }
 
@@ -159,8 +159,8 @@ static void	remplir_map(t_cub3d *cub3d)
 			cub3d->prs_map.map.map_grid[i][j] = cub3d->tmp_store[j];
 			j++;
 		}
-		// while(j < cub3d->prs_map.map.width) // sparate it with space
-		//     cub3d->prs_map.map.map_grid[i][j++] = ' ';
+		while(j < cub3d->prs_map.map.width) // sparate it with space
+		    cub3d->prs_map.map.map_grid[i][j++] = ' ';
 		cub3d->prs_map.map.map_grid[i][j] = '\0';
 		i++;
 		free(cub3d->tmp_store); // free last buffer

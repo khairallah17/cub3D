@@ -6,12 +6,14 @@
 /*   By: eagoumi <eagoumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 05:52:01 by eagoumi           #+#    #+#             */
-/*   Updated: 2024/01/07 05:53:10 by eagoumi          ###   ########.fr       */
+/*   Updated: 2024/01/07 22:51:52 by eagoumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
+#include <stdbool.h>
 #include <stdlib.h>
+static t_cub3d	*cub;
 
 void	ft_free(t_cub3d *cub)
 {
@@ -38,33 +40,51 @@ void	inf(void)
 	system("leaks cub3D");
 }
 
-void	draw(void *parp)
+void    draw(void *parp)
 {
-	t_cub3d	*cub;
-	int		i;
+    int        i;
 
-	cub = parp;
-	i = 0;
-	while (i < cub->prs_map.map.height)
-		printf("%s", cub->prs_map.map.map_grid[i++]);
+    i = 0;
+	cub = (t_cub3d *)parp;
+    while (i < cub->prs_map.map.height)
+    {
+        int j = 0;
+        while (j < cub->prs_map.map.width)
+        {
+			puts("s");
+            if (cub->prs_map.map.map_grid[i][j] == '1')
+                mlx_put_pixel(cub->mlx.window, i, j, 0x0FAFFF);
+            else if (cub->prs_map.map.map_grid[i][j] == '0')
+                mlx_put_pixel(cub->mlx.window, i, j, 0x000000);
+			else if (cub->prs_map.map.map_grid[i][j] == 'N')
+                mlx_put_pixel(cub->mlx.window, i, j, 0xEEEEEE);
+            j=j*32;
+        }
+		// printf("%s", cub->prs_map.map.map_grid[i]);
+		i=i*32;
+    }
 }
 
 int	main(int ac, char **av)
 {
-	t_cub3d	*cub;
 
 	atexit(inf);
 	cub = parsing(ac, av);
 	printf("%p\n", cub);
 	//check map
 	check_map(cub);
+	int i = 0;
+    while (i < cub->prs_map.map.height)
+    {
+		printf("%s\n", cub->prs_map.map.map_grid[i++]);
+	}	
 	//mlx window
-	if (!(cub->mlx.mlx = mlx_init(WINDOW_WIDTH, WINDOW_HEIGHT, "cub3D", true)))
+	if (!(cub->mlx.mlx = mlx_init(cub->prs_map.map.height, cub->prs_map.map.width, "cub3D", true)))
 	{
 		// puts(mlx_strerror(mlx_errno));
 		return(EXIT_FAILURE);
 	}
-	if (!(cub->mlx.window = mlx_new_image(cub->mlx.mlx, WINDOW_WIDTH, WINDOW_HEIGHT)))
+	if (!(cub->mlx.window = mlx_new_image(cub->mlx.mlx, cub->prs_map.map.height, cub->prs_map.map.width)))
 	{
 		mlx_close_window(cub->mlx.mlx);
 		// puts(mlx_strerror(mlx_errno));
@@ -76,6 +96,7 @@ int	main(int ac, char **av)
 		// puts(mlx_strerror(mlx_errno));
 		return(EXIT_FAILURE);
 	}
+	// t_cub3d *cubb;
 	mlx_loop_hook(cub->mlx.mlx, draw, cub);
 	mlx_loop(cub->mlx.mlx);
 	mlx_terminate(cub->mlx.mlx);

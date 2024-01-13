@@ -6,7 +6,7 @@
 /*   By: eagoumi <eagoumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 05:48:56 by eagoumi           #+#    #+#             */
-/*   Updated: 2024/01/07 05:51:22 by eagoumi          ###   ########.fr       */
+/*   Updated: 2024/01/07 22:50:08 by eagoumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,14 @@ char	*search_path_texture(t_cub3d *cub)
 		printf("Error: Path missed .xpm at the end\n");
 		exit(EXIT_FAILURE);
 	}
-	else
-	{
-		fd = open(str, O_RDWR);
-		if (fd == -1)
-		{
-			printf("Error: can't Open and read path Texture\n");
-			exit(EXIT_FAILURE);
-		}
-	}
+	// else
+	// {
+	// 	fd = open(str, O_RDWR);
+	// 	if (fd == -1)
+	// 	{
+	// 		printf("Error: can't Open and read path Texture\n");
+	// 		exit(EXIT_FAILURE);
+	// 	}
+	// }
 	return (str);
 }
