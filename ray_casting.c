@@ -8,7 +8,7 @@
 #define TILE 32
 #define PLAYER_TILE 8
 #define NUM_OF_RAYS 320
-#define FOV (60 * (M_1_PI / 180))
+#define FOV (60 * (M_PI / 180))
 
 char map[MAP_NUM_ROWS][MAP_NUM_COLS] = {
     "11111111111111111111",
@@ -105,7 +105,7 @@ void    draw_single_line(t_global_conf *config) {
     }
     while (px <= dx)
     {
-        mlx_put_pixel(config->img,  slope * px + y_intercept, px, 0x008000FF);
+        mlx_put_pixel(config->img,  px, slope * px + y_intercept, 0x008000FF);
         px +=0.1;
     }
 
@@ -118,13 +118,21 @@ void draw_rays(t_global_conf *config, int pos) {
     double py;
     double tmp;
 
-    px = config->player->x * TILE;
-    py = config->player->y * TILE;
-    dx = config->rays[pos].wall_hit_y; // assuming px and py are the (0, 0);
-    dy = config->rays[pos].wall_hit_x;
+    px = floor(config->player->x * TILE);
+    py = floor(config->player->y * TILE);
+    dx = floor(config->rays[pos].wall_hit_x); // assuming px and py are the (0, 0);
+    dy = floor(config->rays[pos].wall_hit_y);
 
-    printf("(%f;%f)\n",dx, dy);
+    // puts("");
+    // puts("");
+    // puts("");
 
+    // printf("RAY ==> (%f;%f)\n", floor(dx), floor(dy));
+    // printf("PLAYER ==> (%f;%f)\n", floor(px), floor(py));
+
+    // puts("");
+    // puts("");
+    // puts("");
     double slope = (py - dy) / (px - dx);
     double y_intercept = py - slope * px; // py = slope * px + t_intercept
 
@@ -136,16 +144,16 @@ void draw_rays(t_global_conf *config, int pos) {
     }
     while (px <= dx)
     {
-        mlx_put_pixel(config->img,  slope * px + y_intercept, px, 0x008000FF);
+        mlx_put_pixel(config->img,  px, slope * px + y_intercept, 0x008000FF);
         px +=0.1;
     }
 
 }
 
 double  correct_angle(double ray_angle) {
-    ray_angle = remainder(ray_angle, M_2_PI);
+    ray_angle = remainder(ray_angle, M_PI * 2);
     if (ray_angle < 0) {
-        ray_angle += M_2_PI;
+        ray_angle += M_PI * 2;
     }
     return (ray_angle);
 }
@@ -160,6 +168,7 @@ int wall_hit_checker(double x, double y) {
     }
     int mapGridIndexX = floor(x / TILE);
     int mapGridIndexY = floor(y / TILE);
+    // printf("INTERSECTION INDEXES ==> (%f;%f)\n", floor(x/32), floor(y/32));
     return map[mapGridIndexY][mapGridIndexX] == '1';
 }
 
@@ -167,9 +176,9 @@ void    cast_ray(t_global_conf *config, double ray_angle, int pos) {
 
     ray_angle = correct_angle(ray_angle);
 
-    int is_ray_facing_down = ray_angle > 0  && ray_angle < M_1_PI;
+    int is_ray_facing_down = ray_angle > 0  && ray_angle < M_PI;
     int is_ray_facing_up = !is_ray_facing_down;
-    int is_ray_facing_right = ray_angle < 0.5 * M_1_PI || ray_angle > 1.5 * M_1_PI;
+    int is_ray_facing_right = ray_angle < 0.5 * M_PI || ray_angle > 1.5 * M_PI;
     int is_ray_facing_left = !is_ray_facing_right;
 
     double x_inter;
@@ -181,10 +190,24 @@ void    cast_ray(t_global_conf *config, double ray_angle, int pos) {
     double horizontal_wall_hit_x;
     double horizontal_wall_hit_y;
 
-    y_inter = floor(config->player->y / TILE) * TILE;
+    puts("HORIZONTAL");
+    puts("");
+
+    y_inter = floor((config->player->y * TILE) / TILE) * TILE;
+    printf("BEFORE ray[%d] ==> %f\n", pos, y_inter);
+    printf("BEFORE ray[%d] ==> %f\n", pos, y_inter / 32);
     y_inter += is_ray_facing_down ? TILE : 0;
 
-    x_inter = config->player->x + (y_inter - config->player->y) / tan(ray_angle);
+    printf("AFTER ray[%d] ==> %f\n", pos, y_inter);
+    printf("AFTER ray[%d] ==> %f\n", pos, y_inter / 32);
+    puts("");
+    puts("");
+
+    x_inter = (config->player->x * TILE) + (((config->player->y * TILE) - y_inter) / tan(ray_angle));
+    printf("BEFORE ray[%d] ==> %f\n", pos, x_inter);
+    printf("AFTER ray[%d] ==> %f\n", pos, x_inter / 32);
+    puts("");
+    puts("");
 
     y_step = TILE;
     y_step *=is_ray_facing_up ? -1 : 1;
@@ -196,6 +219,7 @@ void    cast_ray(t_global_conf *config, double ray_angle, int pos) {
     double next_horizontal_hit_x = x_inter;
     double next_horizontal_hit_y = y_inter;
 
+
     while ((next_horizontal_hit_x >= 0 && next_horizontal_hit_x <= WINDOW_WIDTH) && (next_horizontal_hit_y >= 0 && next_horizontal_hit_y <= WINDOW_HEIGHT)) {
 
         double x_check = next_horizontal_hit_x;
@@ -204,6 +228,7 @@ void    cast_ray(t_global_conf *config, double ray_angle, int pos) {
         if (wall_hit_checker(x_check, y_check)) {
 
             horizontal_wall_hit = 1;
+            // printf("WALL FOUND AT ==> (%f,%f)!!\n", floor(next_horizontal_hit_x / TILE), floor(next_horizontal_hit_y / TILE));
             horizontal_wall_hit_x = next_horizontal_hit_x;
             horizontal_wall_hit_y = next_horizontal_hit_y;
             break;
@@ -215,24 +240,40 @@ void    cast_ray(t_global_conf *config, double ray_angle, int pos) {
 
     }
 
+    puts("VERTICAL");
+    puts("");
+
     int vertical_wall_hit = 0;
     double vertical_wall_hit_x;
     double vertical_wall_hit_y;
 
-    x_inter = floor(config->player->y / TILE) * TILE;
+    x_inter = floor((config->player->x * TILE) / TILE) * TILE;
+    printf("BEFORE ray[%d] ==> %f\n", pos, x_inter);
+    printf("BEFORE ray[%d] ==> %f\n", pos, x_inter / 32);
     x_inter += is_ray_facing_right ? TILE : 0;
 
-    y_inter = config->player->y + (x_inter - config->player->x) / tan(ray_angle);
+    printf("AFTER ray[%d] ==> %f\n", pos, y_inter);
+    printf("AFTER ray[%d] ==> %f\n", pos, y_inter / 32);
+    puts("");
+    puts("");
+
+    y_inter = (config->player->y * TILE) + (x_inter - (config->player->x * TILE)) * tan(ray_angle);
+
+    printf("BEFORE ray[%d] ==> %f\n", pos, y_inter);
+    printf("AFTER ray[%d] ==> %f\n", pos, y_inter / 32);
+    puts("");
+    puts("");
 
     x_step = TILE;
     x_step *= is_ray_facing_left ? -1 : 1;
 
-    y_step = TILE / tan(ray_angle);
+    y_step = TILE * tan(ray_angle);
     y_step *= (is_ray_facing_up && y_step > 0) ? -1 : 1;
     y_step *= (is_ray_facing_down && y_step < 0) ? -1 : 1;
 
     double next_vertical_hit_x = x_inter;
     double next_vertical_hit_y = y_inter;
+
 
     while ((next_vertical_hit_x >= 0 && next_vertical_hit_x <= WINDOW_WIDTH) && (next_vertical_hit_y >= 0 && next_vertical_hit_y <= WINDOW_HEIGHT)) {
 
@@ -253,8 +294,8 @@ void    cast_ray(t_global_conf *config, double ray_angle, int pos) {
 
     }
 
-    double horizontal_distance = horizontal_wall_hit ? calculating_distance(config->player->x, config->player->y, horizontal_wall_hit_x, horizontal_wall_hit_y) : INT_MAX;
-    double vertical_distance = vertical_wall_hit ? calculating_distance(config->player->x, config->player->y, vertical_wall_hit_x, vertical_wall_hit_y) : INT_MAX;
+    double horizontal_distance = horizontal_wall_hit ? calculating_distance((config->player->x * TILE), (config->player->y * TILE), horizontal_wall_hit_x, horizontal_wall_hit_y) : INT_MAX;
+    double vertical_distance = vertical_wall_hit ? calculating_distance((config->player->x * TILE), (config->player->y * TILE), vertical_wall_hit_x, vertical_wall_hit_y) : INT_MAX;
 
     if (vertical_distance < horizontal_distance) {
         config->rays[pos].distance = vertical_distance;
@@ -296,10 +337,10 @@ void    draw_player(t_global_conf *config) {
     while (i < tile) {
         int j = 0;
         while (j < tile) {
-            mlx_put_pixel(config->img, (TILE * config->player->y)+j, (TILE * config->player->x)+i, config->player->color);
-            mlx_put_pixel(config->img, (TILE * config->player->y)-j, (TILE * config->player->x)-i, config->player->color);
-            mlx_put_pixel(config->img, (TILE * config->player->y)+j, (TILE * config->player->x)-i, config->player->color);
-            mlx_put_pixel(config->img, (TILE * config->player->y)-j, (TILE * config->player->x)+i, config->player->color);
+            mlx_put_pixel(config->img, (TILE * config->player->x)+i, (TILE * config->player->y)+j, config->player->color);
+            mlx_put_pixel(config->img, (TILE * config->player->x)-i, (TILE * config->player->y)-j, config->player->color);
+            mlx_put_pixel(config->img, (TILE * config->player->x)+i, (TILE * config->player->y)-j, config->player->color);
+            mlx_put_pixel(config->img, (TILE * config->player->x)-i, (TILE * config->player->y)+j, config->player->color);
             j++;
         }
         i++;
