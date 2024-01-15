@@ -456,7 +456,7 @@ int main () {
     }
     draw_player(&conf);
 
-    free(conf.rays);
+    // free(conf.rays);
 
     mlx_key_hook(conf.mlx, key_hook, &conf);
     mlx_loop(conf.mlx);
