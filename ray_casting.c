@@ -147,7 +147,7 @@ void draw_rays(t_global_conf *config, int pos) {
     }
     while (px <= dx)
     {
-        mlx_put_pixel(config->img,  slope * px + y_intercept, px, 0x008000FF);
+        mlx_put_pixel(config->img,  px, slope * px + y_intercept, 0x008000FF);
         px +=0.005;
     }
 
@@ -321,10 +321,14 @@ void    cast_ray(t_global_conf *config, double ray_angle, int pos) {
 void    cast_all_rays(t_global_conf *config) {
 
     double ray_angle;
+    double swp;
     int     i;
 
     ray_angle = config->player->rotationAngle - (FOV / 2);
     i = 0;
+    // swp = config->player->x;
+    // config->player->x = config->player->y;
+    // config->player->y = swp;
     while (i < NUM_OF_RAYS) {
         cast_ray(config, ray_angle, i);
         draw_rays(config, i);
@@ -340,15 +344,15 @@ void    draw_player(t_global_conf *config) {
     while (i < tile) {
         int j = 0;
         while (j < tile) {
-            mlx_put_pixel(config->img, (TILE * config->player->y)+i, (TILE * config->player->x)+j, config->player->color);
-            mlx_put_pixel(config->img, (TILE * config->player->y)-i, (TILE * config->player->x)-j, config->player->color);
-            mlx_put_pixel(config->img, (TILE * config->player->y)+i, (TILE * config->player->x)-j, config->player->color);
-            mlx_put_pixel(config->img, (TILE * config->player->y)-i, (TILE * config->player->x)+j, config->player->color);
+            mlx_put_pixel(config->img, (TILE * config->player->x)+i, (TILE * config->player->y)+j, config->player->color);
+            mlx_put_pixel(config->img, (TILE * config->player->x)-i, (TILE * config->player->y)-j, config->player->color);
+            mlx_put_pixel(config->img, (TILE * config->player->x)+i, (TILE * config->player->y)-j, config->player->color);
+            mlx_put_pixel(config->img, (TILE * config->player->x)-i, (TILE * config->player->y)+j, config->player->color);
             j++;
         }
         i++;
     }
-    draw_single_line(config);
+    // draw_single_line(config);
     cast_all_rays(config);
 }
 
@@ -443,14 +447,16 @@ int main () {
             else if (map[i][j] == '0')
                 draw(&conf, j, i, 0x000000);
             else if (map[i][j] == 'N' || map[i][j] == 'W' || map[i][j] == 'E' || map[i][j] == 'S') {
-                conf.player->x = i;
-                conf.player->y = j;
+                conf.player->x = j;
+                conf.player->y = i;
             }
             j++;
         }
         i++;
     }
     draw_player(&conf);
+
+    free(conf.rays);
 
     mlx_key_hook(conf.mlx, key_hook, &conf);
     mlx_loop(conf.mlx);
