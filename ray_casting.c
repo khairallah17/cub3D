@@ -1,5 +1,8 @@
 #include "MLX42/include/MLX42/MLX42.h"
-#include <libc.h>
+// #include <libc.h>
+#include <stdio.h>
+#include <limits.h>
+#include <stdlib.h>
 #include <math.h>
 #define MAP_NUM_ROWS 13
 #define MAP_NUM_COLS 20
@@ -144,8 +147,8 @@ void draw_rays(t_global_conf *config, int pos) {
     }
     while (px <= dx)
     {
-        mlx_put_pixel(config->img,  px, slope * px + y_intercept, 0x008000FF);
-        px +=0.1;
+        mlx_put_pixel(config->img,  slope * px + y_intercept, px, 0x008000FF);
+        px +=0.005;
     }
 
 }
@@ -203,7 +206,7 @@ void    cast_ray(t_global_conf *config, double ray_angle, int pos) {
     puts("");
     puts("");
 
-    x_inter = (config->player->x * TILE) + (((config->player->y * TILE) - y_inter) / tan(ray_angle));
+    x_inter = (config->player->x * TILE) + ((y_inter - (config->player->y * TILE)) / tan(ray_angle));
     printf("BEFORE ray[%d] ==> %f\n", pos, x_inter);
     printf("AFTER ray[%d] ==> %f\n", pos, x_inter / 32);
     puts("");
@@ -337,10 +340,10 @@ void    draw_player(t_global_conf *config) {
     while (i < tile) {
         int j = 0;
         while (j < tile) {
-            mlx_put_pixel(config->img, (TILE * config->player->x)+i, (TILE * config->player->y)+j, config->player->color);
-            mlx_put_pixel(config->img, (TILE * config->player->x)-i, (TILE * config->player->y)-j, config->player->color);
-            mlx_put_pixel(config->img, (TILE * config->player->x)+i, (TILE * config->player->y)-j, config->player->color);
-            mlx_put_pixel(config->img, (TILE * config->player->x)-i, (TILE * config->player->y)+j, config->player->color);
+            mlx_put_pixel(config->img, (TILE * config->player->y)+i, (TILE * config->player->x)+j, config->player->color);
+            mlx_put_pixel(config->img, (TILE * config->player->y)-i, (TILE * config->player->x)-j, config->player->color);
+            mlx_put_pixel(config->img, (TILE * config->player->y)+i, (TILE * config->player->x)-j, config->player->color);
+            mlx_put_pixel(config->img, (TILE * config->player->y)-i, (TILE * config->player->x)+j, config->player->color);
             j++;
         }
         i++;
