@@ -6,12 +6,15 @@
 #include <math.h>
 #define MAP_NUM_ROWS 13
 #define MAP_NUM_COLS 20
-#define WINDOW_HEIGHT MAP_NUM_ROWS * TILE
-#define WINDOW_WIDTH MAP_NUM_COLS * TILE
+#define WINDOW_HEIGHT 768 
+#define WINDOW_WIDTH 1024
 #define TILE 32
 #define PLAYER_TILE 8
 #define NUM_OF_RAYS 320
 #define FOV (60 * (M_PI / 180))
+#define MINIMAP_SCALE 10
+#define MINIMAP_HEIGHT MAP_NUM_ROWS * MINIMAP_SCALE
+#define MINIMAP_WIDTH MAP_NUM_COLS * MINIMAP_SCALE
 
 char map[MAP_NUM_ROWS][MAP_NUM_COLS] = {
     "11111111111111111111",
@@ -56,6 +59,7 @@ typedef struct s_global_conf {
     mlx_image_t     *img;
     t_player        *player;
     t_ray           *rays;
+    uint32_t        *colorBuffer;
 } t_global_conf;
 
 static void ft_error(void)
@@ -72,11 +76,11 @@ void    draw(t_global_conf *config, int x, int y, int color) {
     }
 
     int i = 0;
-    int tile = TILE;
+    int tile = MINIMAP_SCALE;
     while (i < tile) {
         int j = 0;
         while (j < tile) {
-            mlx_put_pixel(config->img, (TILE * x) + i, (TILE * y) + j, color);
+            mlx_put_pixel(config->img, (MINIMAP_SCALE * x) + i, (MINIMAP_SCALE * y) + j, color);
             j++;
         }
         i++;
@@ -84,35 +88,6 @@ void    draw(t_global_conf *config, int x, int y, int color) {
 
 }
 
-void    draw_single_line(t_global_conf *config) {
-
-    double dx;
-    double dy;
-    double px;
-    double py;
-    double tmp;
-
-    px = config->player->x * TILE;
-    py = config->player->y * TILE;
-    dx = (64 * cos(config->player->rotationAngle) + px); // assuming px and py are the (0, 0);
-    dy = (64 * sin(config->player->rotationAngle) + py);
-
-    double slope = (py - dy) / (px - dx);
-    double y_intercept = py - slope * px; // py = slope * px + t_intercept
-
-    if (px >= dx)
-    {
-        tmp = px;
-        px = dx;
-        dx = tmp;
-    }
-    while (px <= dx)
-    {
-        mlx_put_pixel(config->img,  px, slope * px + y_intercept, 0x008000FF);
-        px +=0.1;
-    }
-
-}
 void draw_rays(t_global_conf *config, int pos) {
 
     double dx;
@@ -121,23 +96,13 @@ void draw_rays(t_global_conf *config, int pos) {
     double py;
     double tmp;
 
-    px = floor(config->player->x * TILE);
-    py = floor(config->player->y * TILE);
-    dx = floor(config->rays[pos].wall_hit_x); // assuming px and py are the (0, 0);
+    px = floor(config->player->x * MINIMAP_SCALE);
+    py = floor(config->player->y * MINIMAP_SCALE);
+    dx = floor(config->rays[pos].wall_hit_x);
     dy = floor(config->rays[pos].wall_hit_y);
 
-    // puts("");
-    // puts("");
-    // puts("");
-
-    // printf("RAY ==> (%f;%f)\n", floor(dx), floor(dy));
-    // printf("PLAYER ==> (%f;%f)\n", floor(px), floor(py));
-
-    // puts("");
-    // puts("");
-    // puts("");
     double slope = (py - dy) / (px - dx);
-    double y_intercept = py - slope * px; // py = slope * px + t_intercept
+    double y_intercept = py - slope * px;
 
     if (px >= dx)
     {
@@ -148,9 +113,52 @@ void draw_rays(t_global_conf *config, int pos) {
     while (px <= dx)
     {
         mlx_put_pixel(config->img,  px, slope * px + y_intercept, 0x008000FF);
-        px +=0.005;
+        px += 0.01;
     }
 
+}
+
+void    render_3d(t_global_conf *config) {
+    int     i;
+    int     j;
+    int     x;
+    int     wall_height;
+    double  distance_to_projection_plane;
+    double  projected_wall_height;
+    int     wall_top;
+    int     wall_ceil;
+    double  correct_distance;
+
+    i = 0;
+    for (int x = 0 ; x < WINDOW_HEIGHT ; x++) {
+    }
+    while (i < NUM_OF_RAYS) {
+        correct_distance = config->rays[i].distance * cos(config->rays[i].ray_angle - config->player->rotationAngle);
+        distance_to_projection_plane = (WINDOW_WIDTH / 2) / tan(FOV / 2);
+        projected_wall_height = (TILE / correct_distance) * distance_to_projection_plane;
+        wall_height = (int)projected_wall_height;
+        
+        wall_top = (WINDOW_HEIGHT / 2) - (wall_height / 2);
+        wall_top = wall_top < 0 ? 0 : wall_top;
+        
+        wall_ceil = (WINDOW_HEIGHT / 2) + (wall_height / 2);
+        wall_ceil = wall_ceil > WINDOW_HEIGHT ? WINDOW_HEIGHT : wall_ceil;
+
+        for (int y = 0; y < wall_top; y++)
+            config->colorBuffer[(WINDOW_WIDTH * y) + i] = 0xFF333333;
+
+        j = wall_top;
+        while (j < wall_ceil) {
+            config->colorBuffer[(WINDOW_WIDTH * j) + i] = 0xFF0000FF;
+            j++;
+        }
+
+        // set the color of the floor
+        for (int y = wall_ceil; y < WINDOW_HEIGHT; y++)
+            config->colorBuffer[(WINDOW_WIDTH * y) + i] = 0xFF777777;
+        
+        i++;
+    }
 }
 
 double  correct_angle(double ray_angle) {
@@ -166,12 +174,11 @@ double  calculating_distance(double x1, double y1, double x2, double y2) {
 }
 
 int wall_hit_checker(double x, double y) {
-    if (x < 0 || x > WINDOW_WIDTH || y < 0 || y > WINDOW_HEIGHT) {
+    if (x < 0 || x > MINIMAP_WIDTH || y < 0 || y > MINIMAP_HEIGHT) {
         return 1;
     }
-    int mapGridIndexX = floor(x / TILE);
-    int mapGridIndexY = floor(y / TILE);
-    // printf("INTERSECTION INDEXES ==> (%f;%f)\n", floor(x/32), floor(y/32));
+    int mapGridIndexX = floor(x / MINIMAP_SCALE);
+    int mapGridIndexY = floor(y / MINIMAP_SCALE);
     return map[mapGridIndexY][mapGridIndexX] == '1';
 }
 
@@ -193,29 +200,29 @@ void    cast_ray(t_global_conf *config, double ray_angle, int pos) {
     double horizontal_wall_hit_x;
     double horizontal_wall_hit_y;
 
-    puts("HORIZONTAL");
-    puts("");
+    // puts("HORIZONTAL");
+    // puts("");
 
-    y_inter = floor((config->player->y * TILE) / TILE) * TILE;
-    printf("BEFORE ray[%d] ==> %f\n", pos, y_inter);
-    printf("BEFORE ray[%d] ==> %f\n", pos, y_inter / 32);
-    y_inter += is_ray_facing_down ? TILE : 0;
+    y_inter = floor((config->player->y * MINIMAP_SCALE) / MINIMAP_SCALE) * MINIMAP_SCALE;
+    // printf("BEFORE ray[%d] ==> %f\n", pos, y_inter);
+    // printf("BEFORE ray[%d] ==> %f\n", pos, y_inter / 32);
+    y_inter += is_ray_facing_down ? MINIMAP_SCALE : 0;
 
-    printf("AFTER ray[%d] ==> %f\n", pos, y_inter);
-    printf("AFTER ray[%d] ==> %f\n", pos, y_inter / 32);
-    puts("");
-    puts("");
+    // printf("AFTER ray[%d] ==> %f\n", pos, y_inter);
+    // printf("AFTER ray[%d] ==> %f\n", pos, y_inter / 32);
+    // puts("");
+    // puts("");
 
-    x_inter = (config->player->x * TILE) + ((y_inter - (config->player->y * TILE)) / tan(ray_angle));
-    printf("BEFORE ray[%d] ==> %f\n", pos, x_inter);
-    printf("AFTER ray[%d] ==> %f\n", pos, x_inter / 32);
-    puts("");
-    puts("");
+    x_inter = (config->player->x * MINIMAP_SCALE) + ((y_inter - (config->player->y * MINIMAP_SCALE)) / tan(ray_angle));
+    // printf("BEFORE ray[%d] ==> %f\n", pos, x_inter);
+    // printf("AFTER ray[%d] ==> %f\n", pos, x_inter / 32);
+    // puts("");
+    // puts("");
 
-    y_step = TILE;
+    y_step = MINIMAP_SCALE;
     y_step *=is_ray_facing_up ? -1 : 1;
 
-    x_step = TILE / tan(ray_angle);
+    x_step = MINIMAP_SCALE / tan(ray_angle);
     x_step *= (is_ray_facing_left && x_step > 0) ? -1 : 1;
     x_step *= (is_ray_facing_right && x_step < 0) ? -1 : 1;
 
@@ -223,7 +230,7 @@ void    cast_ray(t_global_conf *config, double ray_angle, int pos) {
     double next_horizontal_hit_y = y_inter;
 
 
-    while ((next_horizontal_hit_x >= 0 && next_horizontal_hit_x <= WINDOW_WIDTH) && (next_horizontal_hit_y >= 0 && next_horizontal_hit_y <= WINDOW_HEIGHT)) {
+    while ((next_horizontal_hit_x >= 0 && next_horizontal_hit_x <= MINIMAP_WIDTH) && (next_horizontal_hit_y >= 0 && next_horizontal_hit_y <= MINIMAP_HEIGHT)) {
 
         double x_check = next_horizontal_hit_x;
         double y_check = next_horizontal_hit_y + (is_ray_facing_up ? -1 : 0);
@@ -231,7 +238,7 @@ void    cast_ray(t_global_conf *config, double ray_angle, int pos) {
         if (wall_hit_checker(x_check, y_check)) {
 
             horizontal_wall_hit = 1;
-            // printf("WALL FOUND AT ==> (%f,%f)!!\n", floor(next_horizontal_hit_x / TILE), floor(next_horizontal_hit_y / TILE));
+            // printf("WALL FOUND AT ==> (%f,%f)!!\n", floor(next_horizontal_hit_x / MINIMAP_SCALE), floor(next_horizontal_hit_y / MINIMAP_SCALE));
             horizontal_wall_hit_x = next_horizontal_hit_x;
             horizontal_wall_hit_y = next_horizontal_hit_y;
             break;
@@ -243,34 +250,34 @@ void    cast_ray(t_global_conf *config, double ray_angle, int pos) {
 
     }
 
-    puts("VERTICAL");
-    puts("");
+    // puts("VERTICAL");
+    // puts("");
 
     int vertical_wall_hit = 0;
     double vertical_wall_hit_x;
     double vertical_wall_hit_y;
 
-    x_inter = floor((config->player->x * TILE) / TILE) * TILE;
-    printf("BEFORE ray[%d] ==> %f\n", pos, x_inter);
-    printf("BEFORE ray[%d] ==> %f\n", pos, x_inter / 32);
-    x_inter += is_ray_facing_right ? TILE : 0;
+    x_inter = floor((config->player->x * MINIMAP_SCALE) / MINIMAP_SCALE) * MINIMAP_SCALE;
+    // printf("BEFORE ray[%d] ==> %f\n", pos, x_inter);
+    // printf("BEFORE ray[%d] ==> %f\n", pos, x_inter / 32);
+    x_inter += is_ray_facing_right ? MINIMAP_SCALE : 0;
 
-    printf("AFTER ray[%d] ==> %f\n", pos, y_inter);
-    printf("AFTER ray[%d] ==> %f\n", pos, y_inter / 32);
-    puts("");
-    puts("");
+    // printf("AFTER ray[%d] ==> %f\n", pos, y_inter);
+    // printf("AFTER ray[%d] ==> %f\n", pos, y_inter / 32);
+    // puts("");
+    // puts("");
 
-    y_inter = (config->player->y * TILE) + (x_inter - (config->player->x * TILE)) * tan(ray_angle);
+    y_inter = (config->player->y * MINIMAP_SCALE) + (x_inter - (config->player->x * MINIMAP_SCALE)) * tan(ray_angle);
 
-    printf("BEFORE ray[%d] ==> %f\n", pos, y_inter);
-    printf("AFTER ray[%d] ==> %f\n", pos, y_inter / 32);
-    puts("");
-    puts("");
+    // printf("BEFORE ray[%d] ==> %f\n", pos, y_inter);
+    // printf("AFTER ray[%d] ==> %f\n", pos, y_inter / 32);
+    // puts("");
+    // puts("");
 
-    x_step = TILE;
+    x_step = MINIMAP_SCALE;
     x_step *= is_ray_facing_left ? -1 : 1;
 
-    y_step = TILE * tan(ray_angle);
+    y_step = MINIMAP_SCALE * tan(ray_angle);
     y_step *= (is_ray_facing_up && y_step > 0) ? -1 : 1;
     y_step *= (is_ray_facing_down && y_step < 0) ? -1 : 1;
 
@@ -278,7 +285,7 @@ void    cast_ray(t_global_conf *config, double ray_angle, int pos) {
     double next_vertical_hit_y = y_inter;
 
 
-    while ((next_vertical_hit_x >= 0 && next_vertical_hit_x <= WINDOW_WIDTH) && (next_vertical_hit_y >= 0 && next_vertical_hit_y <= WINDOW_HEIGHT)) {
+    while ((next_vertical_hit_x >= 0 && next_vertical_hit_x <= (MINIMAP_WIDTH)) && (next_vertical_hit_y >= 0 && next_vertical_hit_y <= MINIMAP_HEIGHT)) {
 
         double x_check = next_vertical_hit_x + (is_ray_facing_left ? -1 : 0);
         double y_check = next_vertical_hit_y;
@@ -297,8 +304,8 @@ void    cast_ray(t_global_conf *config, double ray_angle, int pos) {
 
     }
 
-    double horizontal_distance = horizontal_wall_hit ? calculating_distance((config->player->x * TILE), (config->player->y * TILE), horizontal_wall_hit_x, horizontal_wall_hit_y) : INT_MAX;
-    double vertical_distance = vertical_wall_hit ? calculating_distance((config->player->x * TILE), (config->player->y * TILE), vertical_wall_hit_x, vertical_wall_hit_y) : INT_MAX;
+    double horizontal_distance = horizontal_wall_hit ? calculating_distance((config->player->x * MINIMAP_SCALE), (config->player->y * MINIMAP_SCALE), horizontal_wall_hit_x, horizontal_wall_hit_y) : INT_MAX;
+    double vertical_distance = vertical_wall_hit ? calculating_distance((config->player->x * MINIMAP_SCALE), (config->player->y * MINIMAP_SCALE), vertical_wall_hit_x, vertical_wall_hit_y) : INT_MAX;
 
     if (vertical_distance < horizontal_distance) {
         config->rays[pos].distance = vertical_distance;
@@ -344,16 +351,66 @@ void    draw_player(t_global_conf *config) {
     while (i < tile) {
         int j = 0;
         while (j < tile) {
-            mlx_put_pixel(config->img, (TILE * config->player->x)+i, (TILE * config->player->y)+j, config->player->color);
-            mlx_put_pixel(config->img, (TILE * config->player->x)-i, (TILE * config->player->y)-j, config->player->color);
-            mlx_put_pixel(config->img, (TILE * config->player->x)+i, (TILE * config->player->y)-j, config->player->color);
-            mlx_put_pixel(config->img, (TILE * config->player->x)-i, (TILE * config->player->y)+j, config->player->color);
+            mlx_put_pixel(config->img, (MINIMAP_SCALE * config->player->x)+i, (MINIMAP_SCALE * config->player->y)+j, config->player->color);
+            mlx_put_pixel(config->img, (MINIMAP_SCALE * config->player->x)-i, (MINIMAP_SCALE * config->player->y)-j, config->player->color);
+            mlx_put_pixel(config->img, (MINIMAP_SCALE * config->player->x)+i, (MINIMAP_SCALE * config->player->y)-j, config->player->color);
+            mlx_put_pixel(config->img, (MINIMAP_SCALE * config->player->x)-i, (MINIMAP_SCALE * config->player->y)+j, config->player->color);
             j++;
         }
         i++;
     }
     // draw_single_line(config);
     cast_all_rays(config);
+}
+
+
+void    init_color_buffer(t_global_conf *config) {
+
+    int i;
+    int j;
+    int max;
+
+    i = 0;
+    while (i < WINDOW_WIDTH) {
+        j = 0;
+        while (j < WINDOW_HEIGHT) {
+            config->colorBuffer[(WINDOW_WIDTH * j) + i] = 0xFFFFFFFF;
+            j++;
+        }
+        i++;
+    }
+
+}
+
+void    render_color_buffer(t_global_conf *config) {
+
+    int i;
+    int j;
+    mlx_image_t *image;
+
+    i = 0;
+    image = mlx_new_image(config->mlx, WINDOW_WIDTH ,WINDOW_HEIGHT);
+    // image->pixels = config->colorBuffer;
+    // for (int x = 0; x < WINDOW_WIDTH ; x++) {
+    //     for (int u = 0 ; u < WINDOW_HEIGHT ; u++) {
+    //         image->pixels[(WINDOW_WIDTH * x) + u] = 255;
+    //     }
+    // }
+    // j = mlx_image_to_window(config->mlx, image, 0, 0);
+    // if (j < 0) {
+    //     printf("ERROR\n");
+    //     exit(0);
+    // }
+    printf("RENDRING COLOR BUFFER\n");
+    while (i < WINDOW_WIDTH) {
+        j = 0;
+        while (j < WINDOW_HEIGHT) {
+            mlx_put_pixel(config->img, i, j, config->colorBuffer[(WINDOW_WIDTH * j) + i]);
+            j++;
+        }
+        i++;
+    }
+
 }
 
 void setup(t_global_conf *config) {
@@ -370,8 +427,10 @@ void setup(t_global_conf *config) {
     config->player->rotationAngle = 0;
     config->player->color = 0xFF0000FF;
     config->rays = (t_ray *)malloc(sizeof(t_ray) * NUM_OF_RAYS);
-
+    config->colorBuffer = (uint32_t *)malloc(sizeof(uint32_t) * (uint32_t)WINDOW_HEIGHT * (uint32_t)WINDOW_WIDTH);
+    init_color_buffer(config);
 }
+
 
 void update(t_global_conf *conf) {
 
@@ -380,6 +439,8 @@ void update(t_global_conf *conf) {
     mlx_image_to_window(conf->mlx,conf->img,0,0);
 
     int i = 0;
+    render_3d(conf);
+    render_color_buffer(conf);
     while (i < MAP_NUM_ROWS) {
         int j = 0;
         while (j < MAP_NUM_COLS) {
@@ -401,9 +462,9 @@ void key_hook(mlx_key_data_t keydata, void *param)
 
     conf = param;
     if (keydata.key == MLX_KEY_LEFT)
-        conf->player->rotationAngle += 0.1;
-    else if (keydata.key == MLX_KEY_RIGHT)
         conf->player->rotationAngle -= 0.1;
+    else if (keydata.key == MLX_KEY_RIGHT)
+        conf->player->rotationAngle += 0.1;
     else if (keydata.key == MLX_KEY_W && conf->player->x > 0) {
         conf->player->x += 0.05 * cos(conf->player->rotationAngle);
         conf->player->y += 0.05 * sin(conf->player->rotationAngle);
@@ -413,14 +474,32 @@ void key_hook(mlx_key_data_t keydata, void *param)
         conf->player->y -= 0.05 * sin(conf->player->rotationAngle);
     }
     else if (keydata.key == MLX_KEY_A && conf->player->y > 0) {
-        conf->player->x += 0.05 * cos(conf->player->rotationAngle + M_PI / 2);
-        conf->player->y += 0.05 * sin(conf->player->rotationAngle + M_PI / 2);
-    }
-    else if (keydata.key == MLX_KEY_D && conf->player->y < MAP_NUM_COLS) {
         conf->player->x -= 0.05 * cos(conf->player->rotationAngle + M_PI / 2);
         conf->player->y -= 0.05 * sin(conf->player->rotationAngle + M_PI / 2);
     }
+    else if (keydata.key == MLX_KEY_D && conf->player->y < MAP_NUM_COLS) {
+        conf->player->x += 0.05 * cos(conf->player->rotationAngle + M_PI / 2);
+        conf->player->y += 0.05 * sin(conf->player->rotationAngle + M_PI / 2);
+    }
+    else if (keydata.key == MLX_KEY_ESCAPE) {
+        mlx_delete_image(conf->mlx, conf->img);
+        mlx_close_window(conf->mlx);
+        free(conf->rays);
+        free(conf->colorBuffer);
+        return ;
+    }
     update(conf);
+}
+
+void close_key_hook(void *param) {
+    t_global_conf *conf;
+
+    conf = param;
+    mlx_delete_image(conf->mlx, conf->img);
+    mlx_close_window(conf->mlx);
+    free(conf->rays);
+    free(conf->colorBuffer);
+    return ;
 }
 
 int main () {
@@ -455,9 +534,12 @@ int main () {
         i++;
     }
     draw_player(&conf);
+    render_3d(&conf);
+    render_color_buffer(&conf);
 
     // free(conf.rays);
 
     mlx_key_hook(conf.mlx, key_hook, &conf);
     mlx_loop(conf.mlx);
+    mlx_close_hook(conf.mlx, close_key_hook, &conf);
 }
