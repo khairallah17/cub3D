@@ -8,9 +8,10 @@
 #define MAP_NUM_COLS 20
 #define WINDOW_HEIGHT 768 
 #define WINDOW_WIDTH 1024
-#define TILE 32
+#define TILE 8
 #define PLAYER_TILE 8
-#define NUM_OF_RAYS 320
+#define NUM_OF_RAYS WINDOW_WIDTH
+#define RAYS 60
 #define FOV (60 * (M_PI / 180))
 #define MINIMAP_SCALE 10
 #define MINIMAP_HEIGHT MAP_NUM_ROWS * MINIMAP_SCALE
@@ -23,12 +24,12 @@ char map[MAP_NUM_ROWS][MAP_NUM_COLS] = {
     "10001010101010101001",
     "10000000000000000001",
     "10000000000000001001",
-    "10000000000N00001001",
+    "10000000000000010001",
     "10000000000000001001",
     "10000000000001111001",
     "10000000000000000001",
     "10000000000000000001",
-    "10000000000000000001",
+    "1000000000N000000001",
     "11111111111111111111"
 };
 
@@ -121,7 +122,6 @@ void draw_rays(t_global_conf *config, int pos) {
 void    render_3d(t_global_conf *config) {
     int     i;
     int     j;
-    int     x;
     int     wall_height;
     double  distance_to_projection_plane;
     double  projected_wall_height;
@@ -179,6 +179,7 @@ int wall_hit_checker(double x, double y) {
     }
     int mapGridIndexX = floor(x / MINIMAP_SCALE);
     int mapGridIndexY = floor(y / MINIMAP_SCALE);
+    // printf("MAPGRID [%d][%d]\n", mapGridIndexX, mapGridIndexY);
     return map[mapGridIndexY][mapGridIndexX] == '1';
 }
 
@@ -328,7 +329,6 @@ void    cast_ray(t_global_conf *config, double ray_angle, int pos) {
 void    cast_all_rays(t_global_conf *config) {
 
     double ray_angle;
-    double swp;
     int     i;
 
     ray_angle = config->player->rotationAngle - (FOV / 2);
@@ -338,7 +338,7 @@ void    cast_all_rays(t_global_conf *config) {
     // config->player->y = swp;
     while (i < NUM_OF_RAYS) {
         cast_ray(config, ray_angle, i);
-        draw_rays(config, i);
+        // draw_rays(config, i);
         ray_angle += FOV / NUM_OF_RAYS;
         i++;
     }
@@ -368,7 +368,6 @@ void    init_color_buffer(t_global_conf *config) {
 
     int i;
     int j;
-    int max;
 
     i = 0;
     while (i < WINDOW_WIDTH) {
@@ -401,7 +400,6 @@ void    render_color_buffer(t_global_conf *config) {
     //     printf("ERROR\n");
     //     exit(0);
     // }
-    printf("RENDRING COLOR BUFFER\n");
     while (i < WINDOW_WIDTH) {
         j = 0;
         while (j < WINDOW_HEIGHT) {
@@ -446,7 +444,7 @@ void update(t_global_conf *conf) {
         while (j < MAP_NUM_COLS) {
             if (map[i][j] == '1')
                 draw(conf, j, i, 0xFFFFFF);
-            else if (map[i][j] == '0')
+            else
                 draw(conf, j, i, 0x000000);
             j++;
         }
@@ -456,22 +454,37 @@ void update(t_global_conf *conf) {
 
 }
 
+int wall_collision(double x, double y) {
+
+    // printf("WALL COLLISTION AT ==> [%d][%d]\n", (int)(y/MINIMAP_SCALE),(int)(x/MINIMAP_SCALE));
+    // printf("AT ==> %c\n", map[(int)(y/MINIMAP_SCALE)][(int)(x/MINIMAP_SCALE)]);
+    if (map[(int)(x/MINIMAP_SCALE)][(int)(y/MINIMAP_SCALE)] == '1')
+        return (0);
+    return (1);
+}
+
 void key_hook(mlx_key_data_t keydata, void *param)
 {
     t_global_conf *conf;
+    double  old_x;
+    double  old_y;
 
     conf = param;
+    old_x = conf->player->x;
+    old_y = conf->player->y;
     if (keydata.key == MLX_KEY_LEFT)
         conf->player->rotationAngle -= 0.1;
     else if (keydata.key == MLX_KEY_RIGHT)
         conf->player->rotationAngle += 0.1;
     else if (keydata.key == MLX_KEY_W && conf->player->x > 0) {
-        conf->player->x += 0.05 * cos(conf->player->rotationAngle);
-        conf->player->y += 0.05 * sin(conf->player->rotationAngle);
+        // if (wall_collision((conf->player->x + 0.1 * cos(conf->player->rotationAngle)), (conf->player->y + 0.1 * sin(conf->player->rotationAngle)))) {
+            conf->player->x += 0.1 * cos(conf->player->rotationAngle);
+            conf->player->y += 0.1 * sin(conf->player->rotationAngle);
+        // }
     }
     else if (keydata.key == MLX_KEY_S && conf->player->x < MAP_NUM_ROWS) {
-        conf->player->x -= 0.05 * cos(conf->player->rotationAngle);
-        conf->player->y -= 0.05 * sin(conf->player->rotationAngle);
+        conf->player->x -= 0.1 * cos(conf->player->rotationAngle);
+        conf->player->y -= 0.1 * sin(conf->player->rotationAngle);
     }
     else if (keydata.key == MLX_KEY_A && conf->player->y > 0) {
         conf->player->x -= 0.05 * cos(conf->player->rotationAngle + M_PI / 2);
@@ -528,6 +541,7 @@ int main () {
             else if (map[i][j] == 'N' || map[i][j] == 'W' || map[i][j] == 'E' || map[i][j] == 'S') {
                 conf.player->x = j;
                 conf.player->y = i;
+                draw(&conf, j, i, 0x000000);
             }
             j++;
         }
