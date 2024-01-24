@@ -119,6 +119,30 @@ void draw_rays(t_global_conf *config, int pos) {
 
 }
 
+
+//---------------------------------------- Texture Eagoumi ----------------------------------------//
+#define TEXTURE_WIDTH 32
+#define TEXTURE_HEIGHT 32
+
+uint32_t *wall_texture = NULL;
+void    texture_walls(uint32_t *wall_texture)
+{
+    wall_texture = (uint32_t *)malloc(sizeof(uint32_t) * (uint32_t)TEXTURE_WIDTH * (uint32_t)TEXTURE_HEIGHT);
+    //=-----------------------------------------------=//
+    for (int x = 0; x < TEXTURE_WIDTH; x++)
+    {
+        for (int yt = 0; yt < TEXTURE_HEIGHT; yt++)
+            if (x % 8 == 0 && yt % 8 == 0)
+            {
+                // puts("s");
+                wall_texture[(TEXTURE_WIDTH * yt) + x] = 0xFF0000FF;
+            }
+            else
+                wall_texture[(TEXTURE_WIDTH * yt) + x] = 0xFF000000;
+    }
+}
+//-----------------------------------------------------------------------------------------------//
+
 void    render_3d(t_global_conf *config) {
     int     i;
     int     j;
@@ -132,6 +156,20 @@ void    render_3d(t_global_conf *config) {
     i = 0;
     for (int x = 0 ; x < WINDOW_HEIGHT ; x++) {
     }
+    wall_texture = (uint32_t *)malloc(sizeof(uint32_t) * (uint32_t)TEXTURE_WIDTH * (uint32_t)TEXTURE_HEIGHT);
+    //=-----------------------------------------------=//
+    for (int x = 0; x < TEXTURE_WIDTH; x++)
+    {
+        for (int yt = 0; yt < TEXTURE_HEIGHT; yt++)
+                wall_texture[(TEXTURE_WIDTH * yt) + x] = 0xFF0000FF;
+            // if (x % 8 == 0 && yt % 8 == 0)
+            // {
+            //     // puts("s");
+            //     wall_texture[(TEXTURE_WIDTH * yt) + x] = 0xFF0000FF;
+            // }
+            // else
+            //     wall_texture[(TEXTURE_WIDTH * yt) + x] = 0xFF000000;
+    }
     while (i < NUM_OF_RAYS) {
         correct_distance = config->rays[i].distance * cos(config->rays[i].ray_angle - config->player->rotationAngle);
         distance_to_projection_plane = (WINDOW_WIDTH / 2) / tan(FOV / 2);
@@ -144,15 +182,68 @@ void    render_3d(t_global_conf *config) {
         wall_ceil = (WINDOW_HEIGHT / 2) + (wall_height / 2);
         wall_ceil = wall_ceil > WINDOW_HEIGHT ? WINDOW_HEIGHT : wall_ceil;
 
+        // Texture top ciel
+        // set the color of the floor
+        for (int y = 0; y < wall_top; y++)
+            config->colorBuffer[(WINDOW_WIDTH * y) + i] = 0xFF333333;
+        //------------------------------//
         j = wall_top;
+        // textureoffsetx = ;
+        int textureoffsetx;
+        if (config->rays[i].was_hit_vertical)
+            textureoffsetx = (int)config->rays[i].wall_hit_y % TILE;
+        else 
+            textureoffsetx = (int)config->rays[i].wall_hit_x % TILE;
         while (j < wall_ceil) {
-            config->colorBuffer[(WINDOW_WIDTH * j) + i] = 0xFF0000FF;
+            int top_distance = (j + (wall_height / 2) - (WINDOW_HEIGHT / 2)); 
+            int textureoffsety = top_distance * ((float)TEXTURE_HEIGHT / wall_height);
+            uint32_t texturecolor = wall_texture[(TEXTURE_WIDTH * textureoffsety) * textureoffsetx];
+            config->colorBuffer[(WINDOW_WIDTH * j) + i] = texturecolor;//0xFF0000FF;
             j++;
         }
+
+        // set the color of the floor
+        for (int y = wall_ceil; y < WINDOW_HEIGHT; y++)
+            config->colorBuffer[(WINDOW_WIDTH * y) + i] = 0xFF777777;
         
         i++;
     }
 }
+
+// void    render_3d(t_global_conf *config) {
+//     int     i;
+//     int     j;
+//     int     wall_height;
+//     double  distance_to_projection_plane;
+//     double  projected_wall_height;
+//     int     wall_top;
+//     int     wall_ceil;
+//     double  correct_distance;
+
+//     i = 0;
+//     for (int x = 0 ; x < WINDOW_HEIGHT ; x++) {
+//     }
+//     while (i < NUM_OF_RAYS) {
+//         correct_distance = config->rays[i].distance * cos(config->rays[i].ray_angle - config->player->rotationAngle);
+//         distance_to_projection_plane = (WINDOW_WIDTH / 2) / tan(FOV / 2);
+//         projected_wall_height = (TILE / correct_distance) * distance_to_projection_plane;
+//         wall_height = (int)projected_wall_height;
+        
+//         wall_top = (WINDOW_HEIGHT / 2) - (wall_height / 2);
+//         wall_top = wall_top < 0 ? 0 : wall_top;
+        
+//         wall_ceil = (WINDOW_HEIGHT / 2) + (wall_height / 2);
+//         wall_ceil = wall_ceil > WINDOW_HEIGHT ? WINDOW_HEIGHT : wall_ceil;
+
+//         j = wall_top;
+//         while (j < wall_ceil) {
+//             config->colorBuffer[(WINDOW_WIDTH * j) + i] = 0xFF0000FF;
+//             j++;
+//         }
+        
+//         i++;
+//     }
+// }
 
 double  correct_angle(double ray_angle) {
     ray_angle = remainder(ray_angle, M_PI * 2);
