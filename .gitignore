@@ -1,0 +1,5 @@
+*.out
+*.o
+cub3D
+.vscode/
+a.out.dSYM/
