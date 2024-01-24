@@ -28,6 +28,7 @@ SRC_FILES	=	gnl/get_next_line_utils.c \
 				parsing/path_xpm.c \
 				parsing/check_map.c \
 				parsing/parsing.c \
+				ray_casting.c \
 				cub3D.c
 
 INC_FILES	=	gnl/get_next_line.h \

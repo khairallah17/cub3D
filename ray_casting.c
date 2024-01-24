@@ -29,7 +29,7 @@ char map[MAP_NUM_ROWS][MAP_NUM_COLS] = {
     "10000000000001111001",
     "10000000000000000001",
     "10000000000000000001",
-    "1000000000N000000001",
+    "1N000000000000000001",
     "11111111111111111111"
 };
 
@@ -144,18 +144,11 @@ void    render_3d(t_global_conf *config) {
         wall_ceil = (WINDOW_HEIGHT / 2) + (wall_height / 2);
         wall_ceil = wall_ceil > WINDOW_HEIGHT ? WINDOW_HEIGHT : wall_ceil;
 
-        for (int y = 0; y < wall_top; y++)
-            config->colorBuffer[(WINDOW_WIDTH * y) + i] = 0xFF333333;
-
         j = wall_top;
         while (j < wall_ceil) {
             config->colorBuffer[(WINDOW_WIDTH * j) + i] = 0xFF0000FF;
             j++;
         }
-
-        // set the color of the floor
-        for (int y = wall_ceil; y < WINDOW_HEIGHT; y++)
-            config->colorBuffer[(WINDOW_WIDTH * y) + i] = 0xFF777777;
         
         i++;
     }
@@ -174,12 +167,11 @@ double  calculating_distance(double x1, double y1, double x2, double y2) {
 }
 
 int wall_hit_checker(double x, double y) {
-    if (x < 0 || x > MINIMAP_WIDTH || y < 0 || y > MINIMAP_HEIGHT) {
+    if (x < 0 || (int)x >= MINIMAP_WIDTH || y < 0 || (int)y >= MINIMAP_HEIGHT) {
         return 1;
     }
-    int mapGridIndexX = floor(x / MINIMAP_SCALE);
-    int mapGridIndexY = floor(y / MINIMAP_SCALE);
-    // printf("MAPGRID [%d][%d]\n", mapGridIndexX, mapGridIndexY);
+    int mapGridIndexX = x / MINIMAP_SCALE;
+    int mapGridIndexY = y / MINIMAP_SCALE;
     return map[mapGridIndexY][mapGridIndexX] == '1';
 }
 
@@ -455,12 +447,10 @@ void update(t_global_conf *conf) {
 }
 
 int wall_collision(double x, double y) {
-
-    // printf("WALL COLLISTION AT ==> [%d][%d]\n", (int)(y/MINIMAP_SCALE),(int)(x/MINIMAP_SCALE));
-    // printf("AT ==> %c\n", map[(int)(y/MINIMAP_SCALE)][(int)(x/MINIMAP_SCALE)]);
-    if (map[(int)(x/MINIMAP_SCALE)][(int)(y/MINIMAP_SCALE)] == '1')
+    if (x < 0 || (int)x >= MINIMAP_WIDTH || y < 0 || (int)y >= MINIMAP_HEIGHT) {
         return (0);
-    return (1);
+    }
+    return (map[(int)(y)][(int)(x)] == '1');
 }
 
 void key_hook(mlx_key_data_t keydata, void *param)
@@ -477,22 +467,28 @@ void key_hook(mlx_key_data_t keydata, void *param)
     else if (keydata.key == MLX_KEY_RIGHT)
         conf->player->rotationAngle += 0.1;
     else if (keydata.key == MLX_KEY_W && conf->player->x > 0) {
-        // if (wall_collision((conf->player->x + 0.1 * cos(conf->player->rotationAngle)), (conf->player->y + 0.1 * sin(conf->player->rotationAngle)))) {
+        if (!wall_collision((conf->player->x + (0.1 * cos(conf->player->rotationAngle))), (conf->player->y + (0.1 * sin(conf->player->rotationAngle))))) {
             conf->player->x += 0.1 * cos(conf->player->rotationAngle);
             conf->player->y += 0.1 * sin(conf->player->rotationAngle);
-        // }
+        }
     }
     else if (keydata.key == MLX_KEY_S && conf->player->x < MAP_NUM_ROWS) {
-        conf->player->x -= 0.1 * cos(conf->player->rotationAngle);
-        conf->player->y -= 0.1 * sin(conf->player->rotationAngle);
+        if (!wall_collision(conf->player->x - (0.1 * cos(conf->player->rotationAngle)), conf->player->y - (0.1 * sin(conf->player->rotationAngle)))) {
+            conf->player->x -= 0.1 * cos(conf->player->rotationAngle);
+            conf->player->y -= 0.1 * sin(conf->player->rotationAngle);
+        }
     }
     else if (keydata.key == MLX_KEY_A && conf->player->y > 0) {
-        conf->player->x -= 0.05 * cos(conf->player->rotationAngle + M_PI / 2);
-        conf->player->y -= 0.05 * sin(conf->player->rotationAngle + M_PI / 2);
+        if (!wall_collision(conf->player->x - (0.05 * cos(conf->player->rotationAngle + M_PI / 2)), conf->player->y - (0.05 * sin(conf->player->rotationAngle + M_PI / 2)))) {
+            conf->player->x -= 0.05 * cos(conf->player->rotationAngle + M_PI / 2);
+            conf->player->y -= 0.05 * sin(conf->player->rotationAngle + M_PI / 2);
+        }
     }
     else if (keydata.key == MLX_KEY_D && conf->player->y < MAP_NUM_COLS) {
-        conf->player->x += 0.05 * cos(conf->player->rotationAngle + M_PI / 2);
-        conf->player->y += 0.05 * sin(conf->player->rotationAngle + M_PI / 2);
+        if (!wall_collision(conf->player->x + (0.05 * cos(conf->player->rotationAngle + M_PI / 2)), conf->player->y + (0.05 * sin(conf->player->rotationAngle + M_PI / 2)))) {
+            conf->player->x += 0.05 * cos(conf->player->rotationAngle + M_PI / 2);
+            conf->player->y += 0.05 * sin(conf->player->rotationAngle + M_PI / 2);
+        }
     }
     else if (keydata.key == MLX_KEY_ESCAPE) {
         mlx_delete_image(conf->mlx, conf->img);
