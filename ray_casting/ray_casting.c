@@ -6,7 +6,7 @@
 /*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 10:50:39 by mkhairal          #+#    #+#             */
-/*   Updated: 2024/01/25 15:45:00 by mkhairal         ###   ########.fr       */
+/*   Updated: 2024/01/25 18:35:44 by mkhairal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,9 @@ t_ray_info	*ray_casting_setup(double ray_angle)
 	return (&ray_info);
 }
 
-void	ray_distance_assignement(t_global_conf *config, t_ray_info *ray_info, int pos)
+void	ray_distance_assignement(t_global_conf *config, \
+			t_ray_info *ray_info, int pos)
 {
-	double	horizontal_distance;
-	double	vertical_distance;
-
-	horizontal_distance = INT_MAX;
-	vertical_distance = INT_MAX;
 	if (ray_info->horizontal_wall_hit)
 		horizontal_distance = calculating_distance(config->player->x, \
 		config->player->y, ray_info->horizontal_wall_hit_x, \
@@ -70,4 +66,6 @@ void	cast_ray(t_global_conf *config, double ray_angle, int pos)
 	vertical_casting(config, ray_info);
 	calculating_vertical_distances(ray_info);
 	ray_distance_assignement(config, ray_info, pos);
+	config->player->y /= MINMAP_SCALE;
+	config->player->x /= MINMAP_SCALE;
 }

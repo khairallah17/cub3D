@@ -6,7 +6,7 @@
 /*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 05:55:02 by eagoumi           #+#    #+#             */
-/*   Updated: 2024/01/25 15:45:21 by mkhairal         ###   ########.fr       */
+/*   Updated: 2024/01/25 18:47:16 by mkhairal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,8 @@ typedef struct s_ray
 	int		vertical_wall_hit;
 	double	vertical_wall_hit_x;
 	double	vertical_wall_hit_y;
+	double	horizontal_distance;
+	double	vertical_distance;
 }	t_ray;
 
 typedef struct s_global_conf
@@ -146,9 +148,20 @@ typedef struct s_global_conf
 	t_player	*player;
 	t_ray		*rays;
 	uint32_t	*color_buffer;
+	t_cub3d		*cub;
 }	t_global_conf;
 
-void	check_arguments(int ac, char **av);
+typedef struct s_line_coordinates
+{
+	double	px;
+	double	py;
+	double	dx;
+	double	dy;
+	double	slope;
+	double	y_intercept;
+}	t_line_coordinates;
+
+void		check_arguments(int ac, char **av);
 // static void initial_param(t_cub3d *get_parm, char *path_map);
 // static void parse_texture(t_cub3d *cub);
 int			parsing_remove_new_line(t_cub3d *cub);
@@ -161,12 +174,46 @@ t_cub3d		*parsing(int ac, char **av);
 void		send_err_free(t_cub3d *cub, int err_nbr, char *error_msg);
 void		check_map(t_cub3d *cub);
 
-// RAY CASTING
+/** RAY CASTING **/
 void		calculating_horizontal_distances(t_ray_info *ray_info);
 void		horizontal_casting(t_global_conf *config, t_ray_info *ray_info);
 void		calculating_vertical_distances(t_ray_info *ray_info);
 void		vertical_casting(t_ray_info *ray_info);
-t_ray_info	*ray_casting_setup(double ray_angle);
-void		ray_distance_assignement(t_global_conf *config, t_ray_info *ray_info, int pos);
+t_ray_info	ray_casting_setup(double ray_angle);
+void		ray_distance_assignement(t_global_conf *config, \
+				t_ray_info *ray_info, int pos);
+void		cast_ray(t_global_conf *config, double ray_angle, int pos);
+
+/** CASTING UTILS **/
+double		correct_angle(double ray_angle);
+double		calculating_distance(double x1, double y1, double x2, double y2);
+int			wall_hit_checker(double x, double y);
+void		cast_all_rays(t_global_conf *config);
+
+/** GAME INIT **/
+void		setup(t_global_conf *config);
+void		player_init(t_global_conf *player);
+void		init_ray(t_ray_info *ray_info);
+void		player_init(t_global_conf *config);
+
+/* PLAYER MOVEMENTS */
+int			wall_collision(double x, double y);
+void		player_movements_checker(t_global_conf *config, mlx_key_data *key);
+void		move_up(t_global_conf *config);
+void		move_down(t_global_conf *config);
+void		move_left(t_global_conf *config);
+void		move_right(t_global_conf *config);
+
+/* HOOKS */
+void		close_key_hook(void *param);
+void		update(t_global_conf *conf);
+
+/* DRAW MINIMAP */
+void		draw_player(t_global_conf *config);
+void		draw(t_global_conf *config, int i, int j, uint32_t color);
+void		draw_map(t_global_conf *config);
+
+/* DRAWING RAYS */
+void		draw_rays(t_global_conf *config, int pos);
 
 #endif
