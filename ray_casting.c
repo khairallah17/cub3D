@@ -4,18 +4,7 @@
 #include <limits.h>
 #include <stdlib.h>
 #include <math.h>
-#define MAP_NUM_ROWS 13
-#define MAP_NUM_COLS 20
-#define WINDOW_HEIGHT 768 
-#define WINDOW_WIDTH 1024
-#define TILE 8
-#define PLAYER_TILE 8
-#define NUM_OF_RAYS WINDOW_WIDTH
-#define RAYS 60
-#define FOV (60 * (M_PI / 180))
-#define MINIMAP_SCALE 10
-#define MINIMAP_HEIGHT MAP_NUM_ROWS * MINIMAP_SCALE
-#define MINIMAP_WIDTH MAP_NUM_COLS * MINIMAP_SCALE
+
 
 char map[MAP_NUM_ROWS][MAP_NUM_COLS] = {
     "11111111111111111111",
@@ -23,45 +12,15 @@ char map[MAP_NUM_ROWS][MAP_NUM_COLS] = {
     "10000000000000000001",
     "10001010101010101001",
     "10000000000000000001",
-    "10000000000000001001",
+    "1000000N000000001001",
     "10000000000000010001",
     "10000000000000001001",
     "10000000000001111001",
     "10000000000000000001",
     "10000000000000000001",
-    "1N000000000000000001",
+    "10000000000000000001",
     "11111111111111111111"
 };
-
-typedef struct s_player {
-    double  x;
-    double  y;
-    int     speed;
-    int     direction;
-    double  rotationAngle;
-    double  rotationSpeed;
-    int     color;
-}   t_player;
-
-typedef struct s_ray {
-    double  ray_angle;
-    double  wall_hit_x;
-    double  wall_hit_y;
-    double  distance;
-    int     was_hit_vertical;
-    int     ray_facing_up;
-    int     ray_facing_down;
-    int     ray_facing_left;
-    int     ray_facing_right;
-} t_ray;
-
-typedef struct s_global_conf {
-    mlx_t           *mlx;
-    mlx_image_t     *img;
-    t_player        *player;
-    t_ray           *rays;
-    uint32_t        *colorBuffer;
-} t_global_conf;
 
 static void ft_error(void)
 {
@@ -120,95 +79,28 @@ void draw_rays(t_global_conf *config, int pos) {
 }
 
 
-//---------------------------------------- Texture Eagoumi ----------------------------------------//
-#define TEXTURE_WIDTH 32
-#define TEXTURE_HEIGHT 32
+// //---------------------------------------- Texture Eagoumi ----------------------------------------//
+// #define TEXTURE_WIDTH 32
+// #define TEXTURE_HEIGHT 32
 
-uint32_t *wall_texture = NULL;
-void    texture_walls(uint32_t *wall_texture)
-{
-    wall_texture = (uint32_t *)malloc(sizeof(uint32_t) * (uint32_t)TEXTURE_WIDTH * (uint32_t)TEXTURE_HEIGHT);
-    //=-----------------------------------------------=//
-    for (int x = 0; x < TEXTURE_WIDTH; x++)
-    {
-        for (int yt = 0; yt < TEXTURE_HEIGHT; yt++)
-            if (x % 8 == 0 && yt % 8 == 0)
-            {
-                // puts("s");
-                wall_texture[(TEXTURE_WIDTH * yt) + x] = 0xFF0000FF;
-            }
-            else
-                wall_texture[(TEXTURE_WIDTH * yt) + x] = 0xFF000000;
-    }
-}
-//-----------------------------------------------------------------------------------------------//
-
-void    render_3d(t_global_conf *config) {
-    int     i;
-    int     j;
-    int     wall_height;
-    double  distance_to_projection_plane;
-    double  projected_wall_height;
-    int     wall_top;
-    int     wall_ceil;
-    double  correct_distance;
-
-    i = 0;
-    for (int x = 0 ; x < WINDOW_HEIGHT ; x++) {
-    }
-    wall_texture = (uint32_t *)malloc(sizeof(uint32_t) * (uint32_t)TEXTURE_WIDTH * (uint32_t)TEXTURE_HEIGHT);
-    //=-----------------------------------------------=//
-    for (int x = 0; x < TEXTURE_WIDTH; x++)
-    {
-        for (int yt = 0; yt < TEXTURE_HEIGHT; yt++)
-                wall_texture[(TEXTURE_WIDTH * yt) + x] = 0xFF0000FF;
-            // if (x % 8 == 0 && yt % 8 == 0)
-            // {
-            //     // puts("s");
-            //     wall_texture[(TEXTURE_WIDTH * yt) + x] = 0xFF0000FF;
-            // }
-            // else
-            //     wall_texture[(TEXTURE_WIDTH * yt) + x] = 0xFF000000;
-    }
-    while (i < NUM_OF_RAYS) {
-        correct_distance = config->rays[i].distance * cos(config->rays[i].ray_angle - config->player->rotationAngle);
-        distance_to_projection_plane = (WINDOW_WIDTH / 2) / tan(FOV / 2);
-        projected_wall_height = (TILE / correct_distance) * distance_to_projection_plane;
-        wall_height = (int)projected_wall_height;
-        
-        wall_top = (WINDOW_HEIGHT / 2) - (wall_height / 2);
-        wall_top = wall_top < 0 ? 0 : wall_top;
-        
-        wall_ceil = (WINDOW_HEIGHT / 2) + (wall_height / 2);
-        wall_ceil = wall_ceil > WINDOW_HEIGHT ? WINDOW_HEIGHT : wall_ceil;
-
-        // Texture top ciel
-        // set the color of the floor
-        for (int y = 0; y < wall_top; y++)
-            config->colorBuffer[(WINDOW_WIDTH * y) + i] = 0xFF333333;
-        //------------------------------//
-        j = wall_top;
-        // textureoffsetx = ;
-        int textureoffsetx;
-        if (config->rays[i].was_hit_vertical)
-            textureoffsetx = (int)config->rays[i].wall_hit_y % TILE;
-        else 
-            textureoffsetx = (int)config->rays[i].wall_hit_x % TILE;
-        while (j < wall_ceil) {
-            int top_distance = (j + (wall_height / 2) - (WINDOW_HEIGHT / 2)); 
-            int textureoffsety = top_distance * ((float)TEXTURE_HEIGHT / wall_height);
-            uint32_t texturecolor = wall_texture[(TEXTURE_WIDTH * textureoffsety) * textureoffsetx];
-            config->colorBuffer[(WINDOW_WIDTH * j) + i] = texturecolor;//0xFF0000FF;
-            j++;
-        }
-
-        // set the color of the floor
-        for (int y = wall_ceil; y < WINDOW_HEIGHT; y++)
-            config->colorBuffer[(WINDOW_WIDTH * y) + i] = 0xFF777777;
-        
-        i++;
-    }
-}
+// uint32_t *wall_texture = NULL;
+// void    texture_walls(uint32_t *wall_texture)
+// {
+//     wall_texture = (uint32_t *)malloc(sizeof(uint32_t) * (uint32_t)TEXTURE_WIDTH * (uint32_t)TEXTURE_HEIGHT);
+//     //=-----------------------------------------------=//
+//     for (int x = 0; x < TEXTURE_WIDTH; x++)
+//     {
+//         for (int yt = 0; yt < TEXTURE_HEIGHT; yt++)
+//             if (x % 8 == 0 && yt % 8 == 0)
+//             {
+//                 // puts("s");
+//                 wall_texture[(TEXTURE_WIDTH * yt) + x] = 0xFF0000FF;
+//             }
+//             else
+//                 wall_texture[(TEXTURE_WIDTH * yt) + x] = 0xFF000000;
+//     }
+// }
+// //-----------------------------------------------------------------------------------------------//
 
 // void    render_3d(t_global_conf *config) {
 //     int     i;
@@ -223,6 +115,20 @@ void    render_3d(t_global_conf *config) {
 //     i = 0;
 //     for (int x = 0 ; x < WINDOW_HEIGHT ; x++) {
 //     }
+//     // wall_texture = (uint32_t *)malloc(sizeof(uint32_t) * (uint32_t)TEXTURE_WIDTH * (uint32_t)TEXTURE_HEIGHT);
+//     // //=-----------------------------------------------=//
+//     // for (int x = 0; x < TEXTURE_WIDTH; x++)
+//     // {
+//     //     for (int yt = 0; yt < TEXTURE_HEIGHT; yt++)
+//     //             wall_texture[(TEXTURE_WIDTH * yt) + x] = 0xFF0000FF;
+//     //         // if (x % 8 == 0 && yt % 8 == 0)
+//     //         // {
+//     //         //     // puts("s");
+//     //         //     wall_texture[(TEXTURE_WIDTH * yt) + x] = 0xFF0000FF;
+//     //         // }
+//     //         // else
+//     //         //     wall_texture[(TEXTURE_WIDTH * yt) + x] = 0xFF000000;
+//     // }
 //     while (i < NUM_OF_RAYS) {
 //         correct_distance = config->rays[i].distance * cos(config->rays[i].ray_angle - config->player->rotationAngle);
 //         distance_to_projection_plane = (WINDOW_WIDTH / 2) / tan(FOV / 2);
@@ -235,15 +141,73 @@ void    render_3d(t_global_conf *config) {
 //         wall_ceil = (WINDOW_HEIGHT / 2) + (wall_height / 2);
 //         wall_ceil = wall_ceil > WINDOW_HEIGHT ? WINDOW_HEIGHT : wall_ceil;
 
+//         // Texture top ciel
+//         // set the color of the floor
+//         // for (int y = 0; y < wall_top; y++)
+//         //     config->colorBuffer[(WINDOW_WIDTH * y) + i] = 0xFF333333;
+//         // //------------------------------//
+//         // j = wall_top;
+//         // // textureoffsetx = ;
+//         // int textureoffsetx;
+//         // if (config->rays[i].was_hit_vertical)
+//         //     textureoffsetx = (int)config->rays[i].wall_hit_y % TILE;
+//         // else 
+//         //     textureoffsetx = (int)config->rays[i].wall_hit_x % TILE;
+//         // while (j < wall_ceil) {
+//         //     int top_distance = (j + (wall_height / 2) - (WINDOW_HEIGHT / 2)); 
+//         //     int textureoffsety = top_distance * ((float)TEXTURE_HEIGHT / wall_height);
+//         //     uint32_t texturecolor = wall_texture[(TEXTURE_WIDTH * textureoffsety) * textureoffsetx];
+//         //     config->colorBuffer[(WINDOW_WIDTH * j) + i] = texturecolor;//0xFF0000FF;
+//         //     j++;
+//         // }
 //         j = wall_top;
 //         while (j < wall_ceil) {
 //             config->colorBuffer[(WINDOW_WIDTH * j) + i] = 0xFF0000FF;
 //             j++;
 //         }
+
+//         // set the color of the floor
+//         for (int y = wall_ceil; y < WINDOW_HEIGHT; y++)
+//             config->colorBuffer[(WINDOW_WIDTH * y) + i] = 0xFF777777;
         
 //         i++;
 //     }
 // }
+
+void    render_3d(t_global_conf *config) {
+    int     i;
+    int     j;
+    int     wall_height;
+    double  distance_to_projection_plane;
+    double  projected_wall_height;
+    int     wall_top;
+    int     wall_ceil;
+    double  correct_distance;
+
+    i = 0;
+    for (int x = 0 ; x < WINDOW_HEIGHT ; x++) {
+    }
+    while (i < NUM_OF_RAYS) {
+        correct_distance = config->rays[i].distance * cos(config->rays[i].ray_angle - config->player->rotationAngle);
+        distance_to_projection_plane = (WINDOW_WIDTH / 2) / tan(FOV / 2);
+        projected_wall_height = (TILE / correct_distance) * distance_to_projection_plane;
+        wall_height = (int)projected_wall_height;
+        
+        wall_top = (WINDOW_HEIGHT / 2) - (wall_height / 2);
+        wall_top = wall_top < 0 ? 0 : wall_top;
+        
+        wall_ceil = (WINDOW_HEIGHT / 2) + (wall_height / 2);
+        wall_ceil = wall_ceil > WINDOW_HEIGHT ? WINDOW_HEIGHT : wall_ceil;
+
+        j = wall_top;
+        while (j < wall_ceil) {
+            config->colorBuffer[(WINDOW_WIDTH * j) + i] = 0xFF6495ED;
+            j++;
+        }
+        
+        i++;
+    }
+}
 
 double  correct_angle(double ray_angle) {
     ray_angle = remainder(ray_angle, M_PI * 2);
@@ -266,148 +230,6 @@ int wall_hit_checker(double x, double y) {
     return map[mapGridIndexY][mapGridIndexX] == '1';
 }
 
-void    cast_ray(t_global_conf *config, double ray_angle, int pos) {
-
-    ray_angle = correct_angle(ray_angle);
-
-    int is_ray_facing_down = ray_angle > 0  && ray_angle < M_PI;
-    int is_ray_facing_up = !is_ray_facing_down;
-    int is_ray_facing_right = ray_angle < 0.5 * M_PI || ray_angle > 1.5 * M_PI;
-    int is_ray_facing_left = !is_ray_facing_right;
-
-    double x_inter;
-    double y_inter;
-    double x_step;
-    double y_step;
-
-    int horizontal_wall_hit = 0;
-    double horizontal_wall_hit_x;
-    double horizontal_wall_hit_y;
-
-    // puts("HORIZONTAL");
-    // puts("");
-
-    y_inter = floor((config->player->y * MINIMAP_SCALE) / MINIMAP_SCALE) * MINIMAP_SCALE;
-    // printf("BEFORE ray[%d] ==> %f\n", pos, y_inter);
-    // printf("BEFORE ray[%d] ==> %f\n", pos, y_inter / 32);
-    y_inter += is_ray_facing_down ? MINIMAP_SCALE : 0;
-
-    // printf("AFTER ray[%d] ==> %f\n", pos, y_inter);
-    // printf("AFTER ray[%d] ==> %f\n", pos, y_inter / 32);
-    // puts("");
-    // puts("");
-
-    x_inter = (config->player->x * MINIMAP_SCALE) + ((y_inter - (config->player->y * MINIMAP_SCALE)) / tan(ray_angle));
-    // printf("BEFORE ray[%d] ==> %f\n", pos, x_inter);
-    // printf("AFTER ray[%d] ==> %f\n", pos, x_inter / 32);
-    // puts("");
-    // puts("");
-
-    y_step = MINIMAP_SCALE;
-    y_step *=is_ray_facing_up ? -1 : 1;
-
-    x_step = MINIMAP_SCALE / tan(ray_angle);
-    x_step *= (is_ray_facing_left && x_step > 0) ? -1 : 1;
-    x_step *= (is_ray_facing_right && x_step < 0) ? -1 : 1;
-
-    double next_horizontal_hit_x = x_inter;
-    double next_horizontal_hit_y = y_inter;
-
-
-    while ((next_horizontal_hit_x >= 0 && next_horizontal_hit_x <= MINIMAP_WIDTH) && (next_horizontal_hit_y >= 0 && next_horizontal_hit_y <= MINIMAP_HEIGHT)) {
-
-        double x_check = next_horizontal_hit_x;
-        double y_check = next_horizontal_hit_y + (is_ray_facing_up ? -1 : 0);
-
-        if (wall_hit_checker(x_check, y_check)) {
-
-            horizontal_wall_hit = 1;
-            // printf("WALL FOUND AT ==> (%f,%f)!!\n", floor(next_horizontal_hit_x / MINIMAP_SCALE), floor(next_horizontal_hit_y / MINIMAP_SCALE));
-            horizontal_wall_hit_x = next_horizontal_hit_x;
-            horizontal_wall_hit_y = next_horizontal_hit_y;
-            break;
-
-        } else {
-            next_horizontal_hit_x += x_step;
-            next_horizontal_hit_y += y_step;
-        }
-
-    }
-
-    // puts("VERTICAL");
-    // puts("");
-
-    int vertical_wall_hit = 0;
-    double vertical_wall_hit_x;
-    double vertical_wall_hit_y;
-
-    x_inter = floor((config->player->x * MINIMAP_SCALE) / MINIMAP_SCALE) * MINIMAP_SCALE;
-    // printf("BEFORE ray[%d] ==> %f\n", pos, x_inter);
-    // printf("BEFORE ray[%d] ==> %f\n", pos, x_inter / 32);
-    x_inter += is_ray_facing_right ? MINIMAP_SCALE : 0;
-
-    // printf("AFTER ray[%d] ==> %f\n", pos, y_inter);
-    // printf("AFTER ray[%d] ==> %f\n", pos, y_inter / 32);
-    // puts("");
-    // puts("");
-
-    y_inter = (config->player->y * MINIMAP_SCALE) + (x_inter - (config->player->x * MINIMAP_SCALE)) * tan(ray_angle);
-
-    // printf("BEFORE ray[%d] ==> %f\n", pos, y_inter);
-    // printf("AFTER ray[%d] ==> %f\n", pos, y_inter / 32);
-    // puts("");
-    // puts("");
-
-    x_step = MINIMAP_SCALE;
-    x_step *= is_ray_facing_left ? -1 : 1;
-
-    y_step = MINIMAP_SCALE * tan(ray_angle);
-    y_step *= (is_ray_facing_up && y_step > 0) ? -1 : 1;
-    y_step *= (is_ray_facing_down && y_step < 0) ? -1 : 1;
-
-    double next_vertical_hit_x = x_inter;
-    double next_vertical_hit_y = y_inter;
-
-
-    while ((next_vertical_hit_x >= 0 && next_vertical_hit_x <= (MINIMAP_WIDTH)) && (next_vertical_hit_y >= 0 && next_vertical_hit_y <= MINIMAP_HEIGHT)) {
-
-        double x_check = next_vertical_hit_x + (is_ray_facing_left ? -1 : 0);
-        double y_check = next_vertical_hit_y;
-
-        if (wall_hit_checker(x_check, y_check)) {
-
-            vertical_wall_hit = 1;
-            vertical_wall_hit_x = next_vertical_hit_x;
-            vertical_wall_hit_y = next_vertical_hit_y;
-            break;
-
-        } else {
-            next_vertical_hit_x += x_step;
-            next_vertical_hit_y += y_step;
-        }
-
-    }
-
-    double horizontal_distance = horizontal_wall_hit ? calculating_distance((config->player->x * MINIMAP_SCALE), (config->player->y * MINIMAP_SCALE), horizontal_wall_hit_x, horizontal_wall_hit_y) : INT_MAX;
-    double vertical_distance = vertical_wall_hit ? calculating_distance((config->player->x * MINIMAP_SCALE), (config->player->y * MINIMAP_SCALE), vertical_wall_hit_x, vertical_wall_hit_y) : INT_MAX;
-
-    if (vertical_distance < horizontal_distance) {
-        config->rays[pos].distance = vertical_distance;
-        config->rays[pos].wall_hit_x = vertical_wall_hit_x;
-        config->rays[pos].wall_hit_y = vertical_wall_hit_y;
-        config->rays[pos].was_hit_vertical = 1;
-    } else {
-        config->rays[pos].distance = horizontal_distance;
-        config->rays[pos].wall_hit_x = horizontal_wall_hit_x;
-        config->rays[pos].wall_hit_y = horizontal_wall_hit_y;
-        config->rays[pos].was_hit_vertical = 0;
-    }
-    config->rays[pos].ray_angle = ray_angle;
-    config->rays[pos].ray_facing_down = is_ray_facing_down;
-    config->rays[pos].ray_facing_up = is_ray_facing_up;
-    config->rays[pos].ray_facing_left = is_ray_facing_left;
-    config->rays[pos].ray_facing_right = is_ray_facing_right;
-}
 
 void    cast_all_rays(t_global_conf *config) {
 
