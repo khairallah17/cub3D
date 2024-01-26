@@ -6,7 +6,7 @@
 /*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 16:16:31 by mkhairal          #+#    #+#             */
-/*   Updated: 2024/01/25 18:38:11 by mkhairal         ###   ########.fr       */
+/*   Updated: 2024/01/26 19:01:19 by mkhairal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,13 @@ void	setup(t_global_conf *config)
 	}
 	config->player->rotation_angle = 0;
 	config->player->color = 0xFF0000FF;
+	config->player->x = config->cub->player.x;
+	config->player->y = config->cub->player.y;
 	config->rays = (t_ray *)malloc(sizeof(t_ray) * NUM_OF_RAYS);
-	init_ray(config);
+	draw_map(config);
+	mlx_key_hook(config->mlx, key_hook, config);
+	mlx_loop(config->mlx);
+	mlx_close_hook(config->mlx, close_key_hook, config);
 	// config->color_buffer = (uint32_t *)malloc(sizeof(uint32_t) * \
 	// 	(uint32_t)WINDOW_HEIGHT * (uint32_t)WINDOW_WIDTH);
 	/* init_color_buffer(config); */

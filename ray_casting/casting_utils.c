@@ -6,7 +6,7 @@
 /*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 16:12:18 by mkhairal          #+#    #+#             */
-/*   Updated: 2024/01/25 18:23:34 by mkhairal         ###   ########.fr       */
+/*   Updated: 2024/01/26 16:04:29 by mkhairal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,20 @@ double	calculating_distance(double x1, double y1, double x2, double y2)
 	return (sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)));
 }
 
-int	wall_hit_checker(double x, double y)
+int	wall_hit_checker(t_global_conf *config, double x, double y)
 {
 	int	map_x;
 	int	map_y;
+	int	minimap_height;
+	int	minimap_width;
 
-	if (x < 0 || (int)x >= MINIMAP_WIDTH || y < 0 || (int)y >= MINIMAP_HEIGHT)
+	minimap_height = config->cub->prs_map.map.height * MINIMAP_SCALE;
+	minimap_width = config->cub->prs_map.map.width * MINIMAP_SCALE;
+	if (x < 0 || (int)x >= minimap_width || y < 0 || (int)y >= minimap_height)
 		return (1);
 	map_x = x / MINIMAP_SCALE;
 	map_y = y / MINIMAP_SCALE;
-	return (map[mapGridIndexY][mapGridIndexX] == '1');
+	return (config->cub->prs_map.map.map_grid[map_y][map_x] == '1');
 }
 
 void	cast_all_rays(t_global_conf *config)

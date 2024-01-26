@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eagoumi <eagoumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 05:30:25 by eagoumi           #+#    #+#             */
-/*   Updated: 2024/01/07 05:40:56 by eagoumi          ###   ########.fr       */
+/*   Updated: 2024/01/26 15:30:32 by mkhairal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,21 +193,20 @@ static void	skip_texture_and_remplir_map(t_cub3d *cub3d, int *line_count)
 t_cub3d	*parsing(int ac, char **av)
 {
 	t_cub3d	*cub;
-	int	count_line;
+	int		count_line;
 
 	check_arguments(ac, av);
 	cub = (t_cub3d *)malloc(sizeof(t_cub3d));
 	initial_param(cub, av[1]);
 	count_line = parsing_param_text_and_rm_newline(cub);
-	//setting weith and height du map
 	while (cub->tmp_store)
 	{
 		if (((int)ft_strlen(cub->tmp_store) > cub->prs_map.map.width)
 			&& cub->tmp_store[((int)ft_strlen(cub->tmp_store) - 1)] == '\n')
 			cub->prs_map.map.width = (int)ft_strlen(cub->tmp_store) - 1;
 		else if (((int)ft_strlen(cub->tmp_store) > cub->prs_map.map.width)
-			&& cub->tmp_store[((int)ft_strlen(cub->tmp_store) - 1)] != '\n') // if they are at end of the map and no \n there
-			cub->prs_map.map.width = (int)ft_strlen(cub->tmp_store); // without -1 because on the parsing we remove all newline on the map
+			&& cub->tmp_store[((int)ft_strlen(cub->tmp_store) - 1)] != '\n')
+			cub->prs_map.map.width = (int)ft_strlen(cub->tmp_store);
 		cub->prs_map.map.height++;
 		free(cub->tmp_store);
 		cub->tmp_store = get_next_line(cub->map_fd);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eagoumi <eagoumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 05:42:36 by eagoumi           #+#    #+#             */
-/*   Updated: 2024/01/08 21:13:18 by eagoumi          ###   ########.fr       */
+/*   Updated: 2024/01/26 18:50:56 by mkhairal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,18 @@ void	check_map_good_or_bad(t_cub3d *cub3d, int *i, int *j, int *nb_player)
 		send_err_free(cub3d, 0, "Error: Unexpected charachter in map");
 	if (ft_strchr("NSWE", cub3d->prs_map.map.map_grid[(*i)][(*j)]))
 	{
-		cub3d->player.x_position = (*i) * TILE_SIZE; //set tile xposition
-		cub3d->player.y_position = (*j) * TILE_SIZE; // set tile y position
-		cub3d->player.player_compass = cub3d->prs_map.map.map_grid[(*i)][(*j)];
+		printf("PLAYER POSITION => (%d;%d)\n",(*i),(*j));
+		cub3d->player.x = (*i); //set tile xposition
+		cub3d->player.y = (*j); // set tile y position
+		// cub3d->player.player_compass = cub3d->prs_map.map.map_grid[(*i)][(*j)];
 		if (cub3d->prs_map.map.map_grid[(*i)][(*j)] == 'N')
-			cub3d->player.rotation = 3 * M_PI_2;
+			cub3d->player.rotation_angle = 3 * M_PI_2;
 		else if (cub3d->prs_map.map.map_grid[(*i)][(*j)] == 'W')
-			cub3d->player.rotation = M_PI;
+			cub3d->player.rotation_angle = M_PI;
 		else if (cub3d->prs_map.map.map_grid[(*i)][(*j)] == 'S')
-			cub3d->player.rotation = M_PI_2;
+			cub3d->player.rotation_angle = M_PI_2;
 		else if (cub3d->prs_map.map.map_grid[(*i)][(*j)] == 'E')
-			cub3d->player.rotation = 0;
+			cub3d->player.rotation_angle = 0;
 		//count number of player
 		(*nb_player)++;
 	}

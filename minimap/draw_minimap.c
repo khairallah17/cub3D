@@ -6,21 +6,26 @@
 /*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 17:54:46 by mkhairal          #+#    #+#             */
-/*   Updated: 2024/01/25 18:08:03 by mkhairal         ###   ########.fr       */
+/*   Updated: 2024/01/26 18:44:26 by mkhairal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3D.h"
 
-void	draw(t_global_conf *config, int i, int j, uint32_t color)
+void	draw(t_global_conf *config, int x, int y, uint32_t color)
 {
 	int	i;
 	int	tile;
 	int	j;
 
-	if (config->img)
+	if (!config->img)
 	{
 		printf("[DRAW] Error ==> NO IMAGE\n");
+		exit(0);
+	}
+	else if (!config->mlx)
+	{
+		printf("[DRAW] Error ==> NO MLX\n");
 		exit(0);
 	}
 	i = 0;
@@ -50,15 +55,15 @@ void	draw_map(t_global_conf *config)
 		j = 0;
 		while (j < config->cub->prs_map.map.height)
 		{
-			if (config->cub->prs_map.map[i][j] == '1')
-				draw(config, i, j, 0xFFFFFF);
+			if (config->cub->prs_map.map.map_grid[j][i] == '1')
+				draw(config, j, i, 0x00FFFFFF);
 			else
-				draw(conf, j, i, 0x000000);
+				draw(config, j, i, 0x000000FF);
 			j++;
 		}
 		i++;
 	}
-	draw_map(config);
+	draw_player(config);
 }
 
 void	draw_player(t_global_conf *config)
@@ -76,12 +81,12 @@ void	draw_player(t_global_conf *config)
 		{
 			mlx_put_pixel(config->img, (MINIMAP_SCALE * config->player->x) + i, \
 				(MINIMAP_SCALE * config->player->y) + j, config->player->color);
-			mlx_put_pixel(config->img, (MINIMAP_SCALE * config->player->x) - i, \
-				(MINIMAP_SCALE * config->player->y) - j, config->player->color);
-			mlx_put_pixel(config->img, (MINIMAP_SCALE * config->player->x) + i, \
-				(MINIMAP_SCALE * config->player->y) - j, config->player->color);
-			mlx_put_pixel(config->img, (MINIMAP_SCALE * config->player->x) - i, \
-				(MINIMAP_SCALE * config->player->y) + j, config->player->color);
+			// mlx_put_pixel(config->img, (MINIMAP_SCALE * config->player->x) - i, \
+			// 	(MINIMAP_SCALE * config->player->y) - j, config->player->color);
+			// mlx_put_pixel(config->img, (MINIMAP_SCALE * config->player->x) + i, \
+			// 	(MINIMAP_SCALE * config->player->y) - j, config->player->color);
+			// mlx_put_pixel(config->img, (MINIMAP_SCALE * config->player->x) - i, \
+			// 	(MINIMAP_SCALE * config->player->y) + j, config->player->color);
 			j++;
 		}
 		i++;

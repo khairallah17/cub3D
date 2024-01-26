@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path_xpm.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eagoumi <eagoumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 05:48:56 by eagoumi           #+#    #+#             */
-/*   Updated: 2024/01/07 22:50:08 by eagoumi          ###   ########.fr       */
+/*   Updated: 2024/01/26 15:39:01 by mkhairal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*search_path_texture(t_cub3d *cub)
 {
 	int		first_index_path;
 	int		end_index_path;
-	int		fd;
+	// int		fd;
 	char	*str;
 
 	cub->count_txtr_line++;
