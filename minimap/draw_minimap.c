@@ -6,7 +6,7 @@
 /*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 17:54:46 by mkhairal          #+#    #+#             */
-/*   Updated: 2024/01/26 18:44:26 by mkhairal         ###   ########.fr       */
+/*   Updated: 2024/01/28 20:05:59 by mkhairal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,9 @@ void	draw_map(t_global_conf *config)
 		while (j < config->cub->prs_map.map.height)
 		{
 			if (config->cub->prs_map.map.map_grid[j][i] == '1')
-				draw(config, j, i, 0x00FFFFFF);
+				draw(config, i, j, 0x00FFFFFF);
 			else
-				draw(config, j, i, 0x000000FF);
+				draw(config, i, j, 0x000000FF);
 			j++;
 		}
 		i++;
@@ -81,12 +81,12 @@ void	draw_player(t_global_conf *config)
 		{
 			mlx_put_pixel(config->img, (MINIMAP_SCALE * config->player->x) + i, \
 				(MINIMAP_SCALE * config->player->y) + j, config->player->color);
-			// mlx_put_pixel(config->img, (MINIMAP_SCALE * config->player->x) - i, \
-			// 	(MINIMAP_SCALE * config->player->y) - j, config->player->color);
-			// mlx_put_pixel(config->img, (MINIMAP_SCALE * config->player->x) + i, \
-			// 	(MINIMAP_SCALE * config->player->y) - j, config->player->color);
-			// mlx_put_pixel(config->img, (MINIMAP_SCALE * config->player->x) - i, \
-			// 	(MINIMAP_SCALE * config->player->y) + j, config->player->color);
+			mlx_put_pixel(config->img, (MINIMAP_SCALE * config->player->x) - i, \
+				(MINIMAP_SCALE * config->player->y) - j, config->player->color);
+			mlx_put_pixel(config->img, (MINIMAP_SCALE * config->player->x) + i, \
+				(MINIMAP_SCALE * config->player->y) - j, config->player->color);
+			mlx_put_pixel(config->img, (MINIMAP_SCALE * config->player->x) - i, \
+				(MINIMAP_SCALE * config->player->y) + j, config->player->color);
 			j++;
 		}
 		i++;

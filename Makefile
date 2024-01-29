@@ -41,6 +41,7 @@ SRC_FILES	=	gnl/get_next_line_utils.c \
 				ray_casting/ray_casting.c \
 				rendering/drawing_map.c \
 				rendering/drawing_rays.c \
+				rendering/render_map.c \
 				cub3D.c
 
 INC_FILES	=	gnl/get_next_line.h \

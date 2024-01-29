@@ -6,7 +6,7 @@
 /*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 05:42:36 by eagoumi           #+#    #+#             */
-/*   Updated: 2024/01/26 18:50:56 by mkhairal         ###   ########.fr       */
+/*   Updated: 2024/01/28 18:51:37 by mkhairal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void	check_map_good_or_bad(t_cub3d *cub3d, int *i, int *j, int *nb_player)
 	if (ft_strchr("NSWE", cub3d->prs_map.map.map_grid[(*i)][(*j)]))
 	{
 		printf("PLAYER POSITION => (%d;%d)\n",(*i),(*j));
-		cub3d->player.x = (*i); //set tile xposition
-		cub3d->player.y = (*j); // set tile y position
+		cub3d->player.x = (*j); //set tile xposition
+		cub3d->player.y = (*i); // set tile y position
 		// cub3d->player.player_compass = cub3d->prs_map.map.map_grid[(*i)][(*j)];
 		if (cub3d->prs_map.map.map_grid[(*i)][(*j)] == 'N')
 			cub3d->player.rotation_angle = 3 * M_PI_2;

@@ -6,7 +6,7 @@
 /*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 05:55:02 by eagoumi           #+#    #+#             */
-/*   Updated: 2024/01/26 19:00:28 by mkhairal         ###   ########.fr       */
+/*   Updated: 2024/01/29 01:57:17 by mkhairal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,11 @@
 # define WINDOW_WIDTH 1024
 # define TILE 8
 # define PLAYER_TILE 8
-# define NUM_OF_RAYS WINDOW_WIDTH
+# define RAY_WIDTH 1
+# define NUM_OF_RAYS WINDOW_WIDTH / RAY_WIDTH
 # define RAYS 60
-# define FOV (60 * (3.14159265358979323846264338327950288 / 180))
-# define MINIMAP_SCALE 10
+# define FOV (60 * (M_PI / 180))
+# define MINIMAP_SCALE 32
 
 typedef struct s_texture
 {
@@ -157,6 +158,16 @@ typedef struct s_global_conf
 	t_cub3d		*cub;
 }	t_global_conf;
 
+typedef struct s_render
+{
+	int		wall_height;
+	double	distance_to_projection_plane;
+	double	projected_wall_height;
+	int		wall_top;
+	int		wall_ceil;
+	double	correct_distance;	
+}	t_render;
+
 void		check_arguments(int ac, char **av);
 // static void initial_param(t_cub3d *get_parm, char *path_map);
 // static void parse_texture(t_cub3d *cub);
@@ -204,9 +215,8 @@ void		move_left(t_global_conf *config);
 void		move_right(t_global_conf *config);
 
 /* HOOKS */
-void		close_key_hook(void *param);
 void		update(t_global_conf *conf);
-void		key_hook(mlx_key_data_t keydata, void *param);
+void		my_key_hook(mlx_key_data_t keydata, void *param);
 
 /* DRAW MINIMAP */
 void		draw_player(t_global_conf *config);
@@ -219,5 +229,10 @@ void		draw_rays(t_global_conf *config, int pos);
 /* GAME LAUNCHER */
 void		launch(int ac, char **av);
 void		get_player(t_global_conf *config);
+void		draw_single_line(t_global_conf *config);
+
+/* RENDERING */
+void		init_render(t_render *rend);
+void		render_3d(t_global_conf *config);
 
 #endif

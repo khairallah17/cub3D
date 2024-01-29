@@ -6,13 +6,13 @@
 /*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 18:29:57 by mkhairal          #+#    #+#             */
-/*   Updated: 2024/01/26 15:29:56 by mkhairal         ###   ########.fr       */
+/*   Updated: 2024/01/28 21:02:29 by mkhairal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-int	main(int ac, char **av)
-{
-	launch(ac, av);
-}
+// int	main(int ac, char **av)
+// {
+// 	launch(ac, av);
+// }

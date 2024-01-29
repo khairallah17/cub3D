@@ -6,7 +6,7 @@
 /*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 12:42:05 by mkhairal          #+#    #+#             */
-/*   Updated: 2024/01/26 16:11:52 by mkhairal         ###   ########.fr       */
+/*   Updated: 2024/01/28 23:04:11 by mkhairal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@ void	calculating_vertical_distances(t_global_conf *config, \
 {
 	while ((ray_info->next_vertical_hit_x >= 0 \
 	&& ray_info->next_vertical_hit_x <= \
-	config->cub->prs_map.map.height * MINIMAP_SCALE) \
+	config->cub->prs_map.map.width * MINIMAP_SCALE) \
 	&& (ray_info->next_vertical_hit_y >= 0 \
 	&& ray_info->next_vertical_hit_y <= \
-	config->cub->prs_map.map.width * MINIMAP_SCALE))
+	config->cub->prs_map.map.height * MINIMAP_SCALE))
 	{
 		ray_info->x_check = ray_info->next_vertical_hit_x;
 		if (ray_info->ray_facing_left)
@@ -44,18 +44,20 @@ void	calculating_vertical_distances(t_global_conf *config, \
 void	vertical_casting(t_global_conf *config, t_ray_info *ray_info)
 {
 	ray_info->x_inter = floor((config->player->x) \
-		/ MINIMAP_SCALE) * MINIMAP_SCALE;
+		/ (double)MINIMAP_SCALE) * (double)MINIMAP_SCALE;
 	if (ray_info->ray_facing_right)
-		ray_info->x_inter = MINIMAP_SCALE;
+		ray_info->x_inter += (double)MINIMAP_SCALE;
 	ray_info->y_inter = config->player->y + \
 		(ray_info->x_inter - config->player->x) * tan(ray_info->ray_angle);
-	ray_info->x_step = MINIMAP_SCALE;
+	ray_info->x_step = (double)MINIMAP_SCALE;
 	if (ray_info->ray_facing_left)
 		ray_info->x_step *= -1;
-	ray_info->y_step = MINIMAP_SCALE * tan(ray_info->ray_angle);
+	ray_info->y_step = (double)MINIMAP_SCALE * tan(ray_info->ray_angle);
 	if (ray_info->ray_facing_up && ray_info->y_step > 0)
 		ray_info->y_step *= -1;
 	if (ray_info->ray_facing_down && ray_info->y_step < 0)
 		ray_info->y_step *= -1;
+	ray_info->next_vertical_hit_x = ray_info->x_inter;
+	ray_info->next_vertical_hit_y = ray_info->y_inter;
 	calculating_vertical_distances(config, ray_info);
 }

@@ -184,7 +184,7 @@ void    render_3d(t_global_conf *config) {
             config->color_buffer[(WINDOW_WIDTH * j) + i] = 0xFF6495ED;
             j++;
         }
-        
+
         i++;
     }
 }

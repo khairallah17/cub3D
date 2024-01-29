@@ -6,7 +6,7 @@
 /*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 16:12:18 by mkhairal          #+#    #+#             */
-/*   Updated: 2024/01/26 16:04:29 by mkhairal         ###   ########.fr       */
+/*   Updated: 2024/01/29 01:58:17 by mkhairal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ int	wall_hit_checker(t_global_conf *config, double x, double y)
 	minimap_width = config->cub->prs_map.map.width * MINIMAP_SCALE;
 	if (x < 0 || (int)x >= minimap_width || y < 0 || (int)y >= minimap_height)
 		return (1);
-	map_x = x / MINIMAP_SCALE;
-	map_y = y / MINIMAP_SCALE;
+	map_x = x / (double)MINIMAP_SCALE;
+	map_y = y / (double)MINIMAP_SCALE;
 	return (config->cub->prs_map.map.map_grid[map_y][map_x] == '1');
 }
 
@@ -53,8 +53,8 @@ void	cast_all_rays(t_global_conf *config)
 	while (i < NUM_OF_RAYS)
 	{
 		cast_ray(config, ray_angle, i);
-		draw_rays(config, i);
-		ray_angle += FOV / NUM_OF_RAYS;
+		// draw_rays(config, i);
+		ray_angle += (double)FOV / (double)NUM_OF_RAYS;
 		i++;
 	}
 }
