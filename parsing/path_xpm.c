@@ -23,6 +23,7 @@ int	index_end_path(char *str, int i)
 {
 	while (i >= 0 && str[i] == ' ')
 		i--;
+	i++;
 	return (i);
 }
 

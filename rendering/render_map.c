@@ -30,6 +30,9 @@ void	render_3d(t_global_conf *config)
 
 	i = 0;
 	init_render(&renderer);
+    puts("dd1");
+	// coloring_floor_ceilling(config->cub);//, 0, 0, 0);
+    puts("dd2");
 	while (i < NUM_OF_RAYS)
 	{
 		renderer.correct_distance = config->rays[i].distance * \
@@ -49,7 +52,7 @@ void	render_3d(t_global_conf *config)
 		j = renderer.wall_top;
 		while (j < renderer.wall_ceil)
 		{
-			mlx_put_pixel(config->img, i, j, 0x0000FFFF);
+			mlx_put_pixel(config->img, i, j,3766012159);
 			j++;
 		}
 		i++;

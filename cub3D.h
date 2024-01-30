@@ -26,15 +26,15 @@
 
 # define MAP_NUM_ROWS 13
 # define MAP_NUM_COLS 20
-# define WINDOW_HEIGHT 768 
+# define WINDOW_HEIGHT 768
 # define WINDOW_WIDTH 1024
-# define TILE 8
+# define TILE 64
 # define PLAYER_TILE 8
 # define RAY_WIDTH 1
 # define NUM_OF_RAYS WINDOW_WIDTH / RAY_WIDTH
 # define RAYS 60
 # define FOV (60 * (M_PI / 180))
-# define MINIMAP_SCALE 32
+# define MINIMAP_SCALE 64
 
 typedef struct s_texture
 {
@@ -175,11 +175,14 @@ int			parsing_remove_new_line(t_cub3d *cub);
 int			index_first_path(char *str, int i);
 int			index_end_path(char *str, int i);
 char		*search_path_texture(t_cub3d *cub);
-int			check_color(t_cub3d *cub);
+unsigned int			check_color(t_cub3d *cub);
 // void 	  parsing(int ac, char **av);
 t_cub3d		*parsing(int ac, char **av);
 void		send_err_free(t_cub3d *cub, int err_nbr, char *error_msg);
 void		check_map(t_cub3d *cub);
+
+/** TEXTURE **/
+void    coloring_floor_ceilling(t_cub3d *cub);//, int rays, int top_pixel, int bottom_pixel);
 
 /** RAY CASTING **/
 void		calculating_horizontal_distances(t_global_conf *config, \

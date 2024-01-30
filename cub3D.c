@@ -12,7 +12,7 @@
 
 #include "cub3D.h"
 
-// static t_cub3d	*cub;
+static t_cub3d	*cub;
 
 // void	ft_free(t_cub3d *cub)
 // {
@@ -105,6 +105,7 @@
 
 int	main(int ac, char **av)
 {
+	// coloring_floor_ceilling(cub, 0, 0, 0);
 	launch(ac, av);
 }
 
