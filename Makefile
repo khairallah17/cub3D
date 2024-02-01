@@ -42,6 +42,7 @@ SRC_FILES	=	gnl/get_next_line_utils.c \
 				rendering/drawing_map.c \
 				rendering/drawing_rays.c \
 				rendering/render_map.c \
+				texture_rendring/ceiling_floor_color.c \
 				cub3D.c
 
 INC_FILES	=	gnl/get_next_line.h \
