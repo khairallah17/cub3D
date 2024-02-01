@@ -6,7 +6,7 @@
 /*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 17:53:35 by mkhairal          #+#    #+#             */
-/*   Updated: 2024/01/29 01:59:49 by mkhairal         ###   ########.fr       */
+/*   Updated: 2024/01/31 15:34:17 by mkhairal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	update(t_global_conf *conf)
 	mlx_delete_image(conf->mlx, conf->img);
 	conf->img = mlx_new_image(conf->mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
 	mlx_image_to_window(conf->mlx ,conf->img , 0, 0);
-	render_3d(conf);
+	// render_3d(conf);
 	// draw_map(conf);
 	// draw_player(conf);
 	cast_all_rays(conf);

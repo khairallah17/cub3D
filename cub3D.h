@@ -6,7 +6,7 @@
 /*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 05:55:02 by eagoumi           #+#    #+#             */
-/*   Updated: 2024/01/29 01:57:17 by mkhairal         ###   ########.fr       */
+/*   Updated: 2024/01/31 15:32:04 by mkhairal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,6 +233,6 @@ void		draw_single_line(t_global_conf *config);
 
 /* RENDERING */
 void		init_render(t_render *rend);
-void		render_3d(t_global_conf *config);
+void		render_3d(t_global_conf *config, int pos);
 
 #endif
