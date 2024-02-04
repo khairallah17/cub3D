@@ -6,7 +6,7 @@
 /*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 18:38:38 by mkhairal          #+#    #+#             */
-/*   Updated: 2024/01/31 16:36:00 by mkhairal         ###   ########.fr       */
+/*   Updated: 2024/02/04 23:45:35 by mkhairal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,13 @@ void	launch(int ac, char **av)
 	check_map(cub);
 	config.player = (t_player *)malloc(sizeof(t_player));
 	config.cub = cub;
+	config.player = &cub->player;
+	field_texture_path(&config);
 	setup(&config);
-	mlx_set_cursor_mode(config.mlx, MLX_MOUSE_DISABLED);
-	mlx_cursor_hook(config.mlx, ft_mouse, &config);
+	// draw_map(&config);
+	update(&config);
+	// mlx_set_cursor_mode(config.mlx, MLX_MOUSE_DISABLED);
+	// mlx_cursor_hook(config.mlx, ft_mouse, &config);
 	mlx_key_hook(config.mlx, &my_key_hook, &config);
 	mlx_loop(config.mlx);
 	mlx_terminate(config.mlx);

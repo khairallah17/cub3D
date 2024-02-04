@@ -6,7 +6,7 @@
 /*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 05:55:02 by eagoumi           #+#    #+#             */
-/*   Updated: 2024/01/31 15:32:04 by mkhairal         ###   ########.fr       */
+/*   Updated: 2024/02/05 00:07:21 by mkhairal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,7 @@ typedef struct s_ray
 	int		ray_facing_down;
 	int		ray_facing_left;
 	int		ray_facing_right;
+	mlx_texture_t	*texture;
 }	t_ray;
 
 typedef struct s_cub3d
@@ -148,8 +149,19 @@ typedef struct s_line_coordinates
 	double	y_intercept;
 }	t_line_coordinates;
 
+typedef struct s_mlx_txt
+{
+    mlx_texture_t   *up_north;
+    mlx_texture_t   *down_south;
+    mlx_texture_t   *right_east;
+    mlx_texture_t   *left_west;
+}	t_mlx_txt;
+
 typedef struct s_global_conf
 {
+	int			i;
+	int			j;
+	t_mlx_txt	txt_load_png;
 	mlx_t		*mlx;
 	mlx_image_t	*img;
 	t_player	*player;
@@ -160,6 +172,8 @@ typedef struct s_global_conf
 
 typedef struct s_render
 {
+	int		line_pixel_height;
+	int		distance_from_top_floor;
 	int		wall_height;
 	double	distance_to_projection_plane;
 	double	projected_wall_height;
@@ -180,9 +194,12 @@ unsigned int			check_color(t_cub3d *cub);
 t_cub3d		*parsing(int ac, char **av);
 void		send_err_free(t_cub3d *cub, int err_nbr, char *error_msg);
 void		check_map(t_cub3d *cub);
+unsigned int	pixels_rgba(int r, int g, int b, int a);
 
 /** TEXTURE **/
-void    coloring_floor_ceilling(t_cub3d *cub);//, int rays, int top_pixel, int bottom_pixel);
+// void    coloring_floor_ceilling(t_cub3d *cub);//, int rays, int top_pixel, int bottom_pixel);
+void    field_texture_path(t_global_conf *data);
+void  rendring_texture(t_global_conf *tex_cub, t_render *renderer, int j);
 
 /** RAY CASTING **/
 void		calculating_horizontal_distances(t_global_conf *config, \
@@ -236,6 +253,7 @@ void		draw_single_line(t_global_conf *config);
 
 /* RENDERING */
 void		init_render(t_render *rend);
-void		render_3d(t_global_conf *config, int pos);
+// void		render_3d(t_global_conf *config, int pos);
+void	render_3d(t_global_conf *config, int i);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 18:33:42 by mkhairal          #+#    #+#             */
-/*   Updated: 2024/01/25 18:46:56 by mkhairal         ###   ########.fr       */
+/*   Updated: 2024/02/05 00:13:24 by mkhairal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	get_player(t_global_conf *config)
 		{
 			if (config->cub->prs_map.map.map_grid[i][j])
 			{
-				config->player->x = j;
+				config->player->x = j + MINIMAP_SCALE / 2;
 				config->player->y = i;
 				return ;
 			}

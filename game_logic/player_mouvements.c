@@ -6,7 +6,7 @@
 /*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 16:25:36 by mkhairal          #+#    #+#             */
-/*   Updated: 2024/01/31 16:36:32 by mkhairal         ###   ########.fr       */
+/*   Updated: 2024/02/05 00:11:56 by mkhairal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 void	player_movements_checker(t_global_conf *config, mlx_key_data_t *key)
 {
-	if (key->key == MLX_KEY_LEFT && (key->action == MLX_PRESS || key->action == MLX_REPEAT))
+	if (key->key == MLX_KEY_LEFT)
 		config->player->rotation_angle -= 0.2;
-	else if (key->key == MLX_KEY_RIGHT && (key->action == MLX_PRESS || key->action == MLX_REPEAT))
+	else if (key->key == MLX_KEY_RIGHT)
 		config->player->rotation_angle += 0.2;
 	else if (key->key == MLX_KEY_W && config->player->x > 0)
 		move_up(config);
@@ -34,6 +34,7 @@ void	player_movements_checker(t_global_conf *config, mlx_key_data_t *key)
 		// free(config->color_buffer);
 		exit(0);
 	}
+	update(config);
 }
 
 void	move_up(t_global_conf *config)
@@ -41,12 +42,12 @@ void	move_up(t_global_conf *config)
 	int	x;
 	int	y;
 
-	x = config->player->x + (0.2 * cos(config->player->rotation_angle));
-	y = config->player->y + (0.2 * sin(config->player->rotation_angle));
+	x = config->player->x + (0.4 * cos(config->player->rotation_angle));
+	y = config->player->y + (0.4 * sin(config->player->rotation_angle));
 	if (!wall_collision(config, x, y))
 	{
-		config->player->x += (0.2 * cos(config->player->rotation_angle));
-		config->player->y += (0.2 * sin(config->player->rotation_angle));
+		config->player->x += (0.4 * cos(config->player->rotation_angle));
+		config->player->y += (0.4 * sin(config->player->rotation_angle));
 	}
 }
 
@@ -55,12 +56,12 @@ void	move_down(t_global_conf *config)
 	int	x;
 	int	y;
 
-	x = config->player->x - (0.2 * cos(config->player->rotation_angle));
-	y = config->player->y - (0.2 * sin(config->player->rotation_angle));
+	x = config->player->x - (0.4 * cos(config->player->rotation_angle));
+	y = config->player->y - (0.4 * sin(config->player->rotation_angle));
 	if (!wall_collision(config, x, y))
 	{
-		config->player->x -= (0.2 * cos(config->player->rotation_angle));
-		config->player->y -= (0.2 * sin(config->player->rotation_angle));
+		config->player->x -= (0.4 * cos(config->player->rotation_angle));
+		config->player->y -= (0.4 * sin(config->player->rotation_angle));
 	}
 }
 

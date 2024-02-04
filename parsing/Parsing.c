@@ -6,7 +6,7 @@
 /*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 05:30:25 by eagoumi           #+#    #+#             */
-/*   Updated: 2024/01/26 15:30:32 by mkhairal         ###   ########.fr       */
+/*   Updated: 2024/02/04 15:39:54 by mkhairal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ static void	print_check_err(t_cub3d *cub, char *str)
 
 static void	parse_texture(t_cub3d *cub)
 {
+	
+	printf("colorc == %d\n",cub->prs_map.f_c_color.ceiling);
 	if (!strncmp(cub->tmp_store, "NO ", 3) && !cub->prs_map.texture.north)
 		cub->prs_map.texture.north = search_path_texture(cub);
 	else if (!strncmp(cub->tmp_store, "SO ", 3) && !cub->prs_map.texture.south)
@@ -76,6 +78,7 @@ static void	parse_texture(t_cub3d *cub)
 		cub->error_parse_nb = -1;
 	else
 		cub->error_parse_nb = 2;
+	printf("colorf == %d\n",cub->prs_map.f_c_color.floor);
 }
 
 void	send_err_free(t_cub3d *cub, int err_nbr, char *error_msg)

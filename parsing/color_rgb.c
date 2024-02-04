@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   color_rgb.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eagoumi <eagoumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 05:43:50 by eagoumi           #+#    #+#             */
-/*   Updated: 2024/01/07 05:56:01 by eagoumi          ###   ########.fr       */
+/*   Updated: 2024/02/04 15:45:29 by mkhairal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ void	error_rgb_proba(char *temp, int i, int count_cama)
 unsigned int	send_rgb_color(char *temp, char **rgb_color)
 {
 	int	i;
-	int	color;
 	int	tb_color[3];
 
 	i = 0;
@@ -76,14 +75,8 @@ unsigned int	send_rgb_color(char *temp, char **rgb_color)
 	}
 	free(rgb_color);
 	rgb_color = NULL;
-	// color = ((255 << 24) | (tb_color[0] << 16) \
-	// 	| (tb_color[1] << 8) | tb_color[2]);
 	free(temp);
 	temp = NULL;
-	printf("%p\n", temp);
-	printf("%d\n", tb_color[0]);
-	printf("%d\n", tb_color[1]);
-	printf("%d\n", tb_color[2]);
 	return (pixels_rgba(tb_color[0], tb_color[1], tb_color[2], 255));
 }
 
@@ -95,14 +88,15 @@ unsigned int	check_color(t_cub3d *cub)
 	char	*temp;
 	char	**rgb_color;
 
+	// printf("eeee = %s\n", cub->tmp_store);
 	rgb_color = NULL;
-	cub->count_txtr_line++;
 	first_index_color = index_first_path(cub->tmp_store, 1);
-	printf("first = %d\n", first_index_color);
-	second_index_color = index_end_path(cub->tmp_store, (strlen(cub->tmp_store) - 2)); //skipping "/0" + also first character and secend character space "F "
-	printf("sec = %d\n", second_index_color);
+	second_index_color = index_end_path(cub->tmp_store, (ft_strlen(cub->tmp_store) - 2));// - 3)); //----> tmp_store  at the end fiha '    \n\0' so len(tmp) - \n - \0 
+	// printf("rrr1 = [%c]\n", cub->tmp_store[first_index_color]); //skipping "/0" + also first character and secend character space "F "
+	// printf("rrr2 = [%c]\n", cub->tmp_store[second_index_color]); //skipping "/0" + also first character and secend character space "F "
 	temp = ft_substr(cub->tmp_store, first_index_color, \
-						(second_index_color - first_index_color));
+						(second_index_color - first_index_color + 1));
+	// printf("rrr2 = [%s]\n", temp); //skipping "/0" + also first character and secend character space "F "
 	if (!temp)
 	{
 		free(temp);
@@ -112,8 +106,7 @@ unsigned int	check_color(t_cub3d *cub)
 	}
 	error_rgb_proba(temp, 0, 0);
 	color = send_rgb_color(temp, rgb_color);
-	printf("colorrr is = %u\n", color);
-	printf("culllor = %s\n", cub->tmp_store);
 	// exit(1);
+	cub->count_txtr_line++;
 	return (color);
 }

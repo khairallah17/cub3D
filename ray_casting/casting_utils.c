@@ -6,7 +6,7 @@
 /*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 16:12:18 by mkhairal          #+#    #+#             */
-/*   Updated: 2024/01/31 15:32:35 by mkhairal         ###   ########.fr       */
+/*   Updated: 2024/02/05 00:09:02 by mkhairal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	cast_all_rays(t_global_conf *config)
 	i = 0;
 	while (i < NUM_OF_RAYS)
 	{
+		cast_ray(config, ray_angle, i);
 		cast_ray(config, ray_angle, i);
 		// draw_rays(config, i);
 		render_3d(config, i);

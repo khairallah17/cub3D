@@ -6,13 +6,13 @@
 /*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 05:52:01 by eagoumi           #+#    #+#             */
-/*   Updated: 2024/01/28 21:23:20 by mkhairal         ###   ########.fr       */
+/*   Updated: 2024/02/04 15:40:14 by mkhairal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-static t_cub3d	*cub;
+// static t_cub3d	*cub;
 
 // void	ft_free(t_cub3d *cub)
 // {

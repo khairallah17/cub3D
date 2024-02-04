@@ -6,7 +6,7 @@
 /*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 17:54:46 by mkhairal          #+#    #+#             */
-/*   Updated: 2024/01/28 20:05:59 by mkhairal         ###   ########.fr       */
+/*   Updated: 2024/02/04 22:22:09 by mkhairal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	draw_map(t_global_conf *config)
 		}
 		i++;
 	}
-	draw_player(config);
+	// draw_player(config);
 }
 
 void	draw_player(t_global_conf *config)
@@ -79,18 +79,21 @@ void	draw_player(t_global_conf *config)
 		j = 0;
 		while (j < tile)
 		{
+				printf("color1 == %d\n", config->player->color);
 			mlx_put_pixel(config->img, (MINIMAP_SCALE * config->player->x) + i, \
-				(MINIMAP_SCALE * config->player->y) + j, config->player->color);
+				(MINIMAP_SCALE * config->player->y) + j, 0x00FFFFFF);
+				printf("color == %d\n", 0xFF00FFFF);
+				// exit(1);
 			mlx_put_pixel(config->img, (MINIMAP_SCALE * config->player->x) - i, \
-				(MINIMAP_SCALE * config->player->y) - j, config->player->color);
+				(MINIMAP_SCALE * config->player->y) - j, 0x00FFFFFF);
 			mlx_put_pixel(config->img, (MINIMAP_SCALE * config->player->x) + i, \
-				(MINIMAP_SCALE * config->player->y) - j, config->player->color);
+				(MINIMAP_SCALE * config->player->y) - j, 0xFF00FFFF);
 			mlx_put_pixel(config->img, (MINIMAP_SCALE * config->player->x) - i, \
-				(MINIMAP_SCALE * config->player->y) + j, config->player->color);
+				(MINIMAP_SCALE * config->player->y) + j, 0xFF00FFFF);
 			j++;
 		}
 		i++;
 	}
     // draw_single_line(config);
-	cast_all_rays(config);
+	// cast_all_rays(config);
 }

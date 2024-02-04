@@ -6,7 +6,7 @@
 /*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 10:50:39 by mkhairal          #+#    #+#             */
-/*   Updated: 2024/01/28 23:03:53 by mkhairal         ###   ########.fr       */
+/*   Updated: 2024/02/04 22:55:10 by mkhairal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,14 @@ void	ray_distance_assignement(t_global_conf *config, \
 		config->rays[pos].wall_hit_x = ray_info->vertical_wall_hit_x;
 		config->rays[pos].wall_hit_y = ray_info->vertical_wall_hit_y;
 		config->rays[pos].was_hit_vertical = 1;
+		if (config->rays[pos].ray_facing_right)
+		{
+			config->rays[pos].texture = config->txt_load_png.right_east;
+		}
+		else
+		{
+			config->rays[pos].texture = config->txt_load_png.left_west;
+		}
 	}
 	else
 	{
@@ -51,6 +59,14 @@ void	ray_distance_assignement(t_global_conf *config, \
 		config->rays[pos].wall_hit_x = ray_info->horizontal_wall_hit_x;
 		config->rays[pos].wall_hit_y = ray_info->horizontal_wall_hit_y;
 		config->rays[pos].was_hit_vertical = 0;
+		if (config->rays[pos].ray_facing_up)
+		{
+			config->rays[pos].texture = config->txt_load_png.up_north;
+		}
+		else
+		{
+			config->rays[pos].texture = config->txt_load_png.down_south;
+		}
 	}
 	config->rays[pos].ray_angle = ray_info->ray_angle;
 	config->rays[pos].ray_facing_down = ray_info->ray_facing_down;
