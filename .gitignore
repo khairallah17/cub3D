@@ -1,5 +1,9 @@
 *.out
 *.o
 cub3D
-.vscode/
-a.out.dSYM/
+.vscode
+.DS_Store
+tmp
+obj
+MLX42
+a.out.dSYM

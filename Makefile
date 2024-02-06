@@ -9,6 +9,8 @@ CMLX42		=  $(PWD)/MLX42/build/libmlx42.a -Iinclude -lglfw -L"/Users/$(USER)/.bre
 SRC_DIR		=	./
 OBJ_DIR		=	./obj/
 INC_DIR		=	./
+MLX42_DIR   =	./MLX42
+
 
 # controll codes
 RESET		=	\033[0m
@@ -61,10 +63,10 @@ all: $(NAME)
 	@printf "\n"
 
 #compile the executable
-$(NAME): $(OBJ) $(INC_FILES)
+$(NAME): mlx42 $(OBJ) $(INC_FILES)
 	@echo "$(YELLOW)Compiling [$(NAME)]...$(RESET)"
 	@(cd libft; make)
-	@(cd MLX42; cmake -B build; cmake --build build -j4)
+	@(cd $(MLX42_DIR); cmake -B build; cmake --build build -j4);
 	@$(CC) $(CFLAGS) $(CMLX42) $(OBJ) ./libft/libft.a -o $(NAME)
 	@echo "$(GREEN)Finished [$(NAME)]$(RESET)"
 
@@ -77,6 +79,9 @@ $(OBJ_DIR)%.o:$(SRC_DIR)%.c $(INC_FILES)
 	@echo "$(GREEN)Finished [$@]$(RESET)"
 	@printf "$(UP)$(CUT)"
 
+mlx42:
+	@[ -d MLX42 ] || git clone https://github.com/codam-coding-college/MLX42.git MLX42 
+
 #clean rule
 clean:
 	@if [ -d "$(OBJ_DIR)" ]; then \
@@ -87,6 +92,7 @@ clean:
 
 #fclean rule
 fclean: clean
+	@rm -rf $(MLX42_DIR)
 	@if [ -f "$(NAME)" ]; then \
 	rm -f $(NAME); \
 	cd ./libft; make fclean; \

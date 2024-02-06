@@ -41,8 +41,7 @@ void	ray_casting_setup(t_ray_info *ray_info, t_double ray_angle)
 	}
 }
 
-void	ray_distance_assignement_1(t_global_conf *config, \
-								t_ray_info *ray_info, int pos)
+void	ray_distance_assignement_1(t_ray_info *ray_info)
 {
 	if (ray_info->horizontal_wall_hit)
 		ray_info->horizontal_distance = \
@@ -73,7 +72,7 @@ void	ray_distance_assignement_3(t_global_conf *config, \
 void	ray_distance_assignement(t_global_conf *config, \
 			t_ray_info *ray_info, int pos)
 {
-	ray_distance_assignement_1(config, ray_info, pos);
+	ray_distance_assignement_1(ray_info);
 	if (ray_info->vertical_distance < ray_info->horizontal_distance)
 	{
 		config->rays[pos].distance = ray_info->vertical_distance;
@@ -107,5 +106,6 @@ void	cast_ray(t_global_conf *config, t_double ray_angle, int pos)
 	ray_casting_setup(&ray_info, ray_angle);
 	horizontal_casting(config, &ray_info);
 	vertical_casting(config, &ray_info);
+	ray_distance_assignement(config, &ray_info, pos);
 	ray_distance_assignement(config, &ray_info, pos);
 }
