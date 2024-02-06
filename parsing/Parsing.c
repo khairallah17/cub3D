@@ -6,7 +6,7 @@
 /*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 05:30:25 by eagoumi           #+#    #+#             */
-/*   Updated: 2024/02/04 15:39:54 by mkhairal         ###   ########.fr       */
+/*   Updated: 2024/02/06 20:03:05 by mkhairal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,6 +214,7 @@ int	ft_atobyte(t_map3d *map, int n, char *c)
 			map_error("Error: can't read next character!");
 		p++;
 	}
+	ft_skipcharset(map, c, " \t");
 	if ((p < 1) || (byte > 255) || ((n < 2) && (*c != ','))
 		|| ((n == 2) && !ft_isline(*c)))
 		map_error("Error: invalid color!");

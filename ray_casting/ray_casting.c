@@ -6,7 +6,7 @@
 /*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 10:50:39 by mkhairal          #+#    #+#             */
-/*   Updated: 2024/02/04 22:55:10 by mkhairal         ###   ########.fr       */
+/*   Updated: 2024/02/06 19:41:41 by mkhairal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,6 @@ void	cast_ray(t_global_conf *config, t_double ray_angle, int pos)
 	ray_casting_setup(&ray_info, ray_angle);
 	horizontal_casting(config, &ray_info);
 	vertical_casting(config, &ray_info);
-	for (int i = 0; i < 2; ++i)
-	{
+
 		ray_distance_assignement(config, &ray_info, pos);
-	}
 }
