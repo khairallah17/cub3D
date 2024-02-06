@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_map.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eagoumi <eagoumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 01:42:25 by mkhairal          #+#    #+#             */
-/*   Updated: 2024/02/06 20:51:10 by eagoumi          ###   ########.fr       */
+/*   Updated: 2024/02/06 23:04:29 by mkhairal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,12 @@ void	render_3d(t_global_conf *config, int i)
 	t_render	renderer;
 
 	init_render(&renderer);
-	renderer.distance_to_projection_plane = (WINDOW_WIDTH / 2.0) / tan(FOV / 2.0);
+	renderer.distance_to_projection_plane = (WINDOW_WIDTH / 2.0) \
+	/ tan(FOV / 2.0);
 	renderer.correct_distance = config->rays[i].distance * \
 		cos(config->rays[i].ray_angle - getmap()->player_angle);
-	renderer.projected_wall_height = (MINIMAP_SCALE / renderer.correct_distance) * renderer.distance_to_projection_plane;
+	renderer.projected_wall_height = (MINIMAP_SCALE / \
+	renderer.correct_distance) * renderer.distance_to_projection_plane;
 	renderer.wall_height = (int)renderer.projected_wall_height;
 	if (renderer.wall_height < 0)
 		renderer.wall_height = 0;

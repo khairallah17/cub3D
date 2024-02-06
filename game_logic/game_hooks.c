@@ -6,7 +6,7 @@
 /*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 17:53:35 by mkhairal          #+#    #+#             */
-/*   Updated: 2024/02/05 00:09:30 by mkhairal         ###   ########.fr       */
+/*   Updated: 2024/02/06 23:05:46 by mkhairal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,6 @@ void	my_key_hook(mlx_key_data_t keydata, void *param)
 {
 	if ((keydata.action == MLX_PRESS) || (keydata.action == MLX_REPEAT))
 	{
-		player_movements_checker((t_global_conf *)param, &keydata);		
+		player_movements_checker((t_global_conf *)param, &keydata);
 	}
 }

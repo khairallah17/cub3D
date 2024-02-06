@@ -6,7 +6,7 @@
 /*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 16:16:31 by mkhairal          #+#    #+#             */
-/*   Updated: 2024/02/06 19:41:43 by mkhairal         ###   ########.fr       */
+/*   Updated: 2024/02/06 23:03:48 by mkhairal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void	setup(t_global_conf *config)
 		printf("[SETUP] Error ==> NO IMAGE FOUND\n");
 		exit(0);
 	}
-	// config->rays = (t_ray *)malloc(sizeof(t_ray) * NUM_OF_RAYS);
 }
 
 void	init_ray(t_ray_info *ray_info)
