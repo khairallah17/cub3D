@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eagoumi <eagoumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 05:55:02 by eagoumi           #+#    #+#             */
-/*   Updated: 2024/02/06 22:25:08 by eagoumi          ###   ########.fr       */
+/*   Updated: 2024/02/06 23:10:05 by mkhairal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <math.h>
 # include <stdlib.h>
 # include <libc.h>
+# include <float.h>
 # include <math.h>
 # include "libft/libft.h"
 # include "./MLX42/include/MLX42/MLX42.h"
@@ -33,7 +34,7 @@
 # define NUM_OF_RAYS WINDOW_WIDTH
 # define RAYS 60
 # define FOV (60 * (M_PI / 180))
-# define MINIMAP_SCALE 16
+# define MINIMAP_SCALE 64
 # define DEFAULT_PLAYER_SPEED     		0.2
 # define DEFAULT_PLAYER_ROTATION_ANGLE	0.1
 

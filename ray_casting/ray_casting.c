@@ -6,7 +6,7 @@
 /*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 10:50:39 by mkhairal          #+#    #+#             */
-/*   Updated: 2024/02/06 23:02:14 by mkhairal         ###   ########.fr       */
+/*   Updated: 2024/02/06 23:19:11 by mkhairal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ void	ray_distance_assignement_3(t_global_conf *config, \
 void	ray_distance_assignement(t_global_conf *config, \
 			t_ray_info *ray_info, int pos)
 {
+	ray_distance_assignement_1(config, ray_info, pos);
 	if (ray_info->vertical_distance < ray_info->horizontal_distance)
 	{
 		config->rays[pos].distance = ray_info->vertical_distance;
@@ -81,7 +82,7 @@ void	ray_distance_assignement(t_global_conf *config, \
 		config->rays[pos].was_hit_vertical = 1;
 		if (config->rays[pos].ray_facing_right)
 			config->rays[pos].texture = config->txt_load_png.right_east;
-		else if (config->rays[pos].ray_facing_left)
+		else
 			config->rays[pos].texture = config->txt_load_png.left_west;
 	}
 	else
@@ -92,9 +93,10 @@ void	ray_distance_assignement(t_global_conf *config, \
 		config->rays[pos].was_hit_vertical = 0;
 		if (config->rays[pos].ray_facing_up)
 			config->rays[pos].texture = config->txt_load_png.up_north;
-		else if (config->rays[pos].ray_facing_down)
+		else
 			config->rays[pos].texture = config->txt_load_png.down_south;
 	}
+	ray_distance_assignement_3(config, ray_info, pos);
 }
 
 void	cast_ray(t_global_conf *config, t_double ray_angle, int pos)
@@ -106,6 +108,4 @@ void	cast_ray(t_global_conf *config, t_double ray_angle, int pos)
 	horizontal_casting(config, &ray_info);
 	vertical_casting(config, &ray_info);
 	ray_distance_assignement(config, &ray_info, pos);
-	ray_distance_assignement_1(config, &ray_info, pos);
-	ray_distance_assignement_3(config, &ray_info, pos);
 }

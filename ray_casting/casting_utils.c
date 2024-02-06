@@ -6,7 +6,7 @@
 /*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 16:12:18 by mkhairal          #+#    #+#             */
-/*   Updated: 2024/02/06 23:03:41 by mkhairal         ###   ########.fr       */
+/*   Updated: 2024/02/06 23:09:43 by mkhairal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ void	cast_all_rays(t_global_conf *config)
 	t_double	ray_angle;
 	int			i;
 
-	draw_map(config);
 	ray_angle = getmap()->player_angle - (FOV / 2);
 	i = 0;
 	while (i < NUM_OF_RAYS)
@@ -91,9 +90,8 @@ void	cast_all_rays(t_global_conf *config)
 		ray_angle = normalize_angle(ray_angle);
 		// do_cast(config, i, ray_angle);
 		cast_ray(config, ray_angle, i);
-		draw_rays(config, i);
 		// cast_ray(config, ray_angle, i);
-		// render_3d(config, i);
+		render_3d(config, i);
 		ray_angle += (t_double)FOV / (t_double)NUM_OF_RAYS;
 		i++;
 	}
