@@ -12,100 +12,62 @@
 
 #include "cub3D.h"
 
-// static t_cub3d	*cub;
+unsigned int	pixels_rgba(int r, int g, int b, int a)
+{
+	return ((unsigned int)r << 24 | (unsigned int)g << 16 | (unsigned int)b << 8 | (unsigned int)a);
+}
 
-// void	ft_free(t_cub3d *cub)
-// {
-// 	int	i;
+int	cub3d_exit(t_global_conf *config)
+{
+	if (config)
+	{
+		mlx_delete_image(config->mlx, config->img);
+		mlx_close_window(config->mlx);
+		// free(config->rays);
+	}
+	exit(0);
+	return (0);
+}
 
-// 	i = 0;
-// 	while (cub->prs_map.map.map_grid[i])
-// 		free(cub->prs_map.map.map_grid[i++]);
-// 	free(cub->prs_map.map.map_grid);
-// 	free(cub->path_maps);
-// 	if (cub->prs_map.texture.east != NULL)
-// 		free(cub->prs_map.texture.east);
-// 	if (cub->prs_map.texture.north != NULL)
-// 		free(cub->prs_map.texture.north);
-// 	if (cub->prs_map.texture.south != NULL)
-// 		free(cub->prs_map.texture.south);
-// 	if (cub->prs_map.texture.west != NULL)
-// 		free(cub->prs_map.texture.west);
-// 	free(cub);
-// }
+void	cub3d_put_pixel(
+	mlx_image_t *img,
+	uint32_t x,
+	uint32_t y,
+	uint32_t color)
+{
+	if (y < 0)
+		y = 0;
+	if (y >= WINDOW_HEIGHT)
+		y = WINDOW_HEIGHT - 1;
+	if (x < 0)
+		x = 0;
+	if (x >= WINDOW_WIDTH)
+		x = WINDOW_WIDTH - 1;
+	mlx_put_pixel(img, x, y, color);
+}
 
-// void	inf(void)
-// {
-// 	system("leaks cub3D");
-// }
+void	cub3d_clear_image(mlx_image_t *img)
+{
+	int	x;
+	int	y;
 
-// void    draw(void *parp)
-// {
-//     int        i;
-
-//     i = 0;
-// 	cub = (t_cub3d *)parp;
-//     while (i < cub->prs_map.map.height)
-//     {
-//         int j = 0;
-//         while (j < cub->prs_map.map.width)
-//         {
-// 			puts("s");
-//             if (cub->prs_map.map.map_grid[i][j] == '1')
-//                 mlx_put_pixel(cub->mlx.window, i, j, 0x0FAFFF);
-//             else if (cub->prs_map.map.map_grid[i][j] == '0')
-//                 mlx_put_pixel(cub->mlx.window, i, j, 0x000000);
-// 			else if (cub->prs_map.map.map_grid[i][j] == 'N')
-//                 mlx_put_pixel(cub->mlx.window, i, j, 0xEEEEEE);
-//             j=j*32;
-//         }
-// 		// printf("%s", cub->prs_map.map.map_grid[i]);
-// 		i=i*32;
-//     }
-// }
-
-// int	main(int ac, char **av)
-// {
-
-// 	atexit(inf);
-// 	cub = parsing(ac, av);
-// 	printf("%p\n", cub);
-// 	//check map
-// 	check_map(cub);
-// 	int i = 0;
-//     while (i < cub->prs_map.map.height)
-//     {
-// 		printf("%s\n", cub->prs_map.map.map_grid[i++]);
-// 	}	
-// 	//mlx window
-// 	if (!(cub->mlx.mlx = mlx_init(cub->prs_map.map.height, cub->prs_map.map.width, "cub3D", true)))
-// 	{
-// 		// puts(mlx_strerror(mlx_errno));
-// 		return(EXIT_FAILURE);
-// 	}
-// 	if (!(cub->mlx.window = mlx_new_image(cub->mlx.mlx, cub->prs_map.map.height, cub->prs_map.map.width)))
-// 	{
-// 		mlx_close_window(cub->mlx.mlx);
-// 		// puts(mlx_strerror(mlx_errno));
-// 		return(EXIT_FAILURE);
-// 	}
-// 	if (mlx_image_to_window(cub->mlx.mlx, cub->mlx.window, 0, 0) == -1)
-// 	{
-// 		mlx_close_window(cub->mlx.mlx);
-// 		// puts(mlx_strerror(mlx_errno));
-// 		return(EXIT_FAILURE);
-// 	}
-// 	// t_cub3d *cubb;
-// 	mlx_loop_hook(cub->mlx.mlx, draw, cub);
-// 	mlx_loop(cub->mlx.mlx);
-// 	mlx_terminate(cub->mlx.mlx);
-// 	ft_free(cub);
-// }
-
+	x = 0;
+	while (x < (int)img->width)
+	{
+		y = 0;
+		while (y < (int)img->height)
+		{
+			if (y < (int)(img->height / 2))
+				cub3d_put_pixel(img, x, y, getmap()->ceiling);
+			else
+				cub3d_put_pixel(img, x, y, getmap()->floor);
+			y++;
+		}
+		x++;
+	}
+}
 
 int	main(int ac, char **av)
 {
-	// coloring_floor_ceilling(cub, 0, 0, 0);
 	launch(ac, av);
 }
-

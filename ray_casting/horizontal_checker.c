@@ -17,16 +17,16 @@ void	calculating_horizontal_distances(t_global_conf *config, \
 {
 	while ((ray_info->next_horizontal_hit_x >= 0 \
 	&& ray_info->next_horizontal_hit_x <= \
-	(config->cub->prs_map.map.width * MINIMAP_SCALE)) \
+	(getmap()->width * MINIMAP_SCALE)) \
 	&& (ray_info->next_horizontal_hit_y >= 0 \
 	&& ray_info->next_horizontal_hit_y <= \
-	config->cub->prs_map.map.height * MINIMAP_SCALE))
+	getmap()->height * MINIMAP_SCALE))
 	{
 		ray_info->x_check = ray_info->next_horizontal_hit_x;
 		ray_info->y_check = ray_info->next_horizontal_hit_y;
 		if (ray_info->ray_facing_up)
 			ray_info->y_check -= 1;
-		if (wall_hit_checker(config, ray_info->x_check, ray_info->y_check))
+		if (wall_collision(config, ray_info->x_check / MINIMAP_SCALE, ray_info->y_check / MINIMAP_SCALE))
 		{
 			ray_info->horizontal_wall_hit = 1;
 			ray_info->horizontal_wall_hit_x = ray_info->next_horizontal_hit_x;
@@ -43,19 +43,19 @@ void	calculating_horizontal_distances(t_global_conf *config, \
 
 void    draw_single_line(t_global_conf *config) {
 
-    double dx;
-    double dy;
-    double px;
-    double py;
-    double tmp;
+    t_double dx;
+    t_double dy;
+    t_double px;
+    t_double py;
+    t_double tmp;
 
-    px = config->player->x * MINIMAP_SCALE;
-    py = config->player->y * MINIMAP_SCALE;
-    dx = (64 * cos(config->player->rotation_angle) + px); // assuming px and py are the (0, 0);
-    dy = (64 * sin(config->player->rotation_angle) + py);
+    px = getmap()->player_x * MINIMAP_SCALE;
+    py = getmap()->player_y * MINIMAP_SCALE;
+    dx = (64 * cos(getmap()->player_angle) + px); // assuming px and py are the (0, 0);
+    dy = (64 * sin(getmap()->player_angle) + py);
 
-    double slope = (py - dy) / (px - dx);
-    double y_intercept = py - slope * px; // py = slope * px + t_intercept
+    t_double slope = (py - dy) / (px - dx);
+    t_double y_intercept = py - slope * px; // py = slope * px + t_intercept
 
     if (px >= dx)
     {
@@ -74,16 +74,16 @@ void    draw_single_line(t_global_conf *config) {
 void	horizontal_casting(t_global_conf *config, t_ray_info *ray_info)
 {
 	ray_info->y_inter = \
-		floor((config->player->y) / (double)MINIMAP_SCALE) * (double)MINIMAP_SCALE;
+		floor((getmap()->player_y)) * (t_double)MINIMAP_SCALE;
 	if (ray_info->ray_facing_down)
-		ray_info->y_inter += (double)MINIMAP_SCALE;
+		ray_info->y_inter += (t_double)MINIMAP_SCALE;
 	ray_info->x_inter = \
-		config->player->x + ((ray_info->y_inter - config->player->y) \
+		getmap()->player_x * MINIMAP_SCALE + ((ray_info->y_inter - getmap()->player_y * MINIMAP_SCALE) \
 								/ tan(ray_info->ray_angle));
-	ray_info->y_step = (double)MINIMAP_SCALE;
+	ray_info->y_step = (t_double)MINIMAP_SCALE;
 	if (ray_info->ray_facing_up)
 		ray_info->y_step *= -1;
-	ray_info->x_step = (double)MINIMAP_SCALE / tan(ray_info->ray_angle);
+	ray_info->x_step = (t_double)MINIMAP_SCALE / tan(ray_info->ray_angle);
 	if (ray_info->ray_facing_left && ray_info->x_step > 0)
 		ray_info->x_step *= -1;
 	if (ray_info->ray_facing_right && ray_info->x_step < 0)

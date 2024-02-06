@@ -28,17 +28,7 @@ void	setup(t_global_conf *config)
 		printf("[SETUP] Error ==> NO IMAGE FOUND\n");
 		exit(0);
 	}
-	//config->player->rotation_angle = 0;
-	config->player->color = 0xFF0000FF;
-	config->player->x = config->cub->player.x;
-	config->player->y = config->cub->player.y;
-	config->rays = (t_ray *)malloc(sizeof(t_ray) * NUM_OF_RAYS);
-	// draw_map(config);
-	// draw_player(config);
-	// cast_all_rays(config);
-	// config->color_buffer = (uint32_t *)malloc(sizeof(uint32_t) * \
-	// 	(uint32_t)WINDOW_HEIGHT * (uint32_t)WINDOW_WIDTH);
-	/* init_color_buffer(config); */
+	// config->rays = (t_ray *)malloc(sizeof(t_ray) * NUM_OF_RAYS);
 }
 
 void	init_ray(t_ray_info *ray_info)
@@ -66,5 +56,5 @@ void	init_ray(t_ray_info *ray_info)
 	ray_info->vertical_wall_hit_x = 0;
 	ray_info->vertical_wall_hit_y = 0;
 	ray_info->horizontal_distance = INT_MAX;
-	ray_info->vertical_distance = INT_MIN;
+	ray_info->vertical_distance = INT_MAX;
 }

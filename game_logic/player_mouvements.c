@@ -12,93 +12,44 @@
 
 #include "../cub3D.h"
 
+void	move_player(t_double angle)
+{
+	t_double	x;
+	t_double	y;
+	t_double	v;
+	t_double	d;
+
+	d = 0.0;
+	v = 0.1;
+	if (v >= getmap()->player_speed)
+		v = getmap()->player_speed / 2.0;
+	while (d < getmap()->player_speed)
+	{
+		x = getmap()->player_x + v * cos(getmap()->player_angle + angle);
+		y = getmap()->player_y + v * sin(getmap()->player_angle + angle);
+		if (wall_collision(NULL, x, y))
+			break ;
+		getmap()->player_x = x;
+		getmap()->player_y = y;
+		d += v;
+	}
+}
+
 void	player_movements_checker(t_global_conf *config, mlx_key_data_t *key)
 {
+	if (key->key == MLX_KEY_ESCAPE)
+		cub3d_exit(config);
 	if (key->key == MLX_KEY_LEFT)
-		config->player->rotation_angle -= 0.2;
+		getmap()->player_angle -= getmap()->player_rotation_angle;
 	else if (key->key == MLX_KEY_RIGHT)
-		config->player->rotation_angle += 0.2;
-	else if (key->key == MLX_KEY_W && config->player->x > 0)
-		move_up(config);
-	else if (key->key == MLX_KEY_S && config->player->x < config->cub->prs_map.map.width)
-		move_down(config);
-	else if (key->key == MLX_KEY_A && config->player->y > 0)
-		move_left(config);
-	else if (key->key == MLX_KEY_D && config->player->y < config->cub->prs_map.map.height)
-		move_right(config);
-	else if (key->key == MLX_KEY_ESCAPE)
-	{
-		mlx_delete_image(config->mlx, config->img);
-		mlx_close_window(config->mlx);
-		free(config->rays);
-		// free(config->color_buffer);
-		exit(0);
-	}
+		getmap()->player_angle += getmap()->player_rotation_angle;
+	if (key->key == MLX_KEY_W)
+		move_player(0.0);
+	else if (key->key == MLX_KEY_S)
+		move_player(M_PI);
+	else if (key->key == MLX_KEY_A)
+		move_player(-M_PI_2);
+	else if (key->key == MLX_KEY_D)
+		move_player(M_PI_2);
 	update(config);
-}
-
-void	move_up(t_global_conf *config)
-{
-	int	x;
-	int	y;
-
-	x = config->player->x + (0.4 * cos(config->player->rotation_angle));
-	y = config->player->y + (0.4 * sin(config->player->rotation_angle));
-	if (!wall_collision(config, x, y))
-	{
-		config->player->x += (0.4 * cos(config->player->rotation_angle));
-		config->player->y += (0.4 * sin(config->player->rotation_angle));
-	}
-}
-
-void	move_down(t_global_conf *config)
-{
-	int	x;
-	int	y;
-
-	x = config->player->x - (0.4 * cos(config->player->rotation_angle));
-	y = config->player->y - (0.4 * sin(config->player->rotation_angle));
-	if (!wall_collision(config, x, y))
-	{
-		config->player->x -= (0.4 * cos(config->player->rotation_angle));
-		config->player->y -= (0.4 * sin(config->player->rotation_angle));
-	}
-}
-
-void	move_left(t_global_conf *config)
-{
-	int		x;
-	int		y;
-	double	px;
-	double	py;
-	double	ra;
-
-	px = config->player->x;
-	py = config->player->y;
-	ra = config->player->rotation_angle;
-	x = px - (0.25 * cos(config->player->rotation_angle + M_PI / 2));
-	y = py - (0.25 * sin(config->player->rotation_angle + M_PI / 2));
-	if (!wall_collision(config, x, y))
-	{
-		config->player->x -= (0.25 * cos(ra + M_PI / 2));
-		config->player->y -= (0.25 * sin(ra + M_PI / 2));
-	}
-}
-
-void	move_right(t_global_conf *config)
-{
-	int	x;
-	int	y;
-
-	x = config->player->x + (0.25 * cos(config->player->rotation_angle \
-		+ M_PI / 2));
-	y = config->player->y + (0.25 * sin(config->player->rotation_angle \
-		+ M_PI / 2));
-	if (!wall_collision(config, x, y))
-	{
-		config->player->x += (0.25 * cos(config->player->rotation_angle \
-			+ M_PI / 2));
-		config->player->y += (0.25 * sin(config->player->rotation_angle \
-			+ M_PI / 2));
-	}
 }

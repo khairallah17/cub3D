@@ -12,7 +12,7 @@
 
 #include "../cub3D.h"
 
-double	correct_angle(double ray_angle)
+t_double	correct_angle(t_double ray_angle)
 {
 	ray_angle = remainder(ray_angle, M_PI * 2);
 	if (ray_angle < 0)
@@ -22,41 +22,77 @@ double	correct_angle(double ray_angle)
 	return (ray_angle);
 }
 
-double	calculating_distance(double x1, double y1, double x2, double y2)
+t_double	calculating_distance(t_double x1, t_double y1, t_double x2, t_double y2)
 {
 	return (sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)));
 }
 
-int	wall_hit_checker(t_global_conf *config, double x, double y)
+t_double	normalize_angle(t_double angle)
 {
-	int	map_x;
-	int	map_y;
-	int	minimap_height;
-	int	minimap_width;
+	while (angle < 0)
+		angle += 2 * M_PI;
+	while (angle > 2 * M_PI)
+		angle -= 2 * M_PI;
+	return (angle);
+}
 
-	minimap_height = config->cub->prs_map.map.height * MINIMAP_SCALE;
-	minimap_width = config->cub->prs_map.map.width * MINIMAP_SCALE;
-	if (x < 0 || (int)x >= minimap_width || y < 0 || (int)y >= minimap_height)
-		return (1);
-	map_x = x / (double)MINIMAP_SCALE;
-	map_y = y / (double)MINIMAP_SCALE;
-	return (config->cub->prs_map.map.map_grid[map_y][map_x] == '1');
+void	do_cast(t_global_conf *config, int rayindex, t_double angle)
+{
+	t_double	x;
+	t_double	y;
+	t_double	dda;
+
+	dda = 0.0;
+	while (1)
+	{
+		x = getmap()->player_x + dda * cos(angle);
+		y = getmap()->player_y + dda * sin(angle);
+		if (wall_collision(NULL, x, y))
+		{
+			t_double vx = (int)x + (cos(angle) < 0);
+			t_double vy = getmap()->player_y + (tan(angle) * (vx - getmap()->player_x));
+
+			t_double hy = (int)y + (sin(angle) < 0);
+			t_double hx = getmap()->player_x + ((hy -  getmap()->player_y) / tan(angle));
+
+			config->rays[rayindex].wall_hit_x = hx * TILE;
+			config->rays[rayindex].wall_hit_y = hy * TILE;
+			config->rays[rayindex].distance   = calculating_distance(hx, hy,  getmap()->player_x,  getmap()->player_y);
+			if (
+				calculating_distance(vx, vy,  getmap()->player_x,  getmap()->player_y) <
+				config->rays[rayindex].distance
+			)
+			{
+				config->rays[rayindex].wall_hit_x = vx * TILE;
+				config->rays[rayindex].wall_hit_y = vy * TILE;
+				config->rays[rayindex].distance   = calculating_distance(vx, vy,  getmap()->player_x,  getmap()->player_y);
+			}
+			config->rays[rayindex].distance *= TILE;
+
+
+			printf(">: {%.6f, %.6f}\n", vx, vy);
+			exit(0);
+		}
+		dda += 0.8;
+	}
+
+	exit(0);
 }
 
 void	cast_all_rays(t_global_conf *config)
 {
-	double	ray_angle;
+	t_double	ray_angle;
 	int		i;
 
-	ray_angle = config->player->rotation_angle - (FOV / 2);
+	ray_angle = getmap()->player_angle - (FOV / 2);
 	i = 0;
 	while (i < NUM_OF_RAYS)
 	{
+		ray_angle = normalize_angle(ray_angle);
+		// do_cast(config, i, ray_angle);
 		cast_ray(config, ray_angle, i);
-		cast_ray(config, ray_angle, i);
-		// draw_rays(config, i);
 		render_3d(config, i);
-		ray_angle += (double)FOV / (double)NUM_OF_RAYS;
+		ray_angle += (t_double)FOV / (t_double)NUM_OF_RAYS;
 		i++;
 	}
 }

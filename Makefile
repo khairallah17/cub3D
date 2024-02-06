@@ -22,27 +22,18 @@ CUT			=	\033[K
 #source files
 SRC_FILES	=	gnl/get_next_line_utils.c \
 				gnl/get_next_line.c \
-				parsing/check_arguments.c \
-				parsing/checking_texture_file.c \
-				parsing/color_rgb.c \
-				parsing/path_xpm.c \
-				parsing/check_map.c \
 				parsing/parsing.c \
 				game_logic/game_hooks.c \
 				game_logic/launch.c \
 				game_logic/player_mouvements.c \
-				game_logic/player.c \
 				game_logic/walls_checker.c \
-				minimap/draw_minimap.c \
 				ray_casting/casting_init.c \
 				ray_casting/casting_utils.c \
 				ray_casting/horizontal_checker.c \
 				ray_casting/vertical_checker.c \
 				ray_casting/ray_casting.c \
-				rendering/drawing_map.c \
 				rendering/drawing_rays.c \
 				rendering/render_map.c \
-				texture_rendring/ceiling_floor_color.c \
 				texture_rendring/loading_png.c \
 				cub3D.c
 

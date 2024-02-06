@@ -14,22 +14,15 @@
 
 void	update(t_global_conf *conf)
 {
-	mlx_delete_image(conf->mlx, conf->img);
-
-	conf->img = mlx_new_image(conf->mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
-	// render_3d(conf);
-	// draw_map(conf);
-	// draw_player(conf);
+	cub3d_clear_image(conf->img);
 	cast_all_rays(conf);
-
-	mlx_image_to_window(conf->mlx ,conf->img , 0, 0);
+	mlx_image_to_window(conf->mlx, conf->img, 0, 0);
 }
 
 void	my_key_hook(mlx_key_data_t keydata, void *param)
 {
-	t_global_conf	*conf;
-
-	conf = param;
-	printf("UPDATING\n");
-	player_movements_checker(conf, &keydata);
+	if ((keydata.action == MLX_PRESS) || (keydata.action == MLX_REPEAT))
+	{
+		player_movements_checker((t_global_conf *)param, &keydata);		
+	}
 }

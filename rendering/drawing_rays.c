@@ -15,10 +15,10 @@
 void	draw_rays(t_global_conf *config, int pos)
 {
 	t_line_coordinates	line;
-	double				tmp;
+	t_double			tmp;
 
-	line.px = floor(config->player->x * MINIMAP_SCALE);
-	line.py = floor(config->player->y * MINIMAP_SCALE);
+	line.px = floor(getmap()->player_x * MINIMAP_SCALE);
+	line.py = floor(getmap()->player_y * MINIMAP_SCALE);
 	line.dx = floor(config->rays[pos].wall_hit_x);
 	line.dy = floor(config->rays[pos].wall_hit_y);
 	line.slope = (line.py - line.dy) / (line.px - line.dx);
