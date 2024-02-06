@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   casting_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eagoumi <eagoumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 16:12:18 by mkhairal          #+#    #+#             */
-/*   Updated: 2024/02/05 00:09:02 by mkhairal         ###   ########.fr       */
+/*   Updated: 2024/02/06 22:23:44 by eagoumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,15 +68,89 @@ void	do_cast(t_global_conf *config, int rayindex, t_double angle)
 				config->rays[rayindex].distance   = calculating_distance(vx, vy,  getmap()->player_x,  getmap()->player_y);
 			}
 			config->rays[rayindex].distance *= TILE;
-
-
-			printf(">: {%.6f, %.6f}\n", vx, vy);
-			exit(0);
+			break;
+			// exit(0);
 		}
 		dda += 0.8;
 	}
 
-	exit(0);
+	// exit(0);
+}
+
+void	draw(t_global_conf *config, int x, int y, uint32_t color)
+{
+	int	i;
+	int	tile;
+	int	j;
+
+	if (!config->img)
+	{
+		printf("[DRAW] Error ==> NO IMAGE\n");
+		exit(0);
+	}
+	else if (!config->mlx)
+	{
+		printf("[DRAW] Error ==> NO MLX\n");
+		exit(0);
+	}
+	i = 0;
+	tile = MINIMAP_SCALE;
+	while (i < tile)
+	{
+		j = 0;
+		while (j < tile)
+		{
+			mlx_put_pixel(config->img, (MINIMAP_SCALE * x) + j, \
+			(MINIMAP_SCALE * y) + i, color);
+			j++;
+		}
+		i++;
+	}
+}
+
+void	draw_map(t_global_conf *config)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (i < getmap()->width)
+	{
+		j = 0;
+		while (j < getmap()->height)
+		{
+			if (map_get10(i, j) == '1')
+				draw(config, i, j, 0x00FFFFFF);
+			else
+				draw(config, i, j, 0x000000FF);
+			j++;
+		}
+		i++;
+	}
+	draw_player(config);
+}
+
+void	draw_player(t_global_conf *config)
+{
+	int	i;
+	int	j;
+	int	tile;
+
+	i = 0;
+	tile = PLAYER_TILE / 2;
+	while (i < tile)
+	{
+		j = 0;
+		while (j < tile)
+		{
+			mlx_put_pixel(config->img, i, j, 0x00FF00FF);
+			j++;
+		}
+		i++;
+	}
+    // draw_single_line(config);
+	// cast_all_rays(config);
 }
 
 void	cast_all_rays(t_global_conf *config)
@@ -84,6 +158,7 @@ void	cast_all_rays(t_global_conf *config)
 	t_double	ray_angle;
 	int		i;
 
+	draw_map(config);
 	ray_angle = getmap()->player_angle - (FOV / 2);
 	i = 0;
 	while (i < NUM_OF_RAYS)
@@ -91,7 +166,9 @@ void	cast_all_rays(t_global_conf *config)
 		ray_angle = normalize_angle(ray_angle);
 		// do_cast(config, i, ray_angle);
 		cast_ray(config, ray_angle, i);
-		render_3d(config, i);
+		draw_rays(config, i);
+		// cast_ray(config, ray_angle, i);
+		// render_3d(config, i);
 		ray_angle += (t_double)FOV / (t_double)NUM_OF_RAYS;
 		i++;
 	}

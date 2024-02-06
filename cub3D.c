@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eagoumi <eagoumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 05:52:01 by eagoumi           #+#    #+#             */
-/*   Updated: 2024/02/04 15:40:14 by mkhairal         ###   ########.fr       */
+/*   Updated: 2024/02/06 20:52:35 by eagoumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 unsigned int	pixels_rgba(int r, int g, int b, int a)
 {
-	return ((unsigned int)r << 24 | (unsigned int)g << 16 | (unsigned int)b << 8 | (unsigned int)a);
+	return ((unsigned int)r << 24 | (unsigned int)g << 16 \
+	| (unsigned int)b << 8 | (unsigned int)a);
 }
 
 int	cub3d_exit(t_global_conf *config)

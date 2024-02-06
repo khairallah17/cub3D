@@ -20,9 +20,11 @@ UP			=	\033[A
 CUT			=	\033[K
 
 #source files
-SRC_FILES	=	gnl/get_next_line_utils.c \
-				gnl/get_next_line.c \
-				parsing/parsing.c \
+SRC_FILES	=	parsing/parsing.c \
+				parsing/skipping_t_n_s.c \
+				parsing/counting_mapsize.c \
+				parsing/loading_utils.c \
+				parsing/loading_utils2.c \
 				game_logic/game_hooks.c \
 				game_logic/launch.c \
 				game_logic/player_mouvements.c \
@@ -35,10 +37,10 @@ SRC_FILES	=	gnl/get_next_line_utils.c \
 				rendering/drawing_rays.c \
 				rendering/render_map.c \
 				texture_rendring/loading_png.c \
+				texture_rendring/texture.c \
 				cub3D.c
 
-INC_FILES	=	gnl/get_next_line.h \
-				cub3D.h
+INC_FILES	=	cub3D.h
 
 OBJ_FILES	=	$(SRC_FILES:.c=.o)
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eagoumi <eagoumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 05:55:02 by eagoumi           #+#    #+#             */
-/*   Updated: 2024/02/06 19:26:10 by mkhairal         ###   ########.fr       */
+/*   Updated: 2024/02/06 22:25:08 by eagoumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@
 # include <string.h>
 # include <math.h>
 # include <stdlib.h>
-// # include <libc.h>
+# include <libc.h>
 # include <math.h>
-# include "./gnl/get_next_line.h"
 # include "libft/libft.h"
 # include "./MLX42/include/MLX42/MLX42.h"
 
+# define MAX_FLAGS_NUMBER	6
 # define MAP_NUM_ROWS 13
 # define MAP_NUM_COLS 20
 # define WINDOW_HEIGHT 768
@@ -30,14 +30,14 @@
 # define TILE 64
 # define PLAYER_TILE 8
 # define RAY_WIDTH 1
-# define NUM_OF_RAYS WINDOW_WIDTH / RAY_WIDTH
+# define NUM_OF_RAYS WINDOW_WIDTH
 # define RAYS 60
 # define FOV (60 * (M_PI / 180))
-# define MINIMAP_SCALE 64
-# define DEFAULT_PLAYER_SPEED     		0.4
+# define MINIMAP_SCALE 16
+# define DEFAULT_PLAYER_SPEED     		0.2
 # define DEFAULT_PLAYER_ROTATION_ANGLE	0.1
 
-typedef float t_double;
+typedef float	t_double;
 
 typedef struct s_map3d
 {
@@ -48,11 +48,11 @@ typedef struct s_map3d
 	int				height;
 	char			*map1d;
 	int				players;
-	t_double			player_x;
-	t_double			player_y;
-	t_double			player_speed;
-	t_double			player_angle;
-	t_double			player_rotation_angle;
+	t_double		player_x;
+	t_double		player_y;
+	t_double		player_speed;
+	t_double		player_angle;
+	t_double		player_rotation_angle;
 	int				not_valid;
 	int				lines;
 	int				offset;
@@ -93,11 +93,11 @@ typedef struct s_ray_info
 	t_double	wall_hit_x;
 	t_double	wall_hit_y;
 	t_double	distance;
-	int		was_hit_vertical;
-	int		ray_facing_up;
-	int		ray_facing_down;
-	int		ray_facing_left;
-	int		ray_facing_right;
+	int			was_hit_vertical;
+	int			ray_facing_up;
+	int			ray_facing_down;
+	int			ray_facing_left;
+	int			ray_facing_right;
 	t_double	next_horizontal_hit_x;
 	t_double	next_horizontal_hit_y;
 	t_double	x_step;
@@ -108,10 +108,10 @@ typedef struct s_ray_info
 	t_double	y_check;
 	t_double	next_vertical_hit_x;
 	t_double	next_vertical_hit_y;
-	int		horizontal_wall_hit;
+	int			horizontal_wall_hit;
 	t_double	horizontal_wall_hit_x;
 	t_double	horizontal_wall_hit_y;
-	int		vertical_wall_hit;
+	int			vertical_wall_hit;
 	t_double	vertical_wall_hit_x;
 	t_double	vertical_wall_hit_y;
 	t_double	horizontal_distance;
@@ -121,10 +121,10 @@ typedef struct s_ray_info
 typedef struct s_ray
 {
 	mlx_texture_t	*texture;
-	t_double			ray_angle;
-	t_double			wall_hit_x;
-	t_double			wall_hit_y;
-	t_double			distance;
+	t_double		ray_angle;
+	t_double		wall_hit_x;
+	t_double		wall_hit_y;
+	t_double		distance;
 	int				was_hit_vertical;
 	int				ray_facing_up;
 	int				ray_facing_down;
@@ -167,40 +167,51 @@ typedef struct s_global_conf
 	t_mlx_txt	txt_load_png;
 	mlx_t		*mlx;
 	mlx_image_t	*img;
-	// t_ray		*rays;
-	t_ray		rays[NUM_OF_RAYS]; // config->rays = (t_ray *)malloc(sizeof(t_ray) * NUM_OF_RAYS);
-
+	t_ray		rays[NUM_OF_RAYS];
 	uint32_t	*color_buffer;
 	t_cub3d		*cub;
 }	t_global_conf;
 
 typedef struct s_render
 {
-	int		line_pixel_height;
-	int		distance_from_top_floor;
-	int		wall_height;
+	int			line_pixel_height;
+	int			distance_from_top_floor;
+	int			wall_height;
 	t_double	distance_to_projection_plane;
 	t_double	projected_wall_height;
-	int		wall_top;
-	int		wall_ceil;
+	int			wall_top;
+	int			wall_ceil;
 	t_double	correct_distance;	
 }	t_render;
 
-void			check_arguments(int ac, char **av);
-// static void initial_param(t_cub3d *get_parm, char *path_map);
-// static void parse_texture(t_cub3d *cub);
-int				parsing_remove_new_line(t_cub3d *cub);
-int				index_first_path(char *str, int i);
-int				index_end_path(char *str, int i);
-char			*search_path_texture(t_cub3d *cub);
-unsigned int	check_color(t_cub3d *cub);
-// void 	  parsing(int ac, char **av);
-t_cub3d			*cub3d_parsing(int ac, char **av);
-void			send_err_free(t_cub3d *cub, int err_nbr, char *error_msg);
-void			check_map(t_cub3d *cub);
+/*=============================PARSING======================================*/
+t_map3d			*getmap(void);
 unsigned int	pixels_rgba(int r, int g, int b, int a);
+int				ft_isspace(int c);
+int				ft_isline(char c);
+int				ft_isstab(int c);
+int				ft_extcmp(const char *file, const char *ext);
+void			map_error(const char *msgerr);
+char			map_get10(int x, int y);
+void			is_surrounded_by_spaces(int x, int y);
+void			map_check(t_map3d *map);
+void			open_cubfile(char *cubfile);
+int				ft_copypath(t_map3d *map, char *dst, char *c);
+ssize_t			ft_mapreadch(t_map3d *map, char *c);
+char			ft_skipcharset(t_map3d *map, char *c, const char *charset);
+int				ft_atobyte(t_map3d *map, int n, char *c);
+int				ft_copycolor(t_map3d *map, unsigned int *bgr, char *c);
+void			fill_map_body(t_map3d *map);
+void			read_map_body(t_map3d *map);
+void			update_map_width(t_map3d *map, \
+						int *first_index, int *last_index);
+void			getmapsize(t_map3d *map);
+void			map_load_files(char c, t_map3d	*map);
+void			map_load(char *cubfile);
+t_cub3d			*cub3d_parsing(int ac, char **av);
 
-/** TEXTURE **/
+/*=============================TEXTURE======================================*/
+unsigned int	generate_color(t_global_conf *texture, int x, int y, int i);
 void			field_texture_path(t_global_conf *data);
 void			rendring_texture(t_global_conf *tex_cub, \
 					t_render *renderer, int j);
@@ -217,8 +228,8 @@ void			ray_distance_assignement(t_global_conf *config, \
 void			cast_ray(t_global_conf *config, t_double ray_angle, int pos);
 
 /** CASTING UTILS **/
-t_double			correct_angle(t_double ray_angle);
-t_double			calculating_distance(t_double x1, t_double y1, \
+t_double		correct_angle(t_double ray_angle);
+t_double		calculating_distance(t_double x1, t_double y1, \
 					t_double x2, t_double y2);
 void			cast_all_rays(t_global_conf *config);
 

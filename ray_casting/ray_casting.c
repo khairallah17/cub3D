@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ray_casting.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eagoumi <eagoumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 10:50:39 by mkhairal          #+#    #+#             */
-/*   Updated: 2024/02/06 19:41:41 by mkhairal         ###   ########.fr       */
+/*   Updated: 2024/02/06 22:17:56 by eagoumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3D.h"
+#include <float.h>
 
 void	ray_casting_setup(t_ray_info *ray_info, t_double ray_angle)
 {
@@ -43,6 +44,7 @@ void	ray_casting_setup(t_ray_info *ray_info, t_double ray_angle)
 	}
 }
 
+
 void	ray_distance_assignement(t_global_conf *config, \
 			t_ray_info *ray_info, int pos)
 {
@@ -51,13 +53,13 @@ void	ray_distance_assignement(t_global_conf *config, \
 		getmap()->player_y * MINIMAP_SCALE, ray_info->horizontal_wall_hit_x, \
 		ray_info->horizontal_wall_hit_y);
 	else
-		ray_info->horizontal_distance = INT_MAX;
+		ray_info->horizontal_distance = FLT_MAX;
 	if (ray_info->vertical_wall_hit)
 		ray_info->vertical_distance = calculating_distance(getmap()->player_x * MINIMAP_SCALE, \
 		getmap()->player_y * MINIMAP_SCALE, ray_info->vertical_wall_hit_x, \
 		ray_info->vertical_wall_hit_y);
 	else
-		ray_info->vertical_distance = INT_MAX;
+		ray_info->vertical_distance = FLT_MAX;
 	if (ray_info->vertical_distance < ray_info->horizontal_distance)
 	{
 		config->rays[pos].distance = ray_info->vertical_distance;
@@ -66,7 +68,7 @@ void	ray_distance_assignement(t_global_conf *config, \
 		config->rays[pos].was_hit_vertical = 1;
 		if (config->rays[pos].ray_facing_right)
 			config->rays[pos].texture = config->txt_load_png.right_east;
-		else
+		else if (config->rays[pos].ray_facing_left)
 			config->rays[pos].texture = config->txt_load_png.left_west;
 	}
 	else
@@ -77,7 +79,7 @@ void	ray_distance_assignement(t_global_conf *config, \
 		config->rays[pos].was_hit_vertical = 0;
 		if (config->rays[pos].ray_facing_up)
 			config->rays[pos].texture = config->txt_load_png.up_north;
-		else
+		else if (config->rays[pos].ray_facing_down)
 			config->rays[pos].texture = config->txt_load_png.down_south;
 	}
 	config->rays[pos].ray_angle = ray_info->ray_angle;
@@ -95,6 +97,6 @@ void	cast_ray(t_global_conf *config, t_double ray_angle, int pos)
 	ray_casting_setup(&ray_info, ray_angle);
 	horizontal_casting(config, &ray_info);
 	vertical_casting(config, &ray_info);
-
+	// for (int n = 0; n < 2; n++)
 		ray_distance_assignement(config, &ray_info, pos);
 }
