@@ -6,7 +6,7 @@
 /*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 16:25:36 by mkhairal          #+#    #+#             */
-/*   Updated: 2024/02/07 19:56:18 by mkhairal         ###   ########.fr       */
+/*   Updated: 2024/02/07 22:35:44 by mkhairal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	move_player(t_double angle)
 	{
 		x = getmap()->player_x + v * cos(getmap()->player_angle + angle);
 		y = getmap()->player_y + v * sin(getmap()->player_angle + angle);
-		if (wall_collision2(x, y))
+		if (wall_collision(x, y))
 			break ;
 		getmap()->player_x = x;
 		getmap()->player_y = y;
@@ -39,20 +39,8 @@ void	player_movements_checker(t_global_conf *config, mlx_key_data_t *key)
 {
 	if (key->key == MLX_KEY_ESCAPE)
 		cub3d_exit(config);
-	else if (key->key == MLX_KEY_LEFT) {
-		FILE *stream = NULL;
-		printf("STREAM ==> %p\n", stream);
-		stream = fopen("debug", "w");
-		printf("STREAM ==> %p\n", stream);
-		if (!stream)
-			printf("ERROR OPENING FILE\n");
-		for (int i = 0 ; i < NUM_OF_RAYS ; i++) {
-			fprintf(stream, "{\n\tRAY ANGLE ==> %f \n\tRAY DISTANCE ==> %f\n\tRAY FACING UP ==> %d\n\tRAY FACIGNG DOWN ==> %d\n\tRAY FACIGNG LEFT ==> %d\n\tRAY FACIGNG RIGHT ==> %d\n}\n", config->rays[i].ray_angle, config->rays[i].distance, config->rays[i].ray_facing_up, config->rays[i].ray_facing_down, config->rays[i].ray_facing_left, config->rays[i].ray_facing_right);
-		}
-		fprintf(stream,"\n\nNEW \n\n");
+	else if (key->key == MLX_KEY_LEFT)
 		getmap()->player_angle -= getmap()->player_rotation_angle;
-		fclose(stream);
-	}
 	else if (key->key == MLX_KEY_RIGHT)
 		getmap()->player_angle += getmap()->player_rotation_angle;
 	if (key->key == MLX_KEY_W)
