@@ -43,18 +43,7 @@ FILES_SRC=	ft_atoi.c\
 
 # fonction Bonus
 
-FILES_BNS=	ft_lstadd_back.c\
-			ft_lstadd_front.c\
-			ft_lstclear.c\
-			ft_lstdelone.c\
-			ft_lstiter.c\
-			ft_lstlast.c\
-			ft_lstmap.c\
-			ft_lstnew.c\
-			ft_lstsize.c
-
 OBJ=$(addprefix $(PATH_OBJ), $(FILES_SRC:.c=.o))
-OBJ_BONUS=$(addprefix $(PATH_OBJ), $(FILES_BNS:.c=.o))
 
 DEF 	= 	\x1B[1;0m
 RED 	= 	\x1B[1;31m
@@ -87,8 +76,6 @@ $(NAME):$(OBJ) $(INCLUDE)
 	@printf "$(GREEN)\t ─██████████████──$(RED)██████──██████──$(GREEN)██████████████──$(RED)██████████████──$(GREEN)██████████████──$(RED)██████──────────██████──$(GREEN)██████████─\n"
 	@printf "$(GREEN)\t ─────────────────$(RED)────────────────$(GREEN)────────────────$(RED)────────────────$(GREEN)────────────────$(RED)────────────────────────$(GREEN)───────────\n\n\n\n"
 
-bonus: $(OBJ_BONUS)  $(NAME) $(INCLUDE)
-	@ar rcs $(NAME) $(OBJ_BONUS)
 
 $(PATH_OBJ)%.o:./%.c
 	@mkdir -p $(PATH_OBJ)
@@ -118,7 +105,7 @@ fclean: clean
 	@printf "\n\t$(YELLOW)|🚮 - 🚮 - 🚮 - 🚮 - 🚮 - 🚮|\t$(RED)𝙁 𝙊 𝙍 𝘾 𝙀   𝘾 𝙇 𝙀 𝘼 𝙉 𝙄 𝙉 𝙂   𝘼 𝙍 𝙀   𝘾 𝙊 𝙈 𝙋 𝙇 𝙀 𝙏 𝙀 𝘿    $(BLUE)|✅ - ✅ - ✅ - ✅ - ✅ - ✅|\n\n"; \
 
 
-re: fclean bonus all
+re: fclean all
 	@printf "\n\t\t\t$(YELLOW)               ==$(GREEN)---------------------------------------------------$(YELLOW)== $(BLUE)\n"
 	@printf "\t\t\t$(YELLOW)               ||$(GREEN)---------------------------------------------------$(YELLOW)||\n"
 	@printf "\t\t\t$(YELLOW)               ||$(GREEN) 𝙍 𝙀 - 𝙈 𝘼 𝙆 𝙄 𝙉 𝙂   𝘼 𝙍 𝙀   𝘾 𝙊 𝙈 𝙋 𝙇 𝙀 𝙏 𝙀 𝘿   ✅$(YELLOW)||\n"

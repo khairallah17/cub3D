@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eagoumi <eagoumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 05:55:02 by eagoumi           #+#    #+#             */
-/*   Updated: 2024/02/07 20:35:44 by mkhairal         ###   ########.fr       */
+/*   Updated: 2024/02/07 22:12:46 by eagoumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@
 # define RAY_WIDTH 1
 # define NUM_OF_RAYS WINDOW_WIDTH
 # define RAYS 60
-# define FOV (60 * (M_PI / 180))
+# define FOV 60
 # define MINIMAP_SCALE 64
-# define DEFAULT_PLAYER_SPEED     		0.2
+# define DEFAULT_PLAYER_SPEED     		0.3
 # define DEFAULT_PLAYER_ROTATION_ANGLE	0.1
 
 # include <stdio.h>
@@ -33,11 +33,8 @@
 # include <math.h>
 # include <stdlib.h>
 # include <libc.h>
-# include <float.h>
-# include <math.h>
-# include "libft/libft.h"
+# include "./libft/libft.h"
 # include "MLX42/include/MLX42/MLX42.h"
-
 
 typedef float	t_double;
 
@@ -154,7 +151,6 @@ typedef struct s_render
 	t_double	correct_distance;	
 }	t_render;
 
-
 typedef struct s_map3d
 {
 	int				fd;
@@ -231,6 +227,7 @@ t_double		correct_angle(t_double ray_angle);
 t_double		calculating_distance(t_double x1, t_double y1, \
 					t_double x2, t_double y2);
 void			cast_all_rays(t_global_conf *config);
+t_double		to_rad(t_double angle);
 
 /** GAME INIT **/
 void			setup(t_global_conf *config);
@@ -267,7 +264,6 @@ void			draw_single_line(t_global_conf *config);
 
 /* RENDERING */
 void			init_render(t_render *rend);
-// void		render_3d(t_global_conf *config, int pos);
 void			render_3d(t_global_conf *config, int i);
 
 int				cub3d_exit(t_global_conf *config);

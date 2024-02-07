@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   casting_init.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eagoumi <eagoumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 16:16:31 by mkhairal          #+#    #+#             */
-/*   Updated: 2024/02/06 23:03:48 by mkhairal         ###   ########.fr       */
+/*   Updated: 2024/02/07 22:16:16 by eagoumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3D.h"
+#include <limits.h>
 
 void	setup(t_global_conf *config)
 {
@@ -54,6 +55,6 @@ void	init_ray(t_ray_info *ray_info)
 	ray_info->vertical_wall_hit = 0;
 	ray_info->vertical_wall_hit_x = 0;
 	ray_info->vertical_wall_hit_y = 0;
-	ray_info->horizontal_distance = INT_MAX;
-	ray_info->vertical_distance = INT_MAX;
+	ray_info->horizontal_distance = (float)INT_MAX;
+	ray_info->vertical_distance = (float)INT_MAX;
 }

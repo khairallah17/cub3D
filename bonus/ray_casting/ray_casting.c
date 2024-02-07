@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ray_casting.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eagoumi <eagoumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 10:50:39 by mkhairal          #+#    #+#             */
-/*   Updated: 2024/02/06 23:19:11 by mkhairal         ###   ########.fr       */
+/*   Updated: 2024/02/07 22:22:15 by eagoumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3D.h"
+#include <limits.h>
 
 void	ray_casting_setup(t_ray_info *ray_info, t_double ray_angle)
 {
@@ -49,14 +50,14 @@ void	ray_distance_assignement_1(t_ray_info *ray_info)
 		getmap()->player_y * MINIMAP_SCALE, ray_info->horizontal_wall_hit_x, \
 		ray_info->horizontal_wall_hit_y);
 	else
-		ray_info->horizontal_distance = FLT_MAX;
+		ray_info->horizontal_distance = (float)INT_MAX;
 	if (ray_info->vertical_wall_hit)
 		ray_info->vertical_distance = \
 		calculating_distance(getmap()->player_x * MINIMAP_SCALE, \
 		getmap()->player_y * MINIMAP_SCALE, ray_info->vertical_wall_hit_x, \
 		ray_info->vertical_wall_hit_y);
 	else
-		ray_info->vertical_distance = FLT_MAX;
+		ray_info->vertical_distance = (float)INT_MAX;
 }
 
 void	ray_distance_assignement_3(t_global_conf *config, \
