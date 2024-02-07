@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eagoumi <eagoumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 11:44:57 by eagoumi           #+#    #+#             */
-/*   Updated: 2022/11/08 20:35:52 by eagoumi          ###   ########.fr       */
+/*   Updated: 2024/02/07 18:32:27 by mkhairal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,7 @@ char	*ft_strtrim(char const *s1, char const *set)
 	int		j;
 	char	*str;
 	char	*temp;
-	// int		n;
 
-	// n = 0;
 	if (s1 == 0 || set == 0)
 		return (NULL);
 	i = ft_checkstart(s1, set, 0);

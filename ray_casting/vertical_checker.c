@@ -6,7 +6,7 @@
 /*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 12:42:05 by mkhairal          #+#    #+#             */
-/*   Updated: 2024/02/06 22:44:30 by mkhairal         ###   ########.fr       */
+/*   Updated: 2024/02/07 18:27:44 by mkhairal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 void	calculating_vertical_distances(t_global_conf *config, \
 										t_ray_info *ray_info)
 {
+	(void)config;
 	while ((ray_info->next_vertical_hit_x >= 0 \
-	&& ray_info->next_vertical_hit_x <= \
-	getmap()->width * MINIMAP_SCALE) \
+	&& ray_info->next_vertical_hit_x <= getmap()->width * MINIMAP_SCALE) \
 	&& (ray_info->next_vertical_hit_y >= 0 \
 	&& ray_info->next_vertical_hit_y <= \
 	getmap()->height * MINIMAP_SCALE))
@@ -26,7 +26,7 @@ void	calculating_vertical_distances(t_global_conf *config, \
 		if (ray_info->ray_facing_left)
 			ray_info->x_check -= 1;
 		ray_info->y_check = ray_info->next_vertical_hit_y;
-		if (wall_collision(config, ray_info->x_check / MINIMAP_SCALE, \
+		if (wall_collision(ray_info->x_check / MINIMAP_SCALE, \
 				ray_info->y_check / MINIMAP_SCALE))
 		{
 			ray_info->vertical_wall_hit = 1;

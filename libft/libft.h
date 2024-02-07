@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eagoumi <eagoumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 22:34:15 by eagoumi           #+#    #+#             */
-/*   Updated: 2022/11/10 16:03:57 by eagoumi          ###   ########.fr       */
+/*   Updated: 2024/02/07 18:29:01 by mkhairal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,14 @@ typedef struct s_list
 	void			*content;
 	struct s_list	*next;
 }	t_list;
+
+typedef struct s_params
+{
+	void	*new_content;
+	t_list	*new_node;
+	t_list	*new_lst;
+	t_list	*last_node;
+}	t_params;
 
 t_list	*ft_lstnew(void *content);
 int		ft_lstsize(t_list *lst);

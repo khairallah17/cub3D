@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eagoumi <eagoumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 05:52:01 by eagoumi           #+#    #+#             */
-/*   Updated: 2024/02/06 20:52:35 by eagoumi          ###   ########.fr       */
+/*   Updated: 2024/02/07 18:35:38 by mkhairal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ int	cub3d_exit(t_global_conf *config)
 	{
 		mlx_delete_image(config->mlx, config->img);
 		mlx_close_window(config->mlx);
-		// free(config->rays);
 	}
 	exit(0);
 	return (0);
@@ -68,13 +67,7 @@ void	cub3d_clear_image(mlx_image_t *img)
 	}
 }
 
-void	inf(void)
-{
-	system("leaks cub3D");
-}
-
 int	main(int ac, char **av)
 {
-	atexit(inf);
 	launch(ac, av);
 }

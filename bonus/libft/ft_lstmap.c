@@ -3,22 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eagoumi <eagoumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 19:07:31 by eagoumi           #+#    #+#             */
-/*   Updated: 2022/11/08 20:38:34 by eagoumi          ###   ########.fr       */
+/*   Updated: 2024/02/07 18:33:47 by mkhairal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./libft.h"
-
-typedef struct s_params
-{
-	void	*new_content;
-	t_list	*new_node;
-	t_list	*new_lst;
-	t_list	*last_node;
-}	t_params;
 
 void	*del_free(t_list **lst, void (*del)(void *))
 {

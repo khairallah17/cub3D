@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loading_utils2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eagoumi <eagoumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:23:57 by eagoumi           #+#    #+#             */
-/*   Updated: 2024/02/06 20:24:09 by eagoumi          ###   ########.fr       */
+/*   Updated: 2024/02/07 20:21:34 by mkhairal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,16 @@ int	ft_copypath(t_map3d *map, char *dst, char *c)
 
 	if ((ft_mapreadch(map, c) != 1) || (!ft_isstab(*c) || (*dst != '\0')))
 		return (-1);
-	p = 0;
+	p = -1;
 	last_space_pos = -1;
 	ft_skipcharset(map, c, " \t");
-	while ((*c != '\r') && (*c != '\n') && (*c != '\0') && (last_space_pos < PATH_MAX))
+	while ((*c != '\r') && (*c != '\n') && (*c != '\0') && (p < PATH_MAX))
 	{
-		dst[p] = *c;
+		dst[++p] = *c;
 		if ((p > 0) && (!ft_strchr(" \t", dst[p - 1]))
 			&& (ft_strchr(" \t\r\v\f\n", dst[p])))
 			last_space_pos = p;
 		ft_mapreadch(map, c);
-		p++;
 	}
 	if ((p < 1) || (last_space_pos >= PATH_MAX))
 		return (-1);

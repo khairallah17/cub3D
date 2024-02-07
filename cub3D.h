@@ -6,22 +6,12 @@
 /*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 05:55:02 by eagoumi           #+#    #+#             */
-/*   Updated: 2024/02/06 23:10:05 by mkhairal         ###   ########.fr       */
+/*   Updated: 2024/02/07 20:35:44 by mkhairal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
-
-# include <stdio.h>
-# include <string.h>
-# include <math.h>
-# include <stdlib.h>
-# include <libc.h>
-# include <float.h>
-# include <math.h>
-# include "libft/libft.h"
-# include "./MLX42/include/MLX42/MLX42.h"
 
 # define MAX_FLAGS_NUMBER	6
 # define MAP_NUM_ROWS 13
@@ -38,39 +28,18 @@
 # define DEFAULT_PLAYER_SPEED     		0.2
 # define DEFAULT_PLAYER_ROTATION_ANGLE	0.1
 
+# include <stdio.h>
+# include <string.h>
+# include <math.h>
+# include <stdlib.h>
+# include <libc.h>
+# include <float.h>
+# include <math.h>
+# include "libft/libft.h"
+# include "MLX42/include/MLX42/MLX42.h"
+
+
 typedef float	t_double;
-
-typedef struct s_map3d
-{
-	int				fd;
-	unsigned int	floor;
-	unsigned int	ceiling;
-	int				width;
-	int				height;
-	char			*map1d;
-	int				players;
-	t_double		player_x;
-	t_double		player_y;
-	t_double		player_speed;
-	t_double		player_angle;
-	t_double		player_rotation_angle;
-	int				not_valid;
-	int				lines;
-	int				offset;
-	int				flags_number;
-	char			north[PATH_MAX];
-	char			south[PATH_MAX];
-	char			east[PATH_MAX];
-	char			west[PATH_MAX];
-	char			*filename;
-	int				bodystart;
-}	t_map3d;
-
-char			map_get10(int x, int y);
-t_map3d			*getmap(void);
-void			cub3d_clear_image(mlx_image_t *img);
-void			map_error(const char *msgerr);
-//
 
 typedef struct s_color_rgb
 {
@@ -185,6 +154,33 @@ typedef struct s_render
 	t_double	correct_distance;	
 }	t_render;
 
+
+typedef struct s_map3d
+{
+	int				fd;
+	unsigned int	floor;
+	unsigned int	ceiling;
+	int				width;
+	int				height;
+	char			*map1d;
+	int				players;
+	t_double		player_x;
+	t_double		player_y;
+	t_double		player_speed;
+	t_double		player_angle;
+	t_double		player_rotation_angle;
+	int				not_valid;
+	int				lines;
+	int				offset;
+	int				flags_number;
+	char			north[PATH_MAX];
+	char			south[PATH_MAX];
+	char			east[PATH_MAX];
+	char			west[PATH_MAX];
+	char			*filename;
+	int				bodystart;
+}	t_map3d;
+
 /*=============================PARSING======================================*/
 t_map3d			*getmap(void);
 unsigned int	pixels_rgba(int r, int g, int b, int a);
@@ -216,6 +212,8 @@ unsigned int	generate_color(t_global_conf *texture, int x, int y, int i);
 void			field_texture_path(t_global_conf *data);
 void			rendring_texture(t_global_conf *tex_cub, \
 					t_render *renderer, int j);
+void			cub3d_clear_image(mlx_image_t *img);
+
 /** RAY CASTING **/
 void			calculating_horizontal_distances(t_global_conf *config, \
 												t_ray_info *ray_info);
@@ -241,7 +239,8 @@ void			init_ray(t_ray_info *ray_info);
 void			player_init(t_global_conf *config);
 
 /* PLAYER MOVEMENTS */
-int				wall_collision(t_global_conf *config, float x, float y);
+int				wall_collision(float x, float y);
+int				wall_collision2(float x, float y);
 void			player_movements_checker(t_global_conf *config, \
 											mlx_key_data_t *key);
 void			move_up(t_global_conf *config);

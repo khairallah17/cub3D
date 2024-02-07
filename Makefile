@@ -3,7 +3,7 @@ BONUS		=	cub3D_Bonus
 
 CC			=	gcc
 
-CFLAGS		=	-Wall -Wextra  -fsanitize=address -g
+CFLAGS		=	-Wall -Werror -Wextra
 CMLX42		=  $(PWD)/MLX42/build/libmlx42.a -Iinclude -lglfw -L"/Users/$(USER)/.brew/opt/glfw/lib/"
 # CMLX42		= $(PWD)/MLX42/build/libmlx42.a -Iinclude -lglfw -L"/Users/agoumi/.brew/opt/glfw/lib/"
 # directories

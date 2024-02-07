@@ -6,7 +6,7 @@
 /*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 05:55:02 by eagoumi           #+#    #+#             */
-/*   Updated: 2024/02/06 23:10:05 by mkhairal         ###   ########.fr       */
+/*   Updated: 2024/02/07 20:23:53 by mkhairal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include <float.h>
 # include <math.h>
 # include "libft/libft.h"
-# include "../MLX42/include/MLX42/MLX42.h"
+// # include "../MLX42/include/MLX42/MLX42.h"
 
 # define MAX_FLAGS_NUMBER	6
 # define MAP_NUM_ROWS 13
