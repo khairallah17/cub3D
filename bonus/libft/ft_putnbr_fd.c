@@ -1,18 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   walls_checker.c                                    :+:      :+:    :+:   */
+/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eagoumi <eagoumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/25 17:50:36 by mkhairal          #+#    #+#             */
-/*   Updated: 2024/02/06 21:51:52 by eagoumi          ###   ########.fr       */
+/*   Created: 2022/10/19 02:04:42 by eagoumi           #+#    #+#             */
+/*   Updated: 2022/11/08 20:30:21 by eagoumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../cub3D.h"
+#include "./libft.h"
 
-int	wall_collision(t_global_conf *config, float x, float y)
+void	ft_putnbr_fd(int n, int fd)
 {
-	return ((map_get10(x, y) == '1') || (map_get10(x, y) == ' '));
+	long	nb;
+
+	nb = n;
+	if (nb < 0)
+	{
+		write(fd, "-", 1);
+		nb = nb * -1;
+	}
+	if (nb >= 10)
+	{
+		ft_putnbr_fd(nb / 10, fd);
+		ft_putnbr_fd(nb % 10, fd);
+	}
+	else
+	{
+		ft_putchar_fd(nb + '0', fd);
+	}
 }

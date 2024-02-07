@@ -1,18 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   walls_checker.c                                    :+:      :+:    :+:   */
+/*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eagoumi <eagoumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/25 17:50:36 by mkhairal          #+#    #+#             */
-/*   Updated: 2024/02/06 21:51:52 by eagoumi          ###   ########.fr       */
+/*   Created: 2022/10/10 20:22:06 by eagoumi           #+#    #+#             */
+/*   Updated: 2022/11/08 20:34:30 by eagoumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../cub3D.h"
+#include "./libft.h"
 
-int	wall_collision(t_global_conf *config, float x, float y)
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
-	return ((map_get10(x, y) == '1') || (map_get10(x, y) == ' '));
+	size_t	i;
+
+	i = 0;
+	while ((s1[i] != '\0' || s2[i] != '\0') && i < n)
+	{
+		if (s1[i] != s2[i])
+			return (((unsigned char)s1[i] - (unsigned char)s2[i]));
+		i++;
+	}
+	return (0);
 }

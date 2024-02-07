@@ -1,18 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   walls_checker.c                                    :+:      :+:    :+:   */
+/*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eagoumi <eagoumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/25 17:50:36 by mkhairal          #+#    #+#             */
-/*   Updated: 2024/02/06 21:51:52 by eagoumi          ###   ########.fr       */
+/*   Created: 2022/10/10 20:08:53 by eagoumi           #+#    #+#             */
+/*   Updated: 2022/11/08 20:35:39 by eagoumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../cub3D.h"
+#include "./libft.h"
+#include <stdio.h>
 
-int	wall_collision(t_global_conf *config, float x, float y)
+char	*ft_strrchr(const char *ch, int s)
 {
-	return ((map_get10(x, y) == '1') || (map_get10(x, y) == ' '));
+	size_t	i;
+
+	i = ft_strlen(ch);
+	while (i >= 0)
+	{
+		if (ch[i] == (char)s)
+			return ((char *)&(ch[i]));
+		if (i == 0)
+			return (NULL);
+		i--;
+	}
+	return (NULL);
 }

@@ -1,18 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   walls_checker.c                                    :+:      :+:    :+:   */
+/*   ft_tolower.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eagoumi <eagoumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/25 17:50:36 by mkhairal          #+#    #+#             */
-/*   Updated: 2024/02/06 21:51:52 by eagoumi          ###   ########.fr       */
+/*   Created: 2022/10/10 01:17:07 by eagoumi           #+#    #+#             */
+/*   Updated: 2022/11/05 19:47:54 by eagoumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../cub3D.h"
+#include "./libft.h"
 
-int	wall_collision(t_global_conf *config, float x, float y)
+int	ft_tolower(int lw)
 {
-	return ((map_get10(x, y) == '1') || (map_get10(x, y) == ' '));
+	if (lw >= 65 && lw <= 90)
+		return (lw += 32);
+	else
+		return (lw);
 }

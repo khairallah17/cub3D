@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   walls_checker.c                                    :+:      :+:    :+:   */
+/*   ft_isdigit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eagoumi <eagoumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/25 17:50:36 by mkhairal          #+#    #+#             */
-/*   Updated: 2024/02/06 21:51:52 by eagoumi          ###   ########.fr       */
+/*   Created: 2022/10/09 16:12:17 by eagoumi           #+#    #+#             */
+/*   Updated: 2022/11/08 19:49:58 by eagoumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../cub3D.h"
+#include "./libft.h"
 
-int	wall_collision(t_global_conf *config, float x, float y)
+int	ft_isdigit(int st)
 {
-	return ((map_get10(x, y) == '1') || (map_get10(x, y) == ' '));
+	return (st >= '0' && st <= '9');
 }

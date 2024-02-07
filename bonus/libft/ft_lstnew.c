@@ -1,18 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   walls_checker.c                                    :+:      :+:    :+:   */
+/*   ft_lstnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eagoumi <eagoumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/25 17:50:36 by mkhairal          #+#    #+#             */
-/*   Updated: 2024/02/06 21:51:52 by eagoumi          ###   ########.fr       */
+/*   Created: 2022/10/24 21:59:42 by eagoumi           #+#    #+#             */
+/*   Updated: 2022/11/08 20:26:52 by eagoumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../cub3D.h"
+#include "./libft.h"
 
-int	wall_collision(t_global_conf *config, float x, float y)
+t_list	*ft_lstnew(void *content)
 {
-	return ((map_get10(x, y) == '1') || (map_get10(x, y) == ' '));
+	t_list	*str;
+
+	str = (t_list *)malloc(sizeof(t_list));
+	if (str == NULL)
+		return (NULL);
+	str->content = content;
+	str->next = NULL;
+	return (str);
 }

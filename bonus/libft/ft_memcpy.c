@@ -1,18 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   walls_checker.c                                    :+:      :+:    :+:   */
+/*   ft_memcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eagoumi <eagoumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/25 17:50:36 by mkhairal          #+#    #+#             */
-/*   Updated: 2024/02/06 21:51:52 by eagoumi          ###   ########.fr       */
+/*   Created: 2022/10/13 16:13:56 by eagoumi           #+#    #+#             */
+/*   Updated: 2022/11/08 20:29:19 by eagoumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../cub3D.h"
+#include "./libft.h"
 
-int	wall_collision(t_global_conf *config, float x, float y)
+void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
-	return ((map_get10(x, y) == '1') || (map_get10(x, y) == ' '));
+	char	*rgm;
+	char	*rsrc;
+	size_t	i;
+
+	if (dst == NULL && src == NULL)
+		return (NULL);
+	rgm = dst;
+	rsrc = (char *)src;
+	i = 0;
+	while (i < n)
+	{
+		rgm[i] = rsrc[i];
+		i++;
+	}
+	return (rgm);
 }
