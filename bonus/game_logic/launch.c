@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   launch.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eagoumi <eagoumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 18:38:38 by mkhairal          #+#    #+#             */
-/*   Updated: 2024/02/07 22:53:43 by mkhairal         ###   ########.fr       */
+/*   Updated: 2024/02/07 23:15:40 by eagoumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@ void	ft_mouse(void	*param)
 	x = 0;
 	y = 0;
 	config = (t_global_conf *)param;
-	mlx_get_mouse_pos(config->mlx, &x, &y);
+	mlx_get_mouse_pos (config->mlx, &x, &y);
 	if (old_x != x)
 	{
-		getmap()->player_angle += to_rad(old_x)/ 500;
+		getmap()->player_angle += to_rad(old_x) / 500;
 	}
 	old_x = x;
 	update(config);
