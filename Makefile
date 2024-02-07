@@ -141,6 +141,8 @@ clean:
 fclean: clean
 	@rm -rf $(MLX42_DIR)
 	@rm -rf $(BONUS)
+	@(cd libft; make fclean)
+	@(cd bonus/libft; make fclean)
 	@if [ -f "$(NAME)" ]; then \
 	rm -f $(NAME); \
 	cd ./libft; make fclean; \

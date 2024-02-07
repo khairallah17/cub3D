@@ -6,7 +6,7 @@
 /*   By: eagoumi <eagoumi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 18:38:38 by mkhairal          #+#    #+#             */
-/*   Updated: 2024/02/07 23:15:40 by eagoumi          ###   ########.fr       */
+/*   Updated: 2024/02/08 00:37:11 by eagoumi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,10 @@ void	ft_mouse(void	*param)
 	mlx_get_mouse_pos (config->mlx, &x, &y);
 	if (old_x != x)
 	{
-		getmap()->player_angle += to_rad(old_x) / 500;
+		if (old_x > x)
+			getmap()->player_angle -= to_rad(old_x - x) / 30;
+		else
+			getmap()->player_angle -= to_rad(old_x - x) / 30;
 	}
 	old_x = x;
 	update(config);
