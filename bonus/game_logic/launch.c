@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   launch.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eagoumi <eagoumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 18:38:38 by mkhairal          #+#    #+#             */
-/*   Updated: 2024/02/07 21:47:17 by eagoumi          ###   ########.fr       */
+/*   Updated: 2024/02/07 22:53:43 by mkhairal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@ void	ft_mouse(void	*param)
 	mlx_get_mouse_pos(config->mlx, &x, &y);
 	if (old_x != x)
 	{
-		getmap()->player_angle += (old_x * (M_PI / 180.0)) / 20;
+		getmap()->player_angle += to_rad(old_x)/ 500;
 	}
-	mlx_set_cursor_mode(config->mlx, MLX_MOUSE_DISABLED);
 	old_x = x;
+	update(config);
 }
 
 void	launch(int ac, char **av)
@@ -41,6 +41,8 @@ void	launch(int ac, char **av)
 	field_texture_path(&config);
 	setup(&config);
 	update(&config);
+	mlx_set_cursor_mode(config.mlx, MLX_MOUSE_DISABLED);
+	mlx_loop_hook(config.mlx, &ft_mouse, &config);
 	mlx_key_hook(config.mlx, &my_key_hook, &config);
 	mlx_loop(config.mlx);
 	mlx_terminate(config.mlx);

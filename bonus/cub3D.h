@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eagoumi <eagoumi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 05:55:02 by eagoumi           #+#    #+#             */
-/*   Updated: 2024/02/07 22:20:59 by eagoumi          ###   ########.fr       */
+/*   Updated: 2024/02/07 22:35:24 by mkhairal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,6 +241,7 @@ void			player_init(t_global_conf *config);
 
 /* PLAYER MOVEMENTS */
 int				wall_collision(t_global_conf *config, float x, float y);
+int				wall_collision2(float x, float y);
 void			player_movements_checker(t_global_conf *config, \
 											mlx_key_data_t *key);
 void			move_up(t_global_conf *config);

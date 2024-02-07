@@ -6,7 +6,7 @@
 /*   By: mkhairal <mkhairal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 16:25:36 by mkhairal          #+#    #+#             */
-/*   Updated: 2024/02/07 18:26:00 by mkhairal         ###   ########.fr       */
+/*   Updated: 2024/02/07 22:36:05 by mkhairal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	move_player(t_double angle)
 	{
 		x = getmap()->player_x + v * cos(getmap()->player_angle + angle);
 		y = getmap()->player_y + v * sin(getmap()->player_angle + angle);
-		if (wall_collision(NULL, x, y))
+		if (wall_collision2(x, y))
 			break ;
 		getmap()->player_x = x;
 		getmap()->player_y = y;
